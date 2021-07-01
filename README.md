@@ -18,4 +18,4 @@ Use the Deployment tools in Facile to perform an ![Auto-deployment](https://faci
 
 | Product | Console URL |
 | ----- | ----- |
-| My Ping Console | `https://console.pingone.com/index.html?env={{Your Admin EnvId}}#/home/`
+| Facile Dashboard | `https://facile.pingidentity.cloud/dashboard/{{releaseName}}`
