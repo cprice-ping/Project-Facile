@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ===================================================================== -->
+<!--                                                                       -->
+<!--  Log4J2 Configuration                                                 -->
+<!--                                                                       -->
+<!-- ===================================================================== -->
+
+<!--
+   | For more configuration information and examples see the Apache Log4j2
+   | website: http://logging.apache.org/log4j/2.x/
+ -->
+
+<!--
+   | monitorInterval - the number of seconds before Log4J2 detects changes to the configuration file and reconfigures itself.
+ -->
+<Configuration monitorInterval="30" shutdownHook="enable" packages="com.pingidentity.pa.cli.logging.appenders.log4j2,com.pingidentity.pa.cli.logging.layouts.log4j2,com.pingidentity.pa.cli.logging.filters.log4j2">
+    <Loggers>
+
+    <!-- PingAccess Loggers -->
+    <AsyncLogger name="com.pingidentity" level="${PA_LOG_LEVEL}"/>
+
+	<AsyncLogger name="com.pingidentity.pa.core.interceptor" level="INFO" />
+    <AsyncLogger name="com.pingidentity.pa.oidc.UpdateTokenInterceptor" level="INFO" />
+	<AsyncLogger name="com.pingidentity.pa.core.transport.http.async" level="INFO" />
+	<AsyncLogger name="com.pingidentity.pa.ha.HighAvailabilityConfigurationManager" level="INFO" />
+
+        <!-- Logs details/ordering of service proxies -->
+        <AsyncLogger name="com.pingidentity.pa.core.proxies.ProxyInfoLogger" level="INFO"/>
+
+        <!-- Logs configuration replication details -->
+        <AsyncLogger name="com.pingidentity.pa.polling.replication" level="INFO"/>
+
+        <!--
+        Log entries can be generated from Groovy rules. All Groovy rules use a logger with a name like:
+
+            GroovyRule.[RULE_NAME]
+
+        where RULE_NAME is replaced with the name of the rule.
+
+        To enable DEBUG logging from all Groovy rules, uncomment the following line.
+        <AsyncLogger name="GroovyRule" level="DEBUG"/>
+
+        To enable INFO logging from a specific Groovy rule with the name "example", uncomment the following line:
+        <AsyncLogger name="GroovyRule.[example]" level="INFO"/>
+        -->
+
+        <!-- Log incoming and outgoing cookies-->
+        <!--
+        <AsyncLogger name="com.pingidentity.pa.core.interceptor.CookieLoggingInterceptor" level="TRACE"/>
+        -->
+
+        <!-- ========================= -->
+        <!-- Third-party dependencies  -->
+        <!-- ========================= -->
+
+        <!-- Changes to this section will not be required to effectively troubleshoot PingAccess -->
+        <AsyncLogger name="net.sf.ehcache" level="WARN"/>
+        <AsyncLogger name="net.sf.ehcache.config.CacheConfiguration" level="ERROR"/>
+        <AsyncLogger name="org.springframework" level="WARN"/>
+        <AsyncLogger name="org.springframework.orm.jpa" level="WARN"/>
+        <AsyncLogger name="org.hibernate" level="WARN"/>
+        <AsyncLogger name="org.hibernate.orm.deprecation" level="FATAL"/>
+        <AsyncLogger name="org.hibernate.cache.ehcache.AbstractEhcacheRegionFactory" level="ERROR"/>
+        <AsyncLogger name="org.hibernate.jpa.internal.util.LogHelper" level="FATAL"/>
+        <AsyncLogger name="org.apache.http" level="WARN"/>
+        <AsyncLogger name="java.sql.DatabaseMetaData" level="WARN"/>
+        <AsyncLogger name="com.wordnik.swagger" level="WARN"/>
+        <AsyncLogger name="io.netty" level="WARN"/>
+        <AsyncLogger name="org.jose4j.jwe.kdf"/>
+        <AsyncLogger name="org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator" level="ERROR"/>
+
+        <!-- ======================= -->
+        <!-- Set up the Root logger  -->
+        <!-- ======================= -->
+        <AsyncRoot level="${PA_LOG_LEVEL}" includeLocation="false">
+            <AppenderRef ref="File"/>
+            <AppenderRef ref="CONSOLE" />
+            <!--<AppenderRef ref="CONSOLE" />-->
+            <!--<AppenderRef ref="SYSLOG" />-->
+        </AsyncRoot>
+
+        <!-- ======================= -->
+        <!-- Audit log configuration -->
+        <!-- ======================= -->
+        <Logger name="apiaudit" level="INFO" additivity="false">
+            <AppenderRef ref="APIAuditLog-File"/>
+            <!--<AppenderRef ref="ApiAuditLog-HarFile"/>-->
+        </Logger>
+        <Logger name="engineaudit" level="INFO" additivity="false">
+            <AppenderRef ref="EngineAuditLog-File"/>
+            <AppenderRef ref="CONSOLE" />
+            <!--<AppenderRef ref="EngineAuditLog-HarFile"/>-->
+        </Logger>
+        <Logger name="agentaudit" level="INFO" additivity="false">
+            <AppenderRef ref="AgentAuditLog-File"/>
+            <!--<AppenderRef ref="AgentAuditLog-HarFile"/>-->
+        </Logger>
+    </Loggers>
+
+    <Appenders>
+        <!-- =============================== -->
+        <!-- Append messages to local files  -->
+        <!-- =============================== -->
+
+        <!-- Server log : A size based file rolling appender -->
+        <RollingFile name="File"
+                     fileName="${sys:pa.home}/log/pingaccess.log"
+                     filePattern="${sys:pa.home}/log/pingaccess.log.%i"
+                     ignoreExceptions="false">
+            <PatternLayout>
+                <!-- Uncomment this if you want to use UTF-8 encoding instead of system's default encoding. -->
+                <!--
+                <charset>UTF-8</charset>
+                -->
+                <pattern>%d{ISO8601} %5p [%X{exchangeId}] %c - %m%n</pattern>
+            </PatternLayout>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="100000 KB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="10"/>
+        </RollingFile>
+
+        <!-- ============================== -->
+        <!-- Append messages to the console -->
+        <!-- ============================== -->
+        <!-- To use, uncomment the next block and the appenderRef under the AsyncRoot element, in the 'Loggers' section -->
+
+        <!--
+        <Console name="CONSOLE" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{ABSOLUTE} %-5p [%c{1}] %m%n" />
+        </Console>
+        -->
+
+        <!-- ========================= -->
+        <!-- Append messages to syslog -->
+        <!-- ========================= -->
+        <!-- To use, uncomment the next block and the appenderRef under the AsyncRoot element, in the 'Loggers' section -->
+
+        <!--
+        <Socket name="SYSLOG" host="localhost" port="514" protocol="UDP">
+            <PingSyslogLayout facility="LOCAL0">
+                <PatternLayout>
+                    <pattern>%d{ABSOLUTE} %5p %c:%L - %m%n</pattern>
+                </PatternLayout>
+            </PingSyslogLayout>
+        </Socket>
+        -->
+
+        <!-- API auditing file logging configuration-->
+        <RollingFile name="APIAuditLog-File"
+                     fileName="${sys:pa.home}/log/pingaccess_api_audit.log"
+                     filePattern="${sys:pa.home}/log/pingaccess_api_audit.%d{yyyy-MM-dd}.log"
+                     ignoreExceptions="false">
+            <PatternLayout>
+                <!-- Uncomment this if you want to use UTF-8 encoding instead of system's default encoding. -->
+                <!--
+                <charset>UTF-8</charset>
+                -->
+                <pattern>%d{ISO8601}| %X{exchangeId}| %X{AUDIT.trackingId}| %X{AUDIT.roundTripMS} ms| %X{AUDIT.subject}| %X{AUDIT.authMech}| %X{AUDIT.client}| %X{AUDIT.method}| %X{AUDIT.requestUri}| %X{AUDIT.responseCode} %n</pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy />
+            </Policies>
+        </RollingFile>
+
+        <!-- API Audit log : HAR format file
+
+        To enable:
+          1) Uncomment the ApiAuditLog-HarFile element below
+          2) Uncomment the reference to 'ApiAuditLog-HarFile' for the 'apiaudit' Logger (in the 'Loggers' section)
+
+        Notes:
+          1) With the below settings, this will log all requests/responses that the Administrator API receives (client)
+          2) Additional settings and details can be found in the PingAccess online documentation
+        -->
+        <!--
+        <RollingFile name="ApiAuditLog-HarFile"
+                     fileName="${sys:pa.home}/log/pingaccess_api_audit_har.log"
+                     filePattern="${sys:pa.home}/log/pingaccess_api_audit_har.%d{yyyy-MM-dd}.log"
+                     ignoreExceptions="false">
+            <StatusCodeRegExFilter regex=".*"/>
+            <HarLogLayout clientBodySizeLimit="16384" appBodySizeLimit="16384">
+                <KeyValuePair key="AUDIT.metadata" value="true"/>
+                <KeyValuePair key="AUDIT.http-client" value="true"/>
+            </HarLogLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy />
+            </Policies>
+        </RollingFile>
+        -->
+
+        <!-- Engine auditing file logging configuration-->
+        <!-- Additional Engine Audit values available:-->
+        <!-- | %X{AUDIT.failedRuleClass}-->
+        <!-- | %X{AUDIT.failedRuleSetName}-->
+        <!-- | %X{AUDIT.host}-->
+        <!-- | %X{AUDIT.targetHost}-->
+        <!-- | %X{AUDIT.reqReceivedMillisec}-->
+        <!-- | %X{AUDIT.reqSentMillisec}-->
+        <!-- | %X{AUDIT.respReceivedMillisec}-->
+        <!-- | %X{AUDIT.respSentMillisec}-->
+        <!-- | %X{AUDIT.applicationId}-->
+        <!-- | %X{AUDIT.resourceId}-->
+        <!-- | %X{AUDIT.scopes}-->
+        <!-- | %X{AUDIT.siteUnavailableInfo}-->
+        <!-- | %X{AUDIT.clientCertIssuerDn}-->
+        <!-- | %X{AUDIT.clientCertSubjectDn}-->
+        <!-- | %X{AUDIT.clientCertSerialNum}-->
+        <!-- | %appResponseHeader{a-header-name}-->
+        <!-- | %clientResponseHeader{a-header-name}-->
+        <!-- | %appRequestHeader{a-header-name}-->
+        <!-- | %clientRequestHeader{a-header-name}-->
+        <RollingFile name="EngineAuditLog-File"
+                     fileName="${sys:pa.home}/log/pingaccess_engine_audit.log"
+                     filePattern="${sys:pa.home}/log/pingaccess_engine_audit.%d{yyyy-MM-dd}.log"
+                     ignoreExceptions="false">
+            <PatternLayout>
+                <!-- Uncomment this if you want to use UTF-8 encoding instead of system's default encoding. -->
+                <!--
+                <charset>UTF-8</charset>
+                -->
+                <pattern>%d{ISO8601}| %X{exchangeId}| %X{AUDIT.trackingId}| %X{AUDIT.roundTripMS} ms| %X{AUDIT.proxyRoundTripMS} ms| %X{AUDIT.resource}| %X{AUDIT.subject}| %X{AUDIT.authMech}| %X{AUDIT.client}| %X{AUDIT.method}| %X{AUDIT.requestUri}| %X{AUDIT.responseCode}| %X{AUDIT.failedRuleType}| %X{AUDIT.failedRuleName}| %X{AUDIT.applicationName}| %X{AUDIT.resourceName}| %X{AUDIT.pathPrefix} %n</pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy />
+            </Policies>
+        </RollingFile>
+
+        <!-- Engine Audit log : HAR format file
+
+        To enable:
+          1) Uncomment the EngineAuditLog-HarFile element below
+          2) Uncomment the reference to 'EngineAuditLog-HarFile' for the 'engineaudit' Logger (in the 'Loggers' section)
+
+        Notes:
+          1) With the below settings, this will log all requests/responses with a 5XX response code that the engine receives (client) and sends (app)
+          2) Additional settings and details can be found in the PingAccess online documentation
+        -->
+        <!--
+        <RollingFile name="EngineAuditLog-HarFile"
+                     fileName="${sys:pa.home}/log/pingaccess_engine_audit_har.log"
+                     filePattern="${sys:pa.home}/log/pingaccess_engine_audit_har.%d{yyyy-MM-dd}.log"
+                     ignoreExceptions="false">
+            <StatusCodeRegExFilter regex="5.."/>
+            <HarLogLayout clientBodySizeLimit="16384" appBodySizeLimit="16384">
+                <KeyValuePair key="AUDIT.metadata" value="true"/>
+                <KeyValuePair key="AUDIT.http-client" value="true"/>
+                <KeyValuePair key="AUDIT.http-app" value="true"/>
+            </HarLogLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy />
+            </Policies>
+        </RollingFile>
+        -->
+
+        <!-- Agent auditing file logging configuration-->
+        <!-- Additional Agent Audit values available:-->
+        <!-- | %X{AUDIT.failedRuleClass}-->
+        <!-- | %X{AUDIT.failedRuleSetName}-->
+        <!-- | %X{AUDIT.host}-->
+        <!-- | %X{AUDIT.roundTripMS}-->
+        <!-- | %X{AUDIT.reqReceivedMillisec}-->
+        <!-- | %X{AUDIT.respSentMillisec}-->
+        <!-- | %X{AUDIT.applicationId}-->
+        <!-- | %X{AUDIT.resourceId}-->
+        <!-- | %X{AUDIT.scopes}-->
+        <!-- | %X{AUDIT.agentName}-->
+        <!-- | %appResponseHeader{a-header-name}-->
+        <!-- | %clientResponseHeader{a-header-name}-->
+        <!-- | %appRequestHeader{a-header-name}-->
+        <!-- | %clientRequestHeader{a-header-name}-->
+        <!-- The agent{} pattern matches data sent from an Agent via the 'vnd-pi-agent' header. The following well-known
+             keys are available:
+                h - The hostname where the Agent resides
+                t - The type of Agent and/or the type of platform where the Agent resides
+                v - The version of the Agent making the request
+        -->
+        <!-- | %agent{h}-->
+        <!-- | %agent{t}-->
+        <!-- | %agent{v}-->
+        <RollingFile name="AgentAuditLog-File"
+                     fileName="${sys:pa.home}/log/pingaccess_agent_audit.log"
+                     filePattern="${sys:pa.home}/log/pingaccess_agent_audit.%d{yyyy-MM-dd}.log"
+                     ignoreExceptions="false">
+            <PatternLayout>
+                <!-- Uncomment this if you want to use UTF-8 encoding instead of system's default encoding. -->
+                <!--
+                <charset>UTF-8</charset>
+                -->
+                <pattern>%d{ISO8601}| %X{exchangeId}| %X{AUDIT.trackingId}| %X{AUDIT.roundTripMS} ms| %X{AUDIT.resource}| %X{AUDIT.client}| %X{AUDIT.method}| %X{AUDIT.requestUri}| %X{AUDIT.responseCode}| %X{AUDIT.applicationName}| %X{AUDIT.resourceName}| %X{AUDIT.pathPrefix} %n</pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy />
+            </Policies>
+        </RollingFile>
+
+        <!-- Agent Audit log : HAR format file
+
+        To enable:
+          1) Uncomment the AgentAuditLog-HarFile element below
+          2) Uncomment the reference to 'AgentAuditLog-HarFile' for the 'agentaudit' Logger (in the 'Loggers' section)
+
+        Notes:
+          1) With the below settings, this will log all agent requests/responses with a 5XX response code that are received (client) and sent (app)
+          2) Additional settings and details can be found in the PingAccess online documentation
+          3) The app request is the request that has been modified by identity mappings and rules
+          4) The app response is the initial response generated by PA when access is allowed; this may not be useful for debugging
+        -->
+        <!--
+        <RollingFile name="AgentAuditLog-HarFile"
+                     fileName="${sys:pa.home}/log/pingaccess_agent_audit_har.log"
+                     filePattern="${sys:pa.home}/log/pingaccess_agent_audit_har.%d{yyyy-MM-dd}.log"
+                     ignoreExceptions="false">
+            <StatusCodeRegExFilter regex="5.."/>
+            <HarLogLayout clientBodySizeLimit="16384" appBodySizeLimit="16384">
+                <KeyValuePair key="AUDIT.metadata" value="true"/>
+                <KeyValuePair key="AUDIT.http-client" value="true"/>
+                <KeyValuePair key="AUDIT.http-app" value="true"/>
+            </HarLogLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy />
+            </Policies>
+        </RollingFile>
+        -->
+
+        <!-- JSON Appender for Containers -->
+        <Console name="CONSOLE" target="SYSTEM_OUT">
+            <JsonLayout complete="false" compact="true" eventEol="true">
+            </JsonLayout>
+        </Console>
+
+    </Appenders>
+</Configuration>

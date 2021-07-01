@@ -1,0 +1,19 @@
+dsconfig set-trust-manager-provider-prop \
+    --provider-name 'Blind Trust'  \
+    --set enabled:true
+
+dsconfig create-external-server \
+	--server-name PolicyAdmin \
+	--type policy \
+	--set base-url:https://pingdatagovernancepap:8443 \
+	--set hostname-verification-method:allow-all \
+	--set key-manager-provider:Null \
+	--set "trust-manager-provider:Blind Trust" \
+	--set shared-secret:${DECISION_POINT_SHARED_SECRET} \
+	--set decision-node:e51688ff-1dc9-4b6c-bb36-8af64d02e9d1 \
+	--set branch:defaultPolicies.SNAPSHOT
+
+dsconfig set-policy-decision-service-prop \
+	--set pdp-mode:external \
+	--set policy-server:PolicyAdmin \
+    --set trust-framework-version:v2
