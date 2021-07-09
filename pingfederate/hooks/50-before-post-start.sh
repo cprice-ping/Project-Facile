@@ -37,11 +37,5 @@ echo PingID IK
 rm -f /opt/out/instance/server/default/deploy/pf-pingid-idp-adapter-2.6.jar
 rm -f /opt/out/instance/server/default/deploy/pf-pingid-quickconnection-1.0.1.jar
 rm -f /opt/out/instance/server/default/deploy/PingIDRadiusPCV-2.5.0.jar
+# P1 MFA
 rm -f /opt/out/instance/server/default/deploy/pf-pingone-mfa-adapter-1.3.2.jar
-echo P14C IKs
-rm -f /opt/out/instance/server/default/deploy/pf-p14c-*
-# echo "##########
-# "
-# cat /opt/out/instance/server/default/conf/META-INF/hivemodule.xml
-# echo "
-# ##########"
