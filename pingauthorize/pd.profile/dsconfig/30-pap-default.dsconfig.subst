@@ -3,6 +3,18 @@ dsconfig set-trust-manager-provider-prop \
     --set enabled:true
 
 dsconfig create-external-server \
+    --server-name pd-${RELEASE_NAME}  \
+    --type ping-identity-ds  \
+    --set server-host-name:cp-facile100-2106-pingdirectory  \
+    --set server-port:636  \
+    --set location:Docker  \
+    --set "bind-dn:uid=svc-pingauthorize,ou=serviceAccounts,${USER_BASE_DN}"  \
+    --set password:${DECISION_POINT_SHARED_SECRET}  \
+    --set connection-security:ssl  \
+    --set key-manager-provider:Null  \
+    --set "trust-manager-provider:Blind Trust" 
+
+dsconfig create-external-server \
 	--server-name PolicyAdmin \
 	--type policy \
 	--set base-url:https://pingauthorizepap:8443 \
