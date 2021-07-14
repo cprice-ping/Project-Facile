@@ -49,17 +49,17 @@ deploymentPackageStores:
   #   signingKey:
   #     alias: signing-cert-alias
   #     password: private-key-password
-  - name: S3 bucket store
-    description: AWS S3 bucket store
-    type: s3bucket
-    securityLevel: unsigned
-    config:
-      bucket: cprice-deployment-package-stores
-      prefix: 8.3.0.0-GA-FAT
-      endpoint: https://s3.amazonaws.com
-      region: us-west-2
-      accessKey: ${pazDeployKey}
-      secretKey: ${pazDeploySecret}
+  # - name: S3 bucket store
+  #   description: AWS S3 bucket store
+  #   type: s3bucket
+  #   securityLevel: unsigned
+  #   config:
+  #     bucket: your-s3-bucket-name
+  #     prefix: your-prefix
+  #     endpoint: https://s3.amazonaws.com
+  #     region: us-west-2
+  #     accessKey: your-access-key
+  #     secretKey: your-secret-key
   
 securityHeaders:
   # Configure the values that the Policy Administration GUI will set in its
