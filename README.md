@@ -1,6 +1,6 @@
 # Project Facile
 
-This repo provides the Server Profiles used by ![Project Facile](https://facile.pingidentity.cloud) to deploy a fully wired starting configuration of Ping Identity products.
+This repo provides the Server Profiles used by [Project Facile](https://facile.pingidentity.cloud) to deploy a fully wired starting configuration of Ping Identity products.
 
 ![Facile Architecture](facile-architecture.png)
 
