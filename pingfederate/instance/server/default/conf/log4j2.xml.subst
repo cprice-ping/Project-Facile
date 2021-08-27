@@ -64,10 +64,9 @@
                 <pattern>%d %X{trackingid} %-5p [%c] %m%n</pattern>
             </PatternLayout>
             <Policies>
-                <SizeBasedTriggeringPolicy
-                        size="10000 KB" />
+                <SizeBasedTriggeringPolicy size="${PF_LOG_SIZE_MAX}" />
             </Policies>
-            <DefaultRolloverStrategy max="5" />
+            <DefaultRolloverStrategy max="${PF_LOG_NUMBER}" />
         </RollingFile>
 
         <!-- SAML Transaction log : A time/date based rolling appender -->
@@ -82,7 +81,9 @@
             </PatternLayout>
             <Policies>
                 <TimeBasedTriggeringPolicy />
+                <SizeBasedTriggeringPolicy size="${PF_LOG_SIZE_MAX}" />
             </Policies>
+            <DefaultRolloverStrategy max="${PF_LOG_NUMBER}" />
         </RollingFile>
 
         <RollingFile name="SecurityAudit2File" fileName="${sys:pf.log.dir}/audit.log"
@@ -143,7 +144,9 @@
             </PatternLayout>
             <Policies>
                 <TimeBasedTriggeringPolicy />
+                <SizeBasedTriggeringPolicy size="${PF_LOG_SIZE_MAX}" />
             </Policies>
+            <DefaultRolloverStrategy max="${PF_LOG_NUMBER}" />
         </RollingFile>
 
         <!-- Admin Audit log : A time/date based rolling appender -->
@@ -158,7 +161,9 @@
             </PatternLayout>
             <Policies>
                 <TimeBasedTriggeringPolicy />
+                <SizeBasedTriggeringPolicy size="${PF_LOG_SIZE_MAX}" />
             </Policies>
+            <DefaultRolloverStrategy max="${PF_LOG_NUMBER}" />
         </RollingFile>
 
         <!-- Admin Event Detail Audit log : A time/date based rolling appender -->
@@ -173,7 +178,9 @@
             </PatternLayout>
             <Policies>
                 <TimeBasedTriggeringPolicy />
+                <SizeBasedTriggeringPolicy size="${PF_LOG_SIZE_MAX}" />
             </Policies>
+            <DefaultRolloverStrategy max="${PF_LOG_NUMBER}" />
         </RollingFile>
 
         <!-- Admin API Audit log : A time/date based rolling appender -->
@@ -200,7 +207,9 @@
             </PatternLayout>
             <Policies>
                 <TimeBasedTriggeringPolicy />
+                <SizeBasedTriggeringPolicy size="${PF_LOG_SIZE_MAX}" />
             </Policies>
+            <DefaultRolloverStrategy max="${PF_LOG_NUMBER}" />
         </RollingFile>
 
         <!-- Runtime API Audit log : A time/date based rolling appender -->
@@ -227,7 +236,9 @@
             </PatternLayout>
             <Policies>
                 <TimeBasedTriggeringPolicy />
+                <SizeBasedTriggeringPolicy size="${PF_LOG_SIZE_MAX}" />
             </Policies>
+            <DefaultRolloverStrategy max="${PF_LOG_NUMBER}" />
         </RollingFile>
 
         <!-- Provisioner log : A time/date based rolling appender -->
@@ -239,7 +250,9 @@
             </PatternLayout>
             <Policies>
                 <TimeBasedTriggeringPolicy />
+                <SizeBasedTriggeringPolicy size="${PF_LOG_SIZE_MAX}" />
             </Policies>
+            <DefaultRolloverStrategy max="${PF_LOG_NUMBER}" />
         </RollingFile>
 
         <!-- Outbound provisioner audit log: A time/date based rolling appender -->
@@ -266,7 +279,9 @@
             </PatternLayout>
             <Policies>
                 <TimeBasedTriggeringPolicy />
+                <SizeBasedTriggeringPolicy size="${PF_LOG_SIZE_MAX}" />
             </Policies>
+            <DefaultRolloverStrategy max="${PF_LOG_NUMBER}" />
         </RollingFile>
 
     </Appenders>
