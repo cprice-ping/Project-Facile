@@ -16,3 +16,4 @@ dsconfig create-external-server \
 dsconfig set-policy-decision-service-prop \
 	--set pdp-mode:external \
 	--set policy-server:pingauthorizepap
+	--set trust-framework-version:v2
