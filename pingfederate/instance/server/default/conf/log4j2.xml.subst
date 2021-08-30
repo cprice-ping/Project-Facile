@@ -320,6 +320,7 @@
         <Logger name="com.pingidentity.configservice.impl.ConfigStoreImpl" level="INFO" />
         <Logger name="org.sourceid.saml20.domain.mgmt.impl.PluginManagementSupport" level="INFO" />
         <Logger name="org.sourceid.saml20.service.session.StoredSessionServiceImpl" level="INFO" />
+        <Logger name="org.jgroups.protocols.TCP_NIO2" level="ERROR" />
 
         <!-- log4j2.xml defaults -->
         <Logger name="org.apache.http.wire" level="INFO" />
