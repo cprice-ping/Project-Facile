@@ -31,7 +31,7 @@
             "sessionTimeoutInMinutes": 240
         },
         "adminConfig": {
-            "hostPort": "${PA_ADMIN_PRIVATE_HOSTNAME}:9090",
+            "hostPort": "${PA_ADMIN_PRIVATE_HOSTNAME}:${PA_ADMIN_PRIVATE_PORT_HTTPS}",
             "httpProxyId": 0,
             "httpsProxyId": 0
         },
