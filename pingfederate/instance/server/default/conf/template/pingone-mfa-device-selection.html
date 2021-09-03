@@ -33,13 +33,13 @@ is not recommended as it may interfere with expected server behavior.
         .page__content {
             margin-top: 50px;
         }
-        
+
         @media (max-width: 480px) {
             .page__content {
                 margin-top: 0;
             }
         }
-        
+
     </style>
 </head>
 <body>
@@ -78,10 +78,10 @@ is not recommended as it may interfere with expected server behavior.
                                         #set ($deviceMessageKey = "mobile")
                                     #else
                                         #set ($deviceMessageKey = ${device.type.toLowerCase()})
-                                    #end                                        
+                                    #end
                                     #set( $deviceMessageKeyPrefix = "${deviceMessageKey}.$messageKeyPrefix" )
                                     #set( $deviceIcon = $languagePackMessages.getMessage($deviceMessageKeyPrefix, "icon"))
-                                    
+
                                     #if($device.usable)
                                         #if($device.type.toLowerCase() == "security_key")
                                         <div id="security_key_block_id" class="tile-button--side-icon tile-button tile-button--stacked-small" data-id="tile-selector-button-pingoneAuth" onclick="selectDevice(this, event, '$device.id')" role="button" tabindex="0">
@@ -90,7 +90,7 @@ is not recommended as it may interfere with expected server behavior.
                                         #else
                                         <div class="tile-button--side-icon tile-button tile-button--stacked-small" data-id="tile-selector-button-pingoneAuth" onclick="selectDevice(this, event, '$device.id')" role="button" tabindex="0">
                                         #end
-                                        
+
                                         #if($device.type.toLowerCase() == "security_key")
                                             <div id="security_key_icon_container_id" class="tile-button__icon-container" onclick="selectDevice(this, event, '$device.id')">
                                         #elseif($device.type.toLowerCase() == "platform")
@@ -98,7 +98,7 @@ is not recommended as it may interfere with expected server behavior.
                                         #else
                                             <div class="tile-button__icon-container" onclick="selectDevice(this, event, '$device.id')">
                                         #end
-                                        
+
                                         #if($deviceIcon == "sms")
                                             <svg viewBox="0 0 24 24" role="presentation" style="width: 32px; height: 32px;">
                                                 <path
@@ -136,7 +136,7 @@ is not recommended as it may interfere with expected server behavior.
                                             </svg>
                                         #end
                                         </div>
-                                        
+
                                         #if($device.type.toLowerCase() == "security_key")
                                         <div id="security_key_content_container_id" class="tile-button__content-container" onclick="selectDevice(this, event, '$device.id')">
                                         #elseif($device.type.toLowerCase() == "platform")
@@ -166,7 +166,7 @@ is not recommended as it may interfere with expected server behavior.
                                             #if ($device.defaultDevice)
                                                 <div class="device-selector__item-status"><span class="muted-text">$languagePackMessages.getMessage($messageKeyPrefix, "default.device.title")</span></div>
                                             #end
-                                            
+
                                             #if (!$device.defaultDevice)
                                                 <div class="device-selector__item-controls" id="kebab-menu-icon-id"
                                                     onclick="selectDevice(this, event, '$device.id')">
@@ -200,7 +200,7 @@ is not recommended as it may interfere with expected server behavior.
                                         #end
 
                                     </div>
-                                    #end 
+                                    #end
                                 #end
                             </div>
                         </div>
@@ -210,7 +210,7 @@ is not recommended as it may interfere with expected server behavior.
                                     #if($manualPairing)
                                     <div>
                                         <button id="add-method" class="button file-input--button button--primary brand-primary-bg"
-                                                data-id="button" type="button" onclick="setupMfa()">
+                                                data-id="button" type="button" onclick="addMethod()">
                                             $languagePackMessages.getMessage($messageKeyPrefix,
                                             "add.method.button.title")
                                         </button>
@@ -226,7 +226,6 @@ is not recommended as it may interfere with expected server behavior.
                 </div>
             </div>
         </div>
-        
         <div class="page__footer">
             <div class="ping-footer">
                 <div class="ping-credits"></div>
@@ -234,8 +233,6 @@ is not recommended as it may interfere with expected server behavior.
             </div>
         </div>
     </div>
-  
-    
     <form id="form" method="post" action="$resumePath" autocomplete="off">
         <input type="hidden" name="$selectedDeviceId" value=""/>
         <input type="hidden" name="$defaultDeviceId" value=""/>
@@ -243,9 +240,40 @@ is not recommended as it may interfere with expected server behavior.
         <input type="hidden" name="$cancelAuthentication" value=""/>
     </form>
 </div>
+#if($manualPairing)
+<div id="authentication_required_block_id" class="modal dialog show modal-width-small" style="display: none; top: 25%">
+    <div class="modal-bg" data-id="modal-bg" onclick="cancelAddMethod()"></div>
+    <div class="modal-content" tabindex="-1" data-id="modal-content" style="min-width: 320px; width: 320px; height: auto;">
+        <span>
+            <div class="modal-body overflow-auto" data-id="modal-body">
+                <h1 class="heading-text centered-text">Authentication Required</h1>
+                <div class="text-block" data-id="textblock">
+                    <div class="text-block--overflow-wrap" style="-ms-word-break: normal">
+                        $languagePackMessages.getMessage($messageKeyPrefix, "pairing.message")
+                    </div>
+                </div>
+                <div class="text-block">
+                    <div class="stack" data-id="stack">
+                        <div style="margin-top: 30px">
+                            <button class="button file-input--button brand-primary-bg"
+                                    data-id="button" type="button" onclick="cancelAddMethod()"
+                                    style="display: inline-block; width: 100px; margin-right: 10px">$languagePackMessages.getMessage($messageKeyPrefix,
+                                "cancel.add.method.button.title")
+                            </button>
+                            <button class="button file-input--button button--primary brand-primary-bg"
+                                    data-id="button" type="button" onclick="setupMfa()"
+                                    style="display: inline-block; width: 100px">$languagePackMessages.getMessage($messageKeyPrefix,
+                                "continue.add.method.button.title")
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </span>
+    </div>
+</div>
+#end
 <script type="text/javascript">
-
-
     function isWebAuthnSupported () {
 	  if (!window.PublicKeyCredential) {
 		return false;
@@ -367,7 +395,7 @@ is not recommended as it may interfere with expected server behavior.
             return 'NONE';
         }
 	}
-	
+
 	function handleClick(event) {
 		var target = $(event.target);
 		var popupDivs = document.querySelectorAll("[id^='device-management-popup-frame']");
@@ -380,15 +408,13 @@ is not recommended as it may interfere with expected server behavior.
 			}
 		}
     }
-    
+
     function setDefaultDevice(event, deviceId)
     {
 	    document.forms[0]['$defaultDeviceId'].value = deviceId;
         form.submit();
     }
-    
 
-	
 	function showDeviceManagementPopup(deviceId) {
         // close other popups if any
         var popupDivs = document.querySelectorAll("[id^='device-management-popup-frame']");
@@ -403,15 +429,31 @@ is not recommended as it may interfere with expected server behavior.
         var docId = 'device-management-popup-frame-' + deviceId;
 		document.querySelector("[id='" + docId + "']").style.display = 'block';
     }
-    
+
     function selectDevice(element, event, deviceId) {
     	if(element.id === 'kebab-menu-icon-id')
         {
             event.stopPropagation();
             return showDeviceManagementPopup(deviceId);
-        }    	    	
+        }
         document.forms[0]['$selectedDeviceId'].value = deviceId;
         submit('$selectedDeviceId');
+    }
+
+    function addMethod() {
+        if (document.querySelector('#authentication_required_block_id') != null) {
+            document.querySelector('#authentication_required_block_id').style.display = 'block';
+        }
+        document.body.style.overflow = "hidden";
+        document.body.style.height = "100%";
+    }
+
+    function cancelAddMethod() {
+        if (document.querySelector('#authentication_required_block_id') != null) {
+            document.querySelector('#authentication_required_block_id').style.display = 'none';
+        }
+        document.body.style.overflow = "auto";
+        document.body.style.height = "auto";
     }
 
     function setupMfa() {

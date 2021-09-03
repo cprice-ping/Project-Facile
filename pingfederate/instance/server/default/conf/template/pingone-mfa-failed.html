@@ -18,9 +18,9 @@ is not recommended as it may interfere with expected server behavior.
 <head>
     <title>
         #if($accountLockedOutErrorMessage)
-            $languagePackMessages.getMessage($messageKeyPrefix, "account.locked.out.title")
+        $languagePackMessages.getMessage($messageKeyPrefix, "account.locked.out.title")
         #else
-            $languagePackMessages.getMessage($messageKeyPrefix, "title")
+        $languagePackMessages.getMessage($messageKeyPrefix, "title")
         #end
     </title>
     <base href="$CurrentPingFedBaseURL"/>
@@ -60,9 +60,9 @@ is not recommended as it may interfere with expected server behavior.
                         <p class="icon-feedback__label">
                         <p class="icon-feedback__label">
                             #if($accountLockedOutErrorMessage)
-                                $languagePackMessages.getMessage($messageKeyPrefix, "account.locked.out.header")
+                            $languagePackMessages.getMessage($messageKeyPrefix, "account.locked.out.header")
                             #else
-                                $languagePackMessages.getMessage($messageKeyPrefix, "header")
+                            $languagePackMessages.getMessage($messageKeyPrefix, "header")
                             #end
                         </p>
                         </p>
@@ -70,10 +70,10 @@ is not recommended as it may interfere with expected server behavior.
                     <div class="text-block text-block--small" data-id="textblock">
                         <div class="text-block--overflow-wrap">
                             #if($accountLockedOutErrorMessage)
-                                $accountLockedOutErrorMessage
+                            $accountLockedOutErrorMessage
                             #else
-                                $languagePackMessages.getMessage($messageKeyPrefix, "could.not.authenticate")
-                                $languagePackMessages.getMessage($messageKeyPrefix, $errorMessageKey)
+                            $languagePackMessages.getMessage($messageKeyPrefix, "could.not.authenticate")
+                            $languagePackMessages.getMessage($messageKeyPrefix, $errorMessageKey)
                             #end
                         </div>
                     </div>
