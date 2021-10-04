@@ -11,7 +11,11 @@ function profileDevice(onCompletion) {
             'fontsFlash': true,
             'webdriver': true,
             'canvas': true,
-            'webglVendorAndRenderer': isIe()
+            'webglVendorAndRenderer': isIe(),
+            'fonts': true,
+            'touchSupport': true,
+            'webgl': true,
+            'audio': true
         }
     };
     if (window.requestIdleCallback) {
@@ -38,7 +42,7 @@ function transformComponentsToDeviceProfile(components) {
     components.map(function (component) {
         var key = component.key;
         var value = component.value;
-        if (value === "not available") {
+        if (value === "not available" || value === "excluded") {
             value = null
         } else if (key === "touchSupport") {
             value = value.map(function (v) {
