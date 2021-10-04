@@ -37,5 +37,10 @@ echo PingID IK
 rm -f /opt/out/instance/server/default/deploy/pf-pingid-idp-adapter-2.6.jar
 # rm -f /opt/out/instance/server/default/deploy/pf-pingid-quickconnection-1.0.1.jar
 rm -f /opt/out/instance/server/default/deploy/PingIDRadiusPCV-2.5.0.jar
+# P1
+rm -f /opt/out/instance/server/default/deploy/pf-pingone-datastore-2.2.2.jar
+rm -f /opt/out/instance/server/default/deploy/pf-pingone-quickconnection-2.2.2.jar
 # P1 MFA
 rm -f /opt/out/instance/server/default/deploy/pf-pingone-mfa-adapter-1.3.2.jar
+# P1 Risk
+rm -f /opt/out/instance/server/default/deploy/pf-pingone-risk-management-adapter-1.1.jar
