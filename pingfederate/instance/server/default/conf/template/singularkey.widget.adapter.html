@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>$singularkeyWidgetPageTitle</title>
+    <base href="$CurrentPingFedBaseURL"/>
+    <link rel="stylesheet" media="all" type="text/css" href="assets/css/main.css"/>
+  </head>
+  <body>
+    <div class="ping-container ping-large">
+      <div class="ping-header">
+        $singularkeyWidgetPageTitle
+      </div>
+      <div class="ping-body-container">
+        <div id="singularkeyWidget"></div>
+      </div>
+      <div class="ping-footer-container">
+        <div class="ping-footer">
+          <div class="ping-credits"></div>
+          <div class="ping-copyright">$templateMessages.getMessage("global.footerMessage")</div>
+        </div> <!-- .ping-footer -->
+        <div>
+          <div>
+            <form method="POST" id="pf.form" action="$resumePath" autocomplete="off">
+              <input type="hidden" name="pf.submit" id="pf.submit" value="click" />
+              <input type="hidden" name="flowResult" id="flowResult" value="" />
+            </form>
+          </div>
+      </div> <!-- .ping-footer-container -->
+    </div>
+    <script src="https://devsdk.singularkey.com/internal/latest/singularkey.js" type="text/javascript"></script>
+    <script type="text/javascript">
+    const pingDebug=$pingDebug
+    function pingLog(message){
+      if (pingDebug === true ){
+        console.log(message)
+      }
+    }
+
+    function log(message, payload) {
+      console.log(message+' - '+payload)
+    }
+
+    function successCallback(response) {
+      let flowResult = JSON.stringify(response)
+      pingLog('Success callback received payload from flow '+ flowResult)
+      document.getElementById('flowResult').value = flowResult
+      document.getElementById('pf.form').submit()
+    }
+
+    function errorCallback(error) {
+      log('Error', JSON.stringify(error))
+    }
+
+    function onCloseModal() {
+      log('Modal','closed.')
+    }
+
+    window.addEventListener('load', function () {
+      const skResponse = $skToken;
+      const widgetConfig = {
+        'config': {
+          'method': 'runFlow',
+          'apiRoot': 'https://$urlBase/v1',
+          'accessToken': skResponse['access_token'],
+          'companyId': '$companyId',
+          '$typeOfId': '$flowOrPolicyId'
+        },
+        'useModal': false,
+        successCallback, errorCallback, onCloseModal
+      }
+      /*** Invoke Singular Key Widget ****/
+      console.log("Invoking widget");
+      pingLog("Invoking Widget to https://$urlBase/v1 with company ID $companyId for $typOfId ID $flowOrPolicyId...")
+      singularkey.skRenderScreen(document.getElementById('singularkeyWidget'), widgetConfig)
+      pingLog("Widget invocation done.")
+    })
+    </script>
+  </body>
+</html>
