@@ -6200,7 +6200,8 @@ ul.no-bullets li:before {
     /*optional*/
     font-family: arial, sans-serif;
     /*input has OS specific font-family*/
-    color: #069;
+    color: #3ea0d1;
     text-decoration: underline;
+    vertical-align: text-bottom;
     cursor: pointer;
   }
