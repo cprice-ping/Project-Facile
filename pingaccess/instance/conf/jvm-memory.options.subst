@@ -19,6 +19,4 @@
 #
 # Sidestep GTE bug in run.sh
 #
--Xms${_DOLLAR_}{PA_MIN_HEAP} -Xmx${_DOLLAR_}{PA_MAX_HEAP} -XX:NewSize=${_DOLLAR_}{PA_MIN_YGEN} -XX:MaxNewSize=${_DOLLAR_}{PA_MAX_YGEN} ${_DOLLAR_}{PA_GCOPTION} 
-
--Dlog4j2.formatMsgNoLookups=true
+-Xms${_DOLLAR_}{PA_MIN_HEAP} -Xmx${_DOLLAR_}{PA_MAX_HEAP} -XX:NewSize=${_DOLLAR_}{PA_MIN_YGEN} -XX:MaxNewSize=${_DOLLAR_}{PA_MAX_YGEN} ${_DOLLAR_}{PA_GCOPTION} -Dlog4j2.formatMsgNoLookups=true
