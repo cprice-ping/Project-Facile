@@ -113,7 +113,7 @@
                 <!--
                 <charset>UTF-8</charset>
                 -->
-                <pattern>%d{ISO8601} %5p [%X{exchangeId}] %c - %m%n</pattern>
+                <pattern>%d{ISO8601} %5p [%X{exchangeId}] %c - %m{nolookups}%n</pattern>
             </PatternLayout>
             <Policies>
                 <SizeBasedTriggeringPolicy size="100000 KB"/>
@@ -128,7 +128,7 @@
 
         <!--
         <Console name="CONSOLE" target="SYSTEM_OUT">
-            <PatternLayout pattern="%d{ABSOLUTE} %-5p [%c{1}] %m%n" />
+            <PatternLayout pattern="%d{ABSOLUTE} %-5p [%c{1}] %m{nolookups}%n" />
         </Console>
         -->
 
@@ -141,7 +141,7 @@
         <Socket name="SYSLOG" host="localhost" port="514" protocol="UDP">
             <PingSyslogLayout facility="LOCAL0">
                 <PatternLayout>
-                    <pattern>%d{ABSOLUTE} %5p %c:%L - %m%n</pattern>
+                    <pattern>%d{ABSOLUTE} %5p %c:%L - %m{nolookups}%n</pattern>
                 </PatternLayout>
             </PingSyslogLayout>
         </Socket>

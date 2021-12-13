@@ -19,3 +19,7 @@ Use the Deployment tools in Facile to perform an [Auto-deployment](https://facil
 | Product | Console URL |
 | ----- | ----- |
 | Facile Dashboard | `https://facile.pingidentity.cloud/dashboard/{{releaseName}}`
+
+## Documentation
+
+[Documentation](https://docs.facile.pingidentity.cloud)
