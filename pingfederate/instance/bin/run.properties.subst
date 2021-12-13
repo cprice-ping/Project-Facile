@@ -407,3 +407,6 @@ org.apache.xml.security.ignoreLineBreaks=true
 
 # Disable BCFIPS
 org.bouncycastle.fips.approved_only=false
+
+# Disable log4j2 lookups
+log4j2.formatMsgNoLookups=true
