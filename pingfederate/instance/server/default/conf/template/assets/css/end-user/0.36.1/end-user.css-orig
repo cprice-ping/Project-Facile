@@ -7538,7 +7538,7 @@ input:-webkit-autofill:active ~ .float-label__label, input:-webkit-autofill:focu
 }
 
 .page__footer {
-    color: #3D454D;
+    color: #9da2a8;
     font-size: 12px;
     text-align: center;
     margin: 25px
