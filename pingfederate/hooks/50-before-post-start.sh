@@ -40,7 +40,7 @@ rm  -f /opt/out/instance/server/default/deploy/pf-pingid-idp-adapter-2.10.jar
 rm -f /opt/out/instance/server/default/deploy/pf-pingone-datastore-2.2.2.jar
 rm -f /opt/out/instance/server/default/deploy/pf-pingone-quickconnection-2.2.2.jar
 # P1 MFA
-rm -f /opt/out/instance/server/default/deploy/pf-pingone-mfa-adapter-1.5.1.jar
+rm -f /opt/out/instance/server/default/deploy/pf-pingone-mfa-adapter-1.6.jar
 # P1 Risk
 rm -f /opt/out/instance/server/default/deploy/pf-pingone-risk-management-adapter-1.1.jar
 # Agentless
