@@ -143,9 +143,13 @@ is not recommended as it may interfere with expected server behavior.
         form.submit();
     }
 
+    function isValidPhone(phone) {
+        return /^$|^[\d\-\(\)\s\.]+$|^\+/g.test(phone);
+    }
+
     function canSubmit() {
         var input = document.getElementById("phone");
-        return input.value.length > 0 && input.checkValidity();
+        return input.value.length > 0 && input.checkValidity() && isValidPhone(input.value);
     }
 
     function checkInput() {

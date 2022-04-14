@@ -60,23 +60,56 @@ is not recommended as it may interfere with expected server behavior.
                     <div class="org-logo"><img class="org-logo__image"
                                                src="assets/images/ping-logo.svg"
                                                alt="Company Logo"/></div>
-                    <div class="ping-body-container" style="min-height: auto;">
-                        <div class="spinner spinner--margin-bottom-small">
-                            <div class="spinner__icon" data-id="spinner"></div>
+
+                    <div>
+                        <div class="ping-body-container" style="min-height: auto;">
+                            <div class="spinner spinner--margin-bottom-small">
+                                <div class="spinner__icon" data-id="spinner"></div>
+                            </div>
+                        </div>
+                        <div class="icon-feedback icon-feedback--success" style="margin-bottom: 10px;">
+                            <p class="icon-feedback__label">$languagePackMessages.getMessage($messageKeyPrefix, "header")</p>
+                        </div>
+                        <div class="form-aside">
+                            <p class="text-block text-block--small" style="margin-bottom: 5px;">
+                                <span class="text-block__text">$languagePackMessages.getMessage($messageKeyPrefix, "request.sent.title")</span>
+                            </p>
+                            #set ($deviceMessageKey = ${selectedDevice.type.toLowerCase()})
+                            #set( $deviceMessageKeyPrefix = "${deviceMessageKey}.$messageKeyPrefix" )
+                            <p class="text-block">
+                                <span class="text-block__text">$languagePackMessages.getMessage($deviceMessageKeyPrefix, "method")</span>
+                            </p>
                         </div>
                     </div>
-                    <div class="icon-feedback icon-feedback--success" style="margin-bottom: 10px;">
-                        <p class="icon-feedback__label">$languagePackMessages.getMessage($messageKeyPrefix, "header")</p>
-                    </div>
-                    <div class="form-aside">
-                        <p class="text-block text-block--small" style="margin-bottom: 5px;">
-                            <span class="text-block__text">$languagePackMessages.getMessage($messageKeyPrefix, "request.sent.title")</span>
-                        </p>
-                        #set ($deviceMessageKey = ${selectedDevice.type.toLowerCase()})
-                        #set( $deviceMessageKeyPrefix = "${deviceMessageKey}.$messageKeyPrefix" )
-                        <p class="text-block">
-                            <span class="text-block__text">$languagePackMessages.getMessage($deviceMessageKeyPrefix, "method")</span>
-                        </p>
+                    <div id="user-consent-modal" class="modal dialog show modal-width-small" style="display: none; top: 25%">
+                        <div class="modal-bg" data-id="modal-bg" onclick="unselectDevice()"></div>
+                        <div class="modal-content" tabindex="-1" data-id="modal-content" style="min-width: 320px; width: 320px; height: auto;">
+                        <span>
+                            <div class="modal-body overflow-auto" data-id="modal-body">
+                                <h1 class="heading-text centered-text">$languagePackMessages.getMessage($messageKeyPrefix, "consent.title")</h1>
+                                <div class="text-block" data-id="textblock">
+                                    <div class="text-block--overflow-wrap" style="-ms-word-break: normal">
+                                        $languagePackMessages.getMessage($messageKeyPrefix, "consent.text")
+                                    </div>
+                                </div>
+                                <div class="text-block">
+                                    <div class="stack" data-id="stack">
+                                        <div style="margin-top: 30px">
+                                            <button class="button file-input--button brand-primary-bg"
+                                                    data-id="button" type="button" onclick="unselectDevice()"
+                                                    style="display: inline-block; width: 100px; margin-right: 10px">$languagePackMessages.getMessage($messageKeyPrefix, "consent.cancel.button")
+                                            </button>
+                                            <button class="button file-input--button button--primary brand-primary-bg"
+                                                    data-id="button" type="button" onclick="handleUserConsent()"
+                                                    style="display: inline-block; width: 100px">
+                                                $languagePackMessages.getMessage($messageKeyPrefix, "consent.button")
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -183,6 +216,11 @@ is not recommended as it may interfere with expected server behavior.
 		});
 	}
 
+    function handleUserConsent() {
+	    hideUserConsentModal();
+	    return Authenticate('$publicKeyCredentialRequestOptionsAsString');
+    }
+
 	function Authenticate(publicKeyCredentialRequestOptions) {
 		return new Promise(function(resolve, reject) {
 			var options = JSON.parse(publicKeyCredentialRequestOptions);
@@ -223,21 +261,12 @@ is not recommended as it may interfere with expected server behavior.
 					resolve(JSON.stringify(publicKeyCredential));
 					checkAssertion(JSON.stringify(publicKeyCredential));
 				}).catch(function (err) {
-					// No acceptable authenticator or user refused consent. Cancel authentication
-					// if this is the only device so we don't loop
+					// No acceptable authenticator or user refused consent
 					console.log("No acceptable authenticator or user refused consent");
-					if('$devices.size()' == 1)
-					{
-						document.forms[0]['$cancelAuthentication'].value = true;
-						removeInput('$selectedDeviceId');
-					}
-					else
-					{
-						removeInput('$cancelAuthentication');
-						removeInput('$assertion');
-						document.forms[0]['$compatibility'].value = 'NONE';
-						document.forms[0]['$selectedDeviceId'].value = '';
-					}
+					removeInput('$cancelAuthentication');
+					removeInput('$assertion');
+					document.forms[0]['$compatibility'].value = 'NONE';
+					document.forms[0]['$selectedDeviceId'].value = '';
 					submit();
 			});
 		});
@@ -353,7 +382,29 @@ is not recommended as it may interfere with expected server behavior.
 		form.submit();
 	}
 
-	onload = function () {
+	function isSafari() {
+	    var vendor = navigator.vendor.toLowerCase();
+	    var userAgent = navigator.userAgent.toLowerCase();
+        return vendor.includes('apple') && userAgent.includes('safari');
+    }
+
+    function showUserConsentModal() {
+        if (document.querySelector('#user-consent-modal') != null) {
+            document.querySelector('#user-consent-modal').style.display = 'block';
+        }
+        document.body.style.overflow = "hidden";
+        document.body.style.height = "100%";
+    }
+
+    function hideUserConsentModal() {
+        if (document.querySelector('#user-consent-modal') != null) {
+            document.querySelector('#user-consent-modal').style.display = 'none';
+        }
+        document.body.style.overflow = "auto";
+        document.body.style.height = "auto";
+    }
+
+    onload = function () {
 		getCompatibility().then(function(value) {
 			// compare value with received, if there is no match, trigger cancel flow
 			// PLATFORM - FULL
@@ -361,24 +412,21 @@ is not recommended as it may interfere with expected server behavior.
 			if ( ('$selectedDevice.type' === 'SECURITY_KEY' && value === 'NONE') ||
 				('$selectedDevice.type' === 'PLATFORM' && value !== 'FULL') )
 			{
-				// Cancel authentication if this is the only device so we don't loop
+				// No acceptable authenticator
 				console.log("No acceptable authenticator");
-				if('$devices.size()' == 1)
-				{
-					document.forms[0]['$cancelAuthentication'].value = true;
-					removeInput('$selectedDeviceId');
-				}
-				else
-				{
-					removeInput('$cancelAuthentication');
-					removeInput('$assertion');
-					document.forms[0]['$compatibility'].value = 'NONE';
-					document.forms[0]['$selectedDeviceId'].value = '';
-				}
+				removeInput('$cancelAuthentication');
+				removeInput('$assertion');
+				document.forms[0]['$compatibility'].value = 'NONE';
+				document.forms[0]['$selectedDeviceId'].value = '';
 				submit();
 			}
-			else
-				Authenticate('$publicKeyCredentialRequestOptionsAsString');
+			else {
+			    if (isSafari()) {
+			        showUserConsentModal()
+                } else {
+                    Authenticate('$publicKeyCredentialRequestOptionsAsString');
+                }
+            }
 		});
  }
 

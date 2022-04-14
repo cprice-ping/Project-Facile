@@ -56,7 +56,6 @@ is not recommended as it may interfere with expected server behavior.
 						<div class="feedback__message">$languagePackMessages.getMessage($messageKeyPrefix, $errorMessageKey)
 						</div>
 					</div>
-
                     <div class="text-block" data-id="textblock">
                         <div class="text-block--overflow-wrap">
                             <div class="stack" data-id="stack">
@@ -66,9 +65,7 @@ is not recommended as it may interfere with expected server behavior.
                             </div>
                         </div>
                     </div>
-
 					#end
-
                     #if($errorMessageKey == "")
                     <div id="platform_icon_container_id" class="tile-button__icon-container">
                         <h1 class="heading-text centered-text icon-heading" data-id="heading">
@@ -86,10 +83,39 @@ is not recommended as it may interfere with expected server behavior.
 							</div>
 						</div>
 					</div>
+                    <div id="user-consent-modal" class="modal dialog show modal-width-small" style="display: none; top: 25%">
+                        <div class="modal-bg" data-id="modal-bg" onclick="cancelDevicePairing()"></div>
+                        <div class="modal-content" tabindex="-1" data-id="modal-content" style="min-width: 320px; width: 320px; height: auto;">
+                        <span>
+                            <div class="modal-body overflow-auto" data-id="modal-body">
+                                <h1 class="heading-text centered-text">$languagePackMessages.getMessage($messageKeyPrefix, "consent.title")</h1>
+                                <div class="text-block" data-id="textblock">
+                                    <div class="text-block--overflow-wrap" style="-ms-word-break: normal">
+                                        $languagePackMessages.getMessage($messageKeyPrefix, "consent.text")
+                                    </div>
+                                </div>
+                                <div class="text-block">
+                                    <div class="stack" data-id="stack">
+                                        <div style="margin-top: 30px">
+                                            <button class="button file-input--button brand-primary-bg"
+                                                    data-id="button" type="button" onclick="cancelDevicePairing()"
+                                                    style="display: inline-block; width: 100px; margin-right: 10px">$languagePackMessages.getMessage($messageKeyPrefix, "consent.cancel.button")
+                                            </button>
+                                            <button class="button file-input--button button--primary brand-primary-bg"
+                                                    data-id="button" type="button" onclick="handleUserConsent()"
+                                                    style="display: inline-block; width: 100px">
+                                                $languagePackMessages.getMessage($messageKeyPrefix, "consent.button")
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </span>
+                        </div>
+                    </div>
+                </div>
                     #end
 				</div>
-
-
             </div>
         </div>
         <div class="page__footer">
@@ -191,6 +217,11 @@ is not recommended as it may interfere with expected server behavior.
 			});
 		});
 	}
+
+    function handleUserConsent() {
+        hideUserConsentModal();
+        return Register('$publicKeyCredentialCreationOptions');
+    }
 
 	function Register(publicKeyCredentialCreationOptions) {
 		return new Promise(function (resolve, reject) {
@@ -367,6 +398,28 @@ is not recommended as it may interfere with expected server behavior.
 		form.submit();
 	}
 
+    function isSafari() {
+        var vendor = navigator.vendor.toLowerCase();
+        var userAgent = navigator.userAgent.toLowerCase();
+        return vendor.includes('apple') && userAgent.includes('safari');
+    }
+
+    function showUserConsentModal() {
+        if (document.querySelector('#user-consent-modal') != null) {
+            document.querySelector('#user-consent-modal').style.display = 'block';
+        }
+        document.body.style.overflow = "hidden";
+        document.body.style.height = "100%";
+    }
+
+    function hideUserConsentModal() {
+        if (document.querySelector('#user-consent-modal') != null) {
+            document.querySelector('#user-consent-modal').style.display = 'none';
+        }
+        document.body.style.overflow = "auto";
+        document.body.style.height = "auto";
+    }
+
 	onload = function () {
 		getCompatibility().then(function(value) {			
 			// FULL for Biometrics + Security key
@@ -380,8 +433,13 @@ is not recommended as it may interfere with expected server behavior.
 			}
 			else
 			{
-				if('$errorMessageKey' === "")
-					Register('$publicKeyCredentialCreationOptions');
+				if('$errorMessageKey' === "") {
+				    if (isSafari()) {
+                        showUserConsentModal()
+                    } else {
+                        Register('$publicKeyCredentialCreationOptions');
+                    }
+                }
 			}
 		});
  }

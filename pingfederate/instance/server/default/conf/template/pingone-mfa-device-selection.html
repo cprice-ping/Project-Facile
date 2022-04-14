@@ -58,12 +58,20 @@ is not recommended as it may interfere with expected server behavior.
                             $errorMessageKey)
                         </div>
                     </div>
+                    #if($additionalErrorMessageKey)
+                    <div class="feedback feedback--error" data-id="feedback" id="additional-error-message-container-id"><span
+                            class="feedback__icon pingicon-error-triangle"></span>
+                        <div class="feedback__message">$languagePackMessages.getMessage($messageKeyPrefix,
+                            $additionalErrorMessageKey)
+                        </div>
+                    </div>
+                    #end
                     #end
                     <div class="stack stack--large" data-id="stack">
                         <div>
-                            <h1 class="heading" data-id="heading">$languagePackMessages.getMessage($messageKeyPrefix,
+                            <h1 id="heading_id" class="heading" data-id="heading">$languagePackMessages.getMessage($messageKeyPrefix,
                                 "header")</h1>
-                            <h4 class="heading heading--4" data-id="heading">
+                            <h4 id="heading_desc_id" class="heading heading--4" data-id="heading">
                                 #if($isManualPairingFlow)
                                 $languagePackMessages.getMessage($messageKeyPrefix, "pairing.message")
                                 #else
@@ -151,6 +159,13 @@ is not recommended as it may interfere with expected server behavior.
                                                 #else
                                                 <div class="tile-button__title">$languagePackMessages.getMessage($deviceMessageKeyPrefix, "method")</div>
                                                 #end
+                                                #if($device.type.toLowerCase() == "platform")
+                                                <div class="tile-button__content">
+                                                  #if($escape.escape($device.target))
+                                                    $escape.escape($device.target)
+                                                  #end
+                                                </div>
+                                                #end
                                                 #if($device.type.toLowerCase() != "security_key" && $device.type.toLowerCase() != "platform")
                                                 <div class="tile-button__content">
                                                     #if($deviceMessageKey == "mobile")
@@ -216,9 +231,17 @@ is not recommended as it may interfere with expected server behavior.
                                         </button>
                                     </div>
                                     #end
-                                <a tabindex="0" data-id="content-link" target="_self" class="anchor"
-                                   onclick="cancelAuthentication()">$languagePackMessages.getMessage($messageKeyPrefix,
-                                    "cancel.button.title")</a>
+
+                                    #if($showUsePasswordAuth)
+                                    <div>
+                                        <a tabindex="0" data-id="content-link" target="_self" class="anchor"
+                                            onclick="usePasswordAuth()">$languagePackMessages.getMessage($messageKeyPrefix, "use.password.button.title")</a>
+                                    </div>
+                                    #end
+                                    <div>
+                                        <a tabindex="0" data-id="content-link" target="_self" class="anchor"
+                                            onclick="cancelAuthentication()">$languagePackMessages.getMessage($messageKeyPrefix, "cancel.button.title")</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -238,6 +261,7 @@ is not recommended as it may interfere with expected server behavior.
         <input type="hidden" name="$defaultDeviceId" value=""/>
         <input type="hidden" name="$setupMfa" value=""/>
         <input type="hidden" name="$cancelAuthentication" value=""/>
+        <input type="hidden" name="$usePasswordAuth" value=""/>
     </form>
 </div>
 #if($manualPairing)
@@ -331,31 +355,69 @@ is not recommended as it may interfere with expected server behavior.
 
     function hidePlatformDevice()
     {
-        // Hide platform device
-        if (document.querySelector('#platform_block_id') != null) {
-            document.querySelector('#platform_block_id').style.display = 'none';
+        // Hide all platform devices
+        document.querySelectorAll('#platform_block_id').forEach(function(platform_elem) {
+           platform_elem.style.display = 'none';
+        });
+        document.querySelectorAll('#platform_content_container_id').forEach(function(platform_elem) {
+           platform_elem.style.display = 'none';
+        });
+        document.querySelectorAll('#platform_icon_container_id').forEach(function(platform_elem) {
+           platform_elem.style.display = 'none';
+        });
+
+        other_device_present = false;
+        #foreach($device in $devices)
+            #if($device.type.toLowerCase() != "platform")
+            	other_device_present = true;
+            #end
+        #end
+
+        if(other_device_present)
+        {
+        	document.querySelector('#heading_id').style.display = 'block';
+            document.querySelector('#heading_desc_id').style.display = 'block';
         }
-        if (document.querySelector('#platform_content_container_id') != null) {
-            document.querySelector('#platform_content_container_id').style.display = 'none';
-        }
-        if (document.querySelector('#platform_icon_container_id') != null) {
-            document.querySelector('#platform_icon_container_id').style.display = 'none';
+        else
+        {
+            document.querySelector('#heading_id').style.display = 'none';
+            document.querySelector('#heading_desc_id').style.display = 'none';
         }
     }
 
     function hidePlatformAndSecurityKeyDevices()
     {
-        // Hide both security key and platform device
-        hidePlatformDevice()
-        if (document.querySelector('#security_key_block_id') != null) {
-            document.querySelector('#security_key_block_id').style.display = 'none';
+        // Hide all security key and platform devices
+        hidePlatformDevice();
+        document.querySelectorAll('#security_key_block_id').forEach(function(security_device_elem) {
+           security_device_elem.style.display = 'none';
+        });
+        document.querySelectorAll('#security_key_content_container_id').forEach(function(security_device_elem) {
+           security_device_elem.style.display = 'none';
+        });
+        document.querySelectorAll('#security_key_icon_container_id').forEach(function(security_device_elem) {
+           security_device_elem.style.display = 'none';
+        });
+
+        other_device_present = false;
+
+        #foreach($device in $devices)
+            #if($device.type.toLowerCase() != "platform" && $device.type.toLowerCase() != "security_key")
+            	other_device_present = true;
+            #end
+        #end
+
+        if(other_device_present)
+        {
+        	document.querySelector('#heading_id').style.display = 'block';
+            document.querySelector('#heading_desc_id').style.display = 'block';
         }
-        if (document.querySelector('#security_key_content_container_id') != null) {
-            document.querySelector('#security_key_content_container_id').style.display = 'none';
+        else
+        {
+        	document.querySelector('#heading_id').style.display = 'none';
+            document.querySelector('#heading_desc_id').style.display = 'none';
         }
-        if (document.querySelector('#security_key_icon_container_id') != null) {
-            document.querySelector('#security_key_icon_container_id').style.display = 'none';
-        }
+
     }
 
     function getCompatibilityMode()
@@ -441,6 +503,8 @@ is not recommended as it may interfere with expected server behavior.
     }
 
     function addMethod() {
+        if($isAuthenticationRequiredForNewPairing == false)
+            return setupMfa();
         if (document.querySelector('#authentication_required_block_id') != null) {
             document.querySelector('#authentication_required_block_id').style.display = 'block';
         }
@@ -464,6 +528,11 @@ is not recommended as it may interfere with expected server behavior.
     function cancelAuthentication() {
         document.forms[0]['$cancelAuthentication'].value = 'true';
         submit('$cancelAuthentication');
+    }
+
+    function usePasswordAuth() {
+        document.forms[0]['$usePasswordAuth'].value = 'true';
+        submit('$usePasswordAuth');
     }
 
     function submit(inputName) {
