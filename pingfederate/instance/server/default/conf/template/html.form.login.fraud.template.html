@@ -174,9 +174,9 @@ is not recommended as it may interfere with expected server behavior.
                         </div>
                         <div class="ping-input-container">
                             #if($usernameEditable)
-                                <input id="username" type="text" size="36" name="$name" value="$username" autocorrect="off" autocapitalize="off" onKeyPress="return postOnReturn(event)"  /><!--#* Username value is explicitly HTML encoded in HtmlFormIdpAuthnAdapter *#-->
+                                <input id="username" data-st-field="username" type="text" size="36" name="$name" value="$username" autocorrect="off" autocapitalize="off" onKeyPress="return postOnReturn(event)"  /><!--#* Username value is explicitly HTML encoded in HtmlFormIdpAuthnAdapter *#-->
                             #else
-                                <input id="username" type="text" size="36" name="$name" value="$username" disabled="disabled" autocorrect="off" autocapitalize="off" onKeyPress="return postOnReturn(event)"  /><!--#* Username value is explicitly HTML encoded in HtmlFormIdpAuthnAdapter *#-->
+                                <input id="username" data-st-field="username" type="text" size="36" name="$name" value="$username" disabled="disabled" autocorrect="off" autocapitalize="off" onKeyPress="return postOnReturn(event)"  /><!--#* Username value is explicitly HTML encoded in HtmlFormIdpAuthnAdapter *#-->
                             #end
                             <div class="place-bottom type-alert tooltip-text" id="username-text">
                                 <div class="icon">!</div>
@@ -219,7 +219,7 @@ is not recommended as it may interfere with expected server behavior.
                             <input type="hidden" name="$ok" value="" />
                             <input type="hidden" name="$cancel" value="" />
                             <span id="signOnButtonSpan">
-                                <a onclick="postOk();" class="ping-button normal allow" id="signOnButton" title="$templateMessages.getMessage($messageKeyPrefix, "signInButtonTitle")">
+                                <a onclick="postOk();" data-st-tag="login.login_attempt" class="ping-button normal allow" id="signOnButton" title="$templateMessages.getMessage($messageKeyPrefix, "signInButtonTitle")">
                                 $templateMessages.getMessage($messageKeyPrefix, "signInButtonTitle")
                                 </a>
                             </span>

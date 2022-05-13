@@ -151,10 +151,10 @@ isn't recommended because it might interfere with expected server behavior.
             <div class="ping-input-container">
                 #if ($existing_identifiers.size() > 0)
                 <input id="identifierInput" style="display:none" type="text" size="36" name="$identifier" value=""
-                       autocorrect="off" autocapitalize="off" onKeyPress="return postOnReturn(event)"/>
+                       autocorrect="off" autocapitalize="off" data-st-field="userIdentifier" onKeyPress="return postOnReturn(event)"/>
                 #else
                 <input id="identifierInput" type="text" size="36" name="$identifier" value="" autocorrect="off"
-                       autocapitalize="off" onKeyPress="return postOnReturn(event)"/>
+                       autocapitalize="off" data-st-field="userIdentifier" onKeyPress="return postOnReturn(event)"/>
                 #end
                 <div class="place-bottom type-alert tooltip-text" id="username-text">
                     <div class="icon">!</div>
@@ -163,7 +163,7 @@ isn't recommended because it might interfere with expected server behavior.
             </div>
 
             <div id="postButton" class="ping-buttons">
-                <a onclick="postOk();" class="ping-button normal allow"
+                <a onclick="postOk();" data-st-tag="login.login_attempt" class="ping-button normal allow"
                    title="$templateMessages.getMessage($messageKeyPrefix, " signInButtonTitle")">
                 $templateMessages.getMessage($messageKeyPrefix, "signInButtonTitle")
                 </a>
@@ -171,7 +171,7 @@ isn't recommended because it might interfere with expected server behavior.
 
             #if ($allow_cancel)
             <br>
-            <a onclick="postCancel()">$templateMessages.getMessage($messageKeyPrefix, "cancel")</a>
+            <a onclick="postCancel()" data-st-tag="cancelIdentifier">$templateMessages.getMessage($messageKeyPrefix, "cancel")</a>
             #end
 
             <input type="hidden" name="$clear_identifier" id="$clear_identifier" value=""/>
