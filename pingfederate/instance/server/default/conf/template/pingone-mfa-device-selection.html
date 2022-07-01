@@ -96,7 +96,7 @@ is not recommended as it may interfere with expected server behavior.
                                         #elseif($device.type.toLowerCase() == "platform")
                                         <div id="platform_block_id" class="tile-button--side-icon tile-button tile-button--stacked-small" data-id="tile-selector-button-pingoneAuth" onclick="selectDevice(this, event, '$device.id')" role="button" tabindex="0">
                                         #else
-                                        <div class="tile-button--side-icon tile-button tile-button--stacked-small" data-id="tile-selector-button-pingoneAuth" onclick="selectDevice(this, event, '$device.id')" role="button" tabindex="0">
+                                            <div class="tile-button--side-icon tile-button tile-button--stacked-small" data-id="tile-selector-button-pingoneAuth" onclick="selectDevice(this, event, '$device.id')" role="button" tabindex="0">
                                         #end
 
                                         #if($device.type.toLowerCase() == "security_key")
@@ -150,7 +150,7 @@ is not recommended as it may interfere with expected server behavior.
                                         #elseif($device.type.toLowerCase() == "platform")
                                         <div id="platform_content_container_id" class="tile-button__content-container" onclick="selectDevice(this, event, '$device.id')">
                                         #else
-                                        <div class="tile-button__content-container" onclick="selectDevice(this, event, '$device.id')">
+                                            <div class="tile-button__content-container" onclick="selectDevice(this, event, '$device.id')">
                                         #end
                                             <div class="flex-row flex-row--align-stretch flex-row--justify-start flex-row--flex-direction-column flex-row--column-spacing-sm"
                                                 data-id="flex-row">
@@ -540,6 +540,8 @@ is not recommended as it may interfere with expected server behavior.
         var inputs = document.forms[0].getElementsByTagName("input");
         for (var i = 0; i < inputs.length; i++) {
             var input = inputs[i];
+            if (input.name === '$createAuthenticationCode' && input.value === 'true')
+                continue;
             if (input.name !== inputName) {
                 input.removeAttribute('name');
             }
