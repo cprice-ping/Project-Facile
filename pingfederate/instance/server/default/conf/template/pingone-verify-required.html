@@ -52,16 +52,13 @@ is not recommended as it may interfere with expected server behavior.
                     <div class="org-logo"><img class="org-logo__image"
                                                src="assets/images/ping-logo.svg"
                                                alt="Company Logo"/></div>
-                    <div id="verificationData" class="stack stack--large" data-id="stack">
+                    <div id="verificationData" class="stack stack--large" style="margin-left:27px;margin-right:27px;" data-id="stack">
                         <div class="stack stack--small">
-                            <h1 class="heading" data-id="heading">
+                            <h1 id="header" class="heading" data-id="heading">
                                 $languagePackMessages.getMessage($messageKeyPrefix, "header")
                             </h1>
-                            <h4 id="requiredDescription" class="heading heading--4 text-block" data-id="heading">
-                                $languagePackMessages.getMessage($messageKeyPrefix, "description", $appName)
-                            </h4>
-                            <h4 id="errorDescription" class="heading heading--4 text-block" data-id="heading" style="display: none;">
-                                $languagePackMessages.getMessage($messageKeyPrefix, "error.description")
+                            <h4 id="description" class="heading heading--4 text-block" data-id="heading">
+                                $languagePackMessages.getMessage($messageKeyPrefix, "description")
                             </h4>
                         </div>
                         <div id="errorBlock" class="feedback feedback--error" style="display: none; justify-content: center" data-id="feedback"><span
@@ -78,13 +75,10 @@ is not recommended as it may interfere with expected server behavior.
                                     $verificationCode
                                 </div>
                             </div>
-                            <button class="button button--tertiary" data-id="button" type="button" onclick="copy()">
-                                $languagePackMessages.getMessage($messageKeyPrefix, "copy.button.title")
-                            </button>
                         </div>
                         <div class="text-block">
-                            <a tabindex="0" data-id="content-link" target="_self" class="anchor"
-                               onclick="cancelAuthentication()">$languagePackMessages.getMessage($messageKeyPrefix, "cancel.button.title")</a>
+                            <a tabindex="0" data-id="content-link" target="_self" class="anchor" onclick="retry()">
+                                $languagePackMessages.getMessage($messageKeyPrefix, "cancel.button.title")</a>
                         </div>
                     </div>
                     <div id="spinner" style="display: none;">
@@ -110,6 +104,7 @@ is not recommended as it may interfere with expected server behavior.
 <form method="post" action="$resumePath">
     <input type="hidden" name="$pollStatus" value="">
     <input type="hidden" name="$cancelAuthentication" value="">
+    <input type="hidden" name="$retryVerification" value=""/>
 </form>
 
 <script type="text/javascript">
@@ -131,6 +126,13 @@ is not recommended as it may interfere with expected server behavior.
         window.getSelection().addRange(range);
         document.execCommand("copy");
         window.getSelection().removeAllRanges();
+    }
+
+    function retry() {
+        document.getElementById("verificationData").style.pointerEvents = "none";
+        pollingFlag = false;
+        document.forms[0]['$retryVerification'].value = 'true';
+        submit('$retryVerification');
     }
 
     function cancelAuthentication()
@@ -161,6 +163,7 @@ is not recommended as it may interfere with expected server behavior.
                 jQuery.ajax(
                     {
                         type: 'POST',
+                        async: false,
                         url: resumePath,
                         data: {
                             '$pollStatus': 'true'
@@ -184,26 +187,30 @@ is not recommended as it may interfere with expected server behavior.
                                 document.getElementById("verificationData").style.display = "block";
                                 document.getElementById("spinner").style.display = "none";
 
-                                if (response.error_message !== undefined)
+                                if (response.err_json !== undefined)
                                 {
-                                    document.getElementById("requiredDescription").style.display = "none";
-                                    document.getElementById("errorDescription").style.display = "block";
-
-                                    document.getElementById("errorBlock").style.display = "flex";
-                                    document.getElementById("errorMessage").innerHTML = response.error_message;
+                                    document.getElementById("header").innerHTML = "$languagePackMessages.getMessage($messageKeyPrefix, 'error.header')";
+                                    document.getElementById("description").innerHTML = "$languagePackMessages.getMessage($messageKeyPrefix, 'error.description')";
+                                    console.log("last verification failed: "+response.err_json);
                                 }
                                 else
                                 {
-                                    document.getElementById("requiredDescription").style.display = "block";
-                                    document.getElementById("errorDescription").style.display = "none";
-
-                                    document.getElementById("errorBlock").style.display = "none";
+                                    document.getElementById("header").innerHTML = "$languagePackMessages.getMessage($messageKeyPrefix, 'header')";
+                                    document.getElementById("description").innerHTML = "$languagePackMessages.getMessage($messageKeyPrefix, 'description')";
+                                }
+                                if (response.transaction_status === 'INITIATED')
+                                {
+                                    document.getElementById("header").innerHTML = "$languagePackMessages.getMessage($messageKeyPrefix, 'started.header')";
+                                    document.getElementById("description").innerHTML = "$languagePackMessages.getMessage($messageKeyPrefix, 'started.description')";
                                 }
 
-                                if (response.qr_code !== undefined)
+                                document.getElementById("qrCode").src = response.qr_code || "";
+                                document.getElementById("verificationCode").innerHTML = response.verification_code || "";
+
+                                if (response.new_tab === true)
                                 {
-                                    document.getElementById("qrCode").src = response.qr_code;
-                                    document.getElementById("verificationCode").innerHTML = response.verification_code;
+                                    console.log("polling opens newtab: "+response.web_verification_url);
+                                    window.open(response.web_verification_url, '_blank');
                                 }
                             }
 
@@ -213,8 +220,16 @@ is not recommended as it may interfere with expected server behavior.
                }, POLLING_DELAY);
         }
     }
+    
+    function checkNewTab() {
+        console.log("newtab: $newTab");
+        if ("$newTab") {
+            window.open("$webVerificationUrl", '_blank');
+        }
+    }
 
     onload = function() {
+        checkNewTab();
         setTimeout(doPoll, POLLING_DELAY, '$resumePath');
     };
 </script>
