@@ -45,3 +45,5 @@ rm -f /opt/out/instance/server/default/deploy/pf-pingone-mfa-adapter-1.6.1.jar
 rm -f /opt/out/instance/server/default/deploy/pf-pingone-risk-management-adapter-1.2.jar
 # Agentless
 rm -f /opt/out/instance/server/default/deploy/pf-referenceid-adapter-2.0.3.jar
+# P1 Verify
+rm -f /opt/out/instance/server/default/deploy/pf-pingone-verify-adapter-1.1.jar
