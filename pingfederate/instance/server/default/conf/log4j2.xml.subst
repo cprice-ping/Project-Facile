@@ -301,8 +301,9 @@
         <Logger name="com.pingidentity.oobauth.pingone.mfa" level="INFO" />
         <Logger name="com.pingidentity.adapters.pingone.risk.shade" level="INFO" />
         <Logger name="com.pingidentity.adapters.pingone.mfa.shade" level="INFO"/>
-        <Logger name="com.pingidentity.adapters.pingone.verify.shade.org" level="INFO"/>
+        <Logger name="com.pingidentity.adapters.pingone.verify.shade" level="INFO"/>
         <Logger name="com.pingidentity.integrations.provisioner.pingone.shaded" level="INFO"/>
+        <Logger name="com.pingidentity.adapters.pingone.davinci.shade" level="INFO"/>
         
         <!-- Dialing down other DEBUG things -->
         <Logger name="org.sourceid.servlet.HttpServletRespProxy" level="INFO" />
