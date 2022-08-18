@@ -20,42 +20,52 @@ at runtime by the server.
     <meta http-equiv="x-ua-compatible" content="IE=edge"/>
     <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon"/>
     <link rel="shortcut icon" href="assets/images/favicon.ico" type="image/x-icon"/>
-    <link rel="stylesheet" type="text/css" href="../assets/css/main.css"/>
     <link rel="stylesheet" type="text/css" href="../assets/css/id-dataweb.css"/>
-    <script type="text/javascript" src="../assets/scripts/id_dataweb_spinner.js"></script>
+    <style>
+        .page__content:before {
+            content: none;
+        }
+
+        .page__content {
+            margin-top: 50px;
+        }
+
+        @media (max-width: 480px) {
+            .page__content {
+                margin-top: 0;
+            }
+        }
+    </style>
 </head>
 
 <body>
-<div class="ping-container">
-    <div class="ping-header">
-        $languagePackMessages.getMessage($messageKeyPrefix, "header")
-    </div>
-    <div class="ping-body-container" style="min-height: auto;">
-        <div class="spinner-logo"></div>
-        <div class="spinner-box">
-            <div id="spinner"></div>
-            <div class="spinner-text">
-                $languagePackMessages.getMessage($messageKeyPrefix, "spinner")
+<div class="page brand-background" data-id="page">
+    <div class="page__content">
+        <div class="card card--no-padding">
+            <div class="card__content">
+                <div class="org-logo"><img class="org-logo__image"
+                                           src="assets/images/ping-logo.svg"
+                                           alt="Company Logo"/></div>
+                <div class="ping-body-container" style="min-height: auto;">
+                    <div class="spinner">
+                        <div class="spinner__icon" data-id="spinner"></div>
+                    </div>
+                </div>
+                <div class="icon-feedback icon-feedback--success">
+                    <p class="icon-feedback__label">$languagePackMessages.getMessage($messageKeyPrefix, "header")</p>
+                </div>
             </div>
         </div>
     </div>
+    <div class="page__footer">
+        <div class="ping-footer">
+            <div class="ping-credits"></div>
+            <div class="ping-copyright">$templateMessages.getMessage("global.footerMessage")</div>
+        </div>
+    </div>
 </div>
-
 <script>
     window.onload = function() {
-        var opts = {
-            lines: 13,
-            length: 14,
-            width: 4,
-            radius: 12,
-            color: '#fff',
-            trail: 90,
-            className: 'spinner',
-            top: '40%',
-            left: '50%'
-        };
-        var target = document.getElementById('spinner');
-        new Spinner(opts).spin(target);
         setTimeout(submitUuidForm, $deviceProfilingTimeout);
 
         var script = document.createElement("script");
@@ -75,7 +85,7 @@ at runtime by the server.
         }
     }
 </script>
-<form id="uuid_form" method="POST" action="$action">
+<form id="uuid_form" method="POST" action="$escape.escape($action)">
     <input type="hidden" name="$uuidName" id="uuid_input" value="$uuidValue">
 </form>
 </body>
