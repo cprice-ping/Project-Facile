@@ -322,6 +322,8 @@
         <Logger name="org.sourceid.saml20.domain.mgmt.impl.PluginManagementSupport" level="INFO" />
         <Logger name="org.sourceid.saml20.service.session.StoredSessionServiceImpl" level="INFO" />
         <Logger name="org.jgroups.protocols.TCP_NIO2" level="ERROR" />
+        <Logger name="org.sourceid.saml20.profiles.ProfileProcessFactory" level="INFO" />
+        <Logger name="com.pingidentity.common.util.ldap.LDAPUtil" level="INFO" />
 
         <!-- log4j2.xml defaults -->
         <Logger name="org.apache.http.wire" level="INFO" />
