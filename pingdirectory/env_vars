@@ -1,5 +1,5 @@
 # The location MUST be provided
-LOCATION=Docker
+LOCATION=Facile
 
 # The root user may be provided (Default: cn=directory manager)
 ROOT_USER_DN=cn=dmanager
