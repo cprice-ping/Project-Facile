@@ -113,7 +113,7 @@ acr.values=
 #   Scopes (REQUIRED)
 #   -----------------------------
 #   Requesting Scopes from OP. Include all the scopes required to obtain username and role mapping attributes.
-scopes=openid profile
+scopes=openid email profile
 
 
 #   ----------------------------------
@@ -132,7 +132,7 @@ username.attribute.name=name
 #   Example:
 #     role.attribute.name=admin_role
 #
-role.attribute.name=pf_admin_roles
+role.attribute.name=pingfederate_admin_roles
 
 #   -------------------------------------
 #   Administrator Role Mapping (REQUIRED)
@@ -165,14 +165,11 @@ role.attribute.name=pf_admin_roles
 #     role.map.admin.2=
 #     role.map.admin.3=
 #
-role.admin.1=fullAdmin
-role.admin.2=admin
-role.cryptoManager.1=fullAdmin
-role.cryptoManager.2=cryptoAdmin
-role.userAdmin.1=fullAdmin
-role.userAdmin.2=userAdmin
-role.expressionAdmin.1=fullAdmin
-role.expressionAdmin.2=expressionAdmin
+role.admin=pingfederate-admin
+role.auditor=pingfederate-auditor
+role.cryptoManager=pingfederate-cryptoManager
+role.userAdmin=pingfederate-userAdmin
+role.expressionAdmin=pingfederate-expressionAdmin
 
 #   -----------------------------------------------
 #   Auditor Role Attribute Value Mapping (OPTIONAL)
