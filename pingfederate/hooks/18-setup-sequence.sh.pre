@@ -13,4 +13,4 @@ echo Hello from the server profile 18-setup-sequence.sh hook!
 
 # Remove anything from the /work folder
 # Keeps the Admin node clean if restarted
-# rm -f /opt/out/instance/work/*
+rm -rf /opt/out/instance/work/*
