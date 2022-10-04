@@ -22,23 +22,14 @@ at runtime by the server.
     <link rel="shortcut icon" href="assets/images/favicon.ico" type="image/x-icon"/>
     <link rel="stylesheet" type="text/css" href="assets/css/end-user/0.36.1/end-user.css"/>
     <link rel="stylesheet" type="text/css" href="assets/css/pingone-risk-management.css"/>
-    <script type="text/javascript" src="assets/scripts/fingerprint2-2.1.4.min.js"></script>
-    <script type="text/javascript" src="assets/scripts/pingone-risk-management-profiling.js"></script>
-    <style>
-        .page__content:before {
-            content: none;
-        }
-
-        .page__content {
-            margin-top: 50px;
-        }
-
-        @media (max-width: 480px) {
-            .page__content {
-                margin-top: 0;
-            }
-        }
-    </style>
+    <!-- Uncommenting if using Fingerprint JS. -->
+    <!-- <script type="text/javascript" src="assets/scripts/fingerprint2-2.1.4.min.js"></script> -->
+    <!-- Comment out using signals-sdk if using Fingerprint JS -->
+    <script type="text/javascript" src="assets/scripts/signals-sdk.js"></script>
+    <!-- Uncommenting if using Fingerprint JS. -->
+    <!-- <script type="text/javascript" src="assets/scripts/pingone-risk-management-profiling.js"></script> -->
+    <!-- Comment out using signals-sdk if using Fingerprint JS -->
+    <script type="text/javascript" src="assets/scripts/pingone-risk-profiling-signals-sdk.js"></script>
 </head>
 
 <body>
@@ -70,11 +61,15 @@ at runtime by the server.
     </div>
 </div>
 <script>
+    let submitted = false;
+
     window.onload = function () {
         profileDevice(onCompletion);
         setTimeout(submitDeviceProfile, $deviceProfilingTimeout);
     };
 
+    /*
+    Uncomment if using Fingerprint JS
     function onCompletion(components) {
         var deviceProfile = {components: components};
         var base64EncodedDeviceProfile = encodeDeviceProfile(deviceProfile);
@@ -88,9 +83,26 @@ at runtime by the server.
             deviceProfileInput.value = base64EncodedDeviceProfile;
         }
     }
+    Comment out onCompletion and setDeviceProfile below if using Fingerprint JS.
+    */
+
+    function onCompletion(deviceProfile) {
+        setDeviceProfile(deviceProfile);
+        submitDeviceProfile();
+    }
+
+    function setDeviceProfile(deviceProfile) {
+        const deviceProfileInput = document.getElementById("device-profile-input");
+        if (deviceProfileInput) {
+            deviceProfileInput.value = deviceProfile;
+        }
+    }
 
     function submitDeviceProfile() {
-        submitForm("device-profile-form");
+        if (!submitted) {
+            submitted = true;
+            submitForm("device-profile-form");
+        }
     }
 
     function submitForm(id) {

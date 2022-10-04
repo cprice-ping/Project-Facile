@@ -28,3 +28,17 @@
     color: #fff;
     margin: 10px 0;
 }
+
+.page__content:before {
+    content: none;
+}
+
+.page__content {
+    margin-top: 50px;
+}
+
+@media (max-width: 480px) {
+    .page__content {
+        margin-top: 0;
+    }
+}

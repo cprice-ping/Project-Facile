@@ -13,21 +13,29 @@ function split(string, size) {
     return string.match(re);
 }
 
-function setDeviceProfileCookies(encodedDeviceProfile, cookieNamePrefix) {
+function setDeviceProfileCookies(deviceProfile, cookieNamePrefix) {
     // Our cookies should be 4096 bytes or less
     // So break the encoded device profile into 3896 byte chunks (leaving 200 bytes for the rest of the cookie)
     var chunkLength = 3896;
-    var chunks = split(encodedDeviceProfile, chunkLength);
+    var chunks = split(deviceProfile, chunkLength);
     chunks.map(function (chunk, index) {
         setCookie(cookieNamePrefix + index, chunk, 1);
     });
 }
 
+/*
+Uncomment if using Fingerprint JS
 function onCompletion(components) {
     var deviceProfile = {components: components};
     var base64EncodedDeviceProfile = encodeDeviceProfile(deviceProfile);
     var cookieNamePrefix = "pingone.risk.device.profile";
     setDeviceProfileCookies(base64EncodedDeviceProfile, cookieNamePrefix)
 }
+Comment out the onCompletion method below if using Fingerprint JS
+ */
 
+function onCompletion(deviceProfile) {
+    const cookieNamePrefix = "pingone.risk.device.profile";
+    setDeviceProfileCookies(deviceProfile, cookieNamePrefix);
+}
 profileDevice(onCompletion);
