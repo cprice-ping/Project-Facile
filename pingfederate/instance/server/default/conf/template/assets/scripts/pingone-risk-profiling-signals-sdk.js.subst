@@ -3,7 +3,7 @@ function profileDevice(callback) {
     // replace <envid> with the PingOne console > Environment > Environment ID value
     onPingOneSignalsReady(function () {
         _pingOneSignals.initSilent({
-            envId: "<envid>",
+            envId: "${RELEASE_ENV_ID}",
             deviceAttributesBlackList: []
         }).then(function () {
             console.log("PingOne Signals initialized successfully");
