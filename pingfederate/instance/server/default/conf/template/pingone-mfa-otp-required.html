@@ -65,7 +65,13 @@ is not recommended as it may interfere with expected server behavior.
                         <div class="org-logo"><img class="org-logo__image"
                                                    src="assets/images/ping-logo.svg"
                                                    alt="Company Logo"/></div>
-                        #if($errorMessageKey)
+                        #if($errorMessage)
+                        <div class="feedback feedback--error" data-id="feedback"><span
+                                class="feedback__icon pingicon-error-triangle"></span>
+                            <div class="feedback__message">$errorMessage
+                            </div>
+                        </div>
+                        #elseif($errorMessageKey)
                         <div class="feedback feedback--error" data-id="feedback"><span
                                 class="feedback__icon pingicon-error-triangle"></span>
                             <div class="feedback__message">$languagePackMessages.getMessage($messageKeyPrefix,
@@ -116,7 +122,7 @@ is not recommended as it may interfere with expected server behavior.
                         </div>
                         <div class="text-input__icon"></div>
                         <input id="passcode" type="text" class="text-input text-input--primary input--otp" data-id="text-input"
-                               name="$otp" maxlength="6"
+                               name="$escape.escape($otp)" maxlength="6"
                                value="" oninput="checkInput()" onkeypress="return checkOtpOnReturn(event)"/>
 
                         <div class="form-aside">
@@ -142,7 +148,7 @@ is not recommended as it may interfere with expected server behavior.
                                         "resend.button.title")
                                     </button>
                                     #end
-                                    <input type="hidden" name="$selectedDeviceId" value=""/>
+                                    <input type="hidden" name="$escape.escape($selectedDeviceId)" value=""/>
                                 </div>
                             </div>
                         </div>
@@ -158,7 +164,7 @@ is not recommended as it may interfere with expected server behavior.
                                     <a tabindex="0" data-id="content-link" target="_self" class="anchor"
                                        onclick="cancelAuthentication()">$languagePackMessages.getMessage($messageKeyPrefix,
                                         "cancel.button.title")
-                                        <input type="hidden" name="$cancelAuthentication" value=""/>
+                                        <input type="hidden" name="$escape.escape($cancelAuthentication)" value=""/>
                                     </a>
                                 </div>
                             </div>

@@ -70,6 +70,7 @@ is not recommended as it may interfere with expected server behavior.
                         <div class="icon-feedback icon-feedback--success" style="margin-bottom: 10px;">
                             <p class="icon-feedback__label">$languagePackMessages.getMessage($messageKeyPrefix, "header")</p>
                         </div>
+                        #if($isUsernamelessAuthFlow == false)
                         <div class="form-aside">
                             <p class="text-block text-block--small" style="margin-bottom: 5px;">
                                 <span class="text-block__text">$languagePackMessages.getMessage($messageKeyPrefix, "request.sent.title")</span>
@@ -80,6 +81,7 @@ is not recommended as it may interfere with expected server behavior.
                                 <span class="text-block__text">$languagePackMessages.getMessage($deviceMessageKeyPrefix, "method")</span>
                             </p>
                         </div>
+                        #end
                     </div>
                     <div id="user-consent-modal" class="modal dialog show modal-width-small" style="display: none; top: 25%">
                         <div class="modal-bg" data-id="modal-bg" onclick="unselectDevice()"></div>
@@ -124,10 +126,10 @@ is not recommended as it may interfere with expected server behavior.
 </div>
 
 <form id="form" class="form" data-id="form" method="post" action="$resumePath" autocomplete="off">
-    <input type="hidden" type="text" name="$assertion" value=""/>
-    <input type="hidden" type="text" name="$compatibility" value=""/>
-    <input type="hidden" name="$cancelAuthentication" value=""/>
-    <input type="hidden" name="$selectedDeviceId" value=""/>
+    <input type="hidden" type="text" name="$escape.escape($assertion)" value=""/>
+    <input type="hidden" type="text" name="$escape.escape($compatibility)" value=""/>
+    <input type="hidden" name="$escape.escape($cancelAuthentication)" value=""/>
+    <input type="hidden" name="$escape.escape($selectedDeviceId)" value=""/>
 </form>
 
 
