@@ -7,6 +7,10 @@ html {
   html:after {
     display: none;
   }
+
+  .company-logo img { 
+    margin-top: -3rem 
+  }
   
   .pattern-bg {
     background-image: url("../images/bg/pattern-bg.png");
@@ -355,7 +359,6 @@ html {
   
   @media only screen and (max-device-width: 736px) and (orientation: landscape) {
     .mobile-bg {
-      display: inline-block;
       float: right;
       width: 50%;
       overflow: hidden;
@@ -368,7 +371,7 @@ html {
     }
     .mobile-bg:after {
       content: "";
-      background-image: url("../images//bg/pattern.png");
+      background-image: url("../images/bg/pattern.png");
       background-repeat: repeat;
       background-size: fixed;
       max-width: none;

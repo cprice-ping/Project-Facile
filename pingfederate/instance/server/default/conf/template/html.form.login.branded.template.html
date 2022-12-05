@@ -69,6 +69,9 @@ It is recommended to sanitize the values that are displayed using $escape.escape
 </head>
 
 <body onload="setFocus();getTheme();">
+<div class="pattern-bg"></div>
+<div class="body-bg" id="bodyBg" onload="imgLoad()"> </div>
+<div class="mobile-bg" id="mobileBg">
 
 <!-- Extended Properties:
 $escape.escape($extendedProperties)
@@ -79,8 +82,8 @@ $escape.escape($extendedProperties)
     if there is a logo present in the 'company-logo' container,
     then 'has-logo' class should be added to 'ping-header' container.
     -->
-    <div class="ping-header">
-        <span class="company-logo"><!-- client company logo here --></span>
+    <div class="ping-header has-logo">
+        <span class="company-logo"><img src="/assets/images/ping-logo.png"></span>
         $templateMessages.getMessage($messageKeyPrefix, "title")
     </div>
     <!-- .ping-header -->
@@ -118,7 +121,7 @@ $escape.escape($extendedProperties)
                         <div class="ping-input-label">
                             $templateMessages.getMessage($messageKeyPrefix, "usernameTitle")
                         </div>
-                        <div class="ping-input-container">
+                        <div class="ping-input-container username-container">
                             #if($usernameEditable)
                                 <input id="username" type="text" size="36" name="$name" value="$username" autocorrect="off" autocapitalize="off" onKeyPress="return postOnReturn(event)"  /><!--#* Username value is explicitly HTML encoded in HtmlFormIdpAuthnAdapter *#-->
                             #else
