@@ -141,7 +141,7 @@ html {
   }
   
   .ping-signin .ping-header, .ping-signin .ping-body-container {
-    padding: 0px;
+    padding: 60px 0px !important ;
     margin: 0px;
     background-color: transparent;
     box-shadow: none;
