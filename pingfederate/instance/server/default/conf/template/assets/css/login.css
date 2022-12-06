@@ -9,9 +9,8 @@ html {
   }
 
   .company-logo img { 
-    display: block;
     margin-top: -3rem;
-    height: 90px; 
+    height: 120px; 
   }
   
   .pattern-bg {
