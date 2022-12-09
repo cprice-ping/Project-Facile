@@ -9,8 +9,8 @@ html {
   }
 
   .company-logo img { 
-    margin-top: -3rem;
-    height: 120px; 
+    /* margin-top: -3rem; */
+    height: 90px !important; 
   }
   
   .pattern-bg {
@@ -142,7 +142,7 @@ html {
   }
   
   .ping-signin .ping-header, .ping-signin .ping-body-container {
-    padding: 60px 0px !important ;
+    padding: 30px 0px !important ;
     margin: 0px;
     background-color: transparent;
     box-shadow: none;
