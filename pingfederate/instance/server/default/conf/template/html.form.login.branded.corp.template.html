@@ -83,7 +83,6 @@ $escape.escape($extendedProperties)
     if there is a logo present in the 'company-logo' container,
     then 'has-logo' class should be added to 'ping-header' container.
     -->
-    <img src="/assets/images/ping-logo.png" style="width:120px">
     <div class="ping-header has-logo">
         <span class="company-logo"><img src="/assets/images/ping-logo.png"></span>
         <!-- $templateMessages.getMessage($messageKeyPrefix, "title") -->
@@ -111,116 +110,79 @@ $escape.escape($extendedProperties)
                     *#
                 </div>
 
-                #if($altAuthSources.size() > 0)
-                <div class="columns-2" id ="content-columns">
-                    <div class="content-column column-1">
-                        <div class="column-title columns alt-auth-source-column" style="display: none">
-                            $templateMessages.getMessage($messageKeyPrefix, "title")
+                <div class="ping-input-label">
+                    $templateMessages.getMessage($messageKeyPrefix, "usernameTitle")
+                </div>
+                <div class="ping-input-container username-container">
+                    #if($usernameEditable)
+                        <input id="username" type="text" size="36" name="$name" value="$username" autocorrect="off" autocapitalize="off" onKeyPress="return postOnReturn(event)"  /><!--#* Username value is explicitly HTML encoded in HtmlFormIdpAuthnAdapter *#-->
+                    #else
+                        <input id="username" type="text" size="36" name="$name" value="$username" disabled="disabled" autocorrect="off" autocapitalize="off" onKeyPress="return postOnReturn(event)"  /><!--#* Username value is explicitly HTML encoded in HtmlFormIdpAuthnAdapter *#-->
+                    #end
+                    <div class="place-bottom type-alert tooltip-text" id="username-text">
+                    <div class="icon">!</div>
+                        $templateMessages.getMessage($messageKeyPrefix, "missingField")
+                    </div>
+                </div>
+
+                <div class="ping-input-label">
+                    $templateMessages.getMessage($messageKeyPrefix, "passwordTitle")
+                </div>
+                <div class="ping-input-container password-container">
+                    <input id="password" type="password" size="36" name="$pass" onKeyPress="return postOnReturn(event)" />
+                    <div class="place-bottom type-alert tooltip-text" id="password-text">
+                    <div class="icon">!</div>
+                        $templateMessages.getMessage($messageKeyPrefix, "missingField")
+                    </div>
+                </div>
+
+                #if($enableRememberUsername)
+                    <label class="remember-username">
+                        <div class="ping-checkbox-container stacked">
+                            <input id="rememberUsername" type="checkbox" name="$rememberUsername" $rememberUsernameChecked />
+                            $templateMessages.getMessage($messageKeyPrefix, "rememberUsernameTitle")
+                            <div class="icon"></div>
                         </div>
+                    </label>
                 #end
 
-                        <div class="ping-input-label">
-                            $templateMessages.getMessage($messageKeyPrefix, "usernameTitle")
+                #if($showMyDeviceCheckbox)
+                    <label class="my-computer">
+                        <div class="ping-checkbox-container stacked">
+                            <input id="myDevice" type="checkbox" name="$myDevice" $myDeviceChecked />
+                            $templateMessages.getMessage($messageKeyPrefix, "myDeviceTitle")
+                            <div class="icon"></div>
                         </div>
-                        <div class="ping-input-container username-container">
-                            #if($usernameEditable)
-                                <input id="username" type="text" size="36" name="$name" value="$username" autocorrect="off" autocapitalize="off" onKeyPress="return postOnReturn(event)"  /><!--#* Username value is explicitly HTML encoded in HtmlFormIdpAuthnAdapter *#-->
-                            #else
-                                <input id="username" type="text" size="36" name="$name" value="$username" disabled="disabled" autocorrect="off" autocapitalize="off" onKeyPress="return postOnReturn(event)"  /><!--#* Username value is explicitly HTML encoded in HtmlFormIdpAuthnAdapter *#-->
-                            #end
-                            <div class="place-bottom type-alert tooltip-text" id="username-text">
-                            <div class="icon">!</div>
-                                $templateMessages.getMessage($messageKeyPrefix, "missingField")
-                            </div>
-                        </div>
+                    </label>
+                #end
 
-                        <div class="ping-input-label">
-                            $templateMessages.getMessage($messageKeyPrefix, "passwordTitle")
-                        </div>
-                        <div class="ping-input-container password-container">
-                            <input id="password" type="password" size="36" name="$pass" onKeyPress="return postOnReturn(event)" />
-                            <div class="place-bottom type-alert tooltip-text" id="password-text">
-                            <div class="icon">!</div>
-                                $templateMessages.getMessage($messageKeyPrefix, "missingField")
-                            </div>
-                        </div>
-
-                        #if($enableRememberUsername)
-                            <label class="remember-username">
-                                <div class="ping-checkbox-container stacked">
-                                    <input id="rememberUsername" type="checkbox" name="$rememberUsername" $rememberUsernameChecked />
-                                    $templateMessages.getMessage($messageKeyPrefix, "rememberUsernameTitle")
-                                    <div class="icon"></div>
-                                </div>
-                            </label>
-                        #end
-
-                        #if($showMyDeviceCheckbox)
-                            <label class="my-computer">
-                                <div class="ping-checkbox-container stacked">
-                                    <input id="myDevice" type="checkbox" name="$myDevice" $myDeviceChecked />
-                                    $templateMessages.getMessage($messageKeyPrefix, "myDeviceTitle")
-                                    <div class="icon"></div>
-                                </div>
-                            </label>
-                        #end
-
-                        <div class="ping-buttons">
-                            <input type="hidden" name="$ok" value="" />
-                            <input type="hidden" name="$cancel" value="" />
-                            <span id="signOnButtonSpan">
-                                <a onclick="postOk();" class="ping-button normal allow" id="signOnButton" title="$templateMessages.getMessage($messageKeyPrefix, "signInButtonTitle")">
-                                $templateMessages.getMessage($messageKeyPrefix, "signInButtonTitle")
-                                </a>
-                            </span>
-                        </div>
-                        <!-- .ping-buttons -->
-
-                        #if($supportsPasswordChange || $supportsPasswordReset || $supportsUsernameRecovery)
-                        <div class="ping-input-link ping-pass-change account-actions">
-                            #if($supportsPasswordChange)
-                            <a href="$changePasswordUrl" class="password-change">$templateMessages.getMessage($messageKeyPrefix, "changePassword")</a>
-                            #end
-                            #if($supportsPasswordChange && ($supportsPasswordReset || $supportsUsernameRecovery))
-                            <span class="divider">|</span>
-                            #end
-                            #if($supportsPasswordReset)
-                            <input type="hidden" name="$passwordReset" value=""/>
-                            <a onclick="postForgotPassword();" class="forgot-password">$templateMessages.getMessage($messageKeyPrefix, "forgotPassword")</a>
-                            #elseif($supportsUsernameRecovery)
-                            <input type="hidden" name="$usernameRecovery" value=""/>
-                            <a onclick="postRecoverUsername();" class="forgot-password">$templateMessages.getMessage($messageKeyPrefix, "recoverUsername")</a>
-                            #end
-                        </div>
-                        #end
-
-                        #if($registrationEnabled)
-                        <div class="ping-register">
-                            <input type="hidden" name="$registrationValue" value=""/>
-                            $templateMessages.getMessage($messageKeyPrefix, "noAccountMessage") <a onclick="postRegistration();">$templateMessages.getMessage($messageKeyPrefix, "registerAccount")</a>
-                        </div>
-                        #end
-
-                    #if($altAuthSources.size() > 0)
-                    </div>
-                    <!-- column-1 -->
-                    
-                    <div class="content-column column-2 alt-auth-source-column" style="display: none" >
-                        <div class="columns-separator">
-                            <span>$templateMessages.getMessage($messageKeyPrefix, "columnsSeparator")</span>
-                        </div>
-
-                        <div class="column-title-2">
-                            $templateMessages.getMessage($messageKeyPrefix, "loginWithButtonTitle")
-                        </div>
-
-                        #parse("alt-authn-source.template.html")
-
-                    </div>
-                    <!-- column-2 -->
-
+                <div class="ping-buttons">
+                    <input type="hidden" name="$ok" value="" />
+                    <input type="hidden" name="$cancel" value="" />
+                    <span id="signOnButtonSpan">
+                        <a onclick="postOk();" class="ping-button normal allow" id="signOnButton" title="$templateMessages.getMessage($messageKeyPrefix, "signInButtonTitle")">
+                        $templateMessages.getMessage($messageKeyPrefix, "signInButtonTitle")
+                        </a>
+                    </span>
                 </div>
-                <!-- content-columns -->
+                <!-- .ping-buttons -->
+
+                #if($supportsPasswordChange || $supportsPasswordReset || $supportsUsernameRecovery)
+                <div class="ping-input-link ping-pass-change account-actions">
+                    #if($supportsPasswordChange)
+                    <a href="$changePasswordUrl" class="password-change">$templateMessages.getMessage($messageKeyPrefix, "changePassword")</a>
+                    #end
+                    #if($supportsPasswordChange && ($supportsPasswordReset || $supportsUsernameRecovery))
+                    <span class="divider">|</span>
+                    #end
+                    #if($supportsPasswordReset)
+                    <input type="hidden" name="$passwordReset" value=""/>
+                    <a onclick="postForgotPassword();" class="forgot-password">$templateMessages.getMessage($messageKeyPrefix, "forgotPassword")</a>
+                    #elseif($supportsUsernameRecovery)
+                    <input type="hidden" name="$usernameRecovery" value=""/>
+                    <a onclick="postRecoverUsername();" class="forgot-password">$templateMessages.getMessage($messageKeyPrefix, "recoverUsername")</a>
+                    #end
+                </div>
                 #end
                 
                 <!-- #recaptcha -->
