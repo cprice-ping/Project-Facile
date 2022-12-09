@@ -61,7 +61,7 @@ It is recommended to sanitize the values that are displayed using $escape.escape
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
     <meta http-equiv="x-ua-compatible" content="IE=edge" />
-    <link rel="stylesheet" type="text/css" href="assets/css/corp-main.css"/>
+    <link rel="stylesheet" type="text/css" href="assets/css/main.css"/>
     <link rel="stylesheet" type="text/css" href="assets/css/login.css"/>
     #if($captchaEnabled)
         <script src='https://www.google.com/recaptcha/api.js' async defer></script>
@@ -241,6 +241,9 @@ $escape.escape($extendedProperties)
 
     <div class="ping-footer-container">
         <div class="ping-footer">
+            <p>
+                $templateMessages.getMessage("$messageKeyPrefix", "disclaimer")
+            </p>
             <div class="ping-credits"></div>
             <div class="ping-copyright">$templateMessages.getMessage("global.footerMessage")</div>
         </div>
