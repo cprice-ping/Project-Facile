@@ -12,6 +12,13 @@ html {
     /* margin-top: -3rem; */
     height: 90px !important; 
   }
+
+  .ping-header.has-logo .company-logo {
+    max-height: 60px;
+    height: 60px;
+    display: block;
+    padding-bottom: 20px;
+}
   
   .pattern-bg {
     background-image: url("../images/bg/pattern-bg.png");
@@ -133,11 +140,10 @@ html {
     top: 0;
     bottom: 0;
     left: 10%;
-    padding: 140px 75px 10px 75px;
+    padding: 5% 75px 10px 75px;
     background-color: rgba(255, 255, 255, 0.45);
     display: inline-block;
     box-sizing: border-box;
-    padding-top: 10%;
     overflow: auto;
   }
   
