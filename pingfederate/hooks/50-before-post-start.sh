@@ -24,6 +24,11 @@ sed -e "s#class=\"org.sourceid.oauth20.domain.ClientManagerXmlFileImpl\"/>#class
 
 mv /opt/out/instance/server/default/conf/META-INF/hivemodule.xml-modified /opt/out/instance/server/default/conf/META-INF/hivemodule.xml
 
+# Remove anything from the /work folder
+# Keeps the Admin node clean if restarted
+echo Cleaning work folder
+rm -rf /opt/out/instance/work/*
+
 # Delete bundled files so that Server Profile can apply newer ones
 echo Removing bundled files
 # AuthN API
