@@ -187,11 +187,14 @@ is not recommended as it may interfere with expected server behavior.
                                 document.getElementById("verificationData").style.display = "block";
                                 document.getElementById("spinner").style.display = "none";
 
-                                if (response.err_json !== undefined)
+                                if (response.error_message !== undefined)
                                 {
                                     document.getElementById("header").innerHTML = "$languagePackMessages.getMessage($messageKeyPrefix, 'error.header')";
                                     document.getElementById("description").innerHTML = "$languagePackMessages.getMessage($messageKeyPrefix, 'error.description')";
-                                    console.log("last verification failed: "+response.err_json);
+
+                                    if (response.err_json !== undefined) {
+                                        console.log("last verification failed: "+response.err_json);
+                                    }
                                 }
                                 else
                                 {
