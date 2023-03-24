@@ -327,6 +327,7 @@
         <Logger name="com.pingidentity.common.util.ldap.LDAPUtil" level="INFO" />
         <Logger name="com.pingidentity.crypto.OCSPCheckerImpl" level="INFO" />
         <Logger name="com.pingidentity.pingonev2.PingOneV2APIClient" level="INFO" />
+        <Logger name="org.sourceid.saml20.domain.mgmt.impl.TrustedCAsManagerImpl" level="INFO" />
 
         <!-- log4j2.xml defaults -->
         <Logger name="org.apache.http.wire" level="INFO" />
