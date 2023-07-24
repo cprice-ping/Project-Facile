@@ -13,7 +13,7 @@ is not recommended as it may interfere with expected server behavior.
 <!-- template name: pingone-mfa-otp-required.html -->
 
 #set( $messageKeyPrefix = "pingone.mfa.otp.required." )
-#if($selectedDevice.type.toLowerCase() == "android" || $device.type.toLowerCase() == "iphone")
+#if($selectedDevice.type.toLowerCase() == "android" || $selectedDevice.type.toLowerCase() == "iphone")
     #set ($deviceMessageKey = "mobile")
 #else
     #set ($deviceMessageKey = ${selectedDevice.type.toLowerCase()})

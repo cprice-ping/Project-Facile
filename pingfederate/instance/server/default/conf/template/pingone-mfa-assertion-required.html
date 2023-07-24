@@ -78,7 +78,7 @@ is not recommended as it may interfere with expected server behavior.
                             #set ($deviceMessageKey = ${selectedDevice.type.toLowerCase()})
                             #set( $deviceMessageKeyPrefix = "${deviceMessageKey}.$messageKeyPrefix" )
                             <p class="text-block">
-                                <span class="text-block__text">$languagePackMessages.getMessage($deviceMessageKeyPrefix, "method")</span>
+                                <span class="text-block__text">$languagePackMessages.getMessage($deviceMessageKeyPrefix, "method", $selectedDevice.name)</span>
                             </p>
                         </div>
                         #end

@@ -35,7 +35,7 @@ Comment out the onCompletion method below if using Fingerprint JS
  */
 
 function onCompletion(deviceProfile) {
-    const cookieNamePrefix = "pingone.risk.device.profile";
+    var cookieNamePrefix = "pingone.risk.device.profile";
     setDeviceProfileCookies(deviceProfile, cookieNamePrefix);
 }
 profileDevice(onCompletion);
