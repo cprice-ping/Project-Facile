@@ -37,8 +37,7 @@
         -->
 
         <Console name="CONSOLE" target="SYSTEM_OUT">
-            <JsonLayout complete="false" compact="true" eventEol="true">
-            </JsonLayout>
+            <JsonLayout complete="false" compact="true" eventEol="true"></JsonLayout>
         </Console>
 
         <Console name="CONSOLE-ERROR" target="SYSTEM_ERR">
