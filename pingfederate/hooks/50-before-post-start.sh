@@ -17,12 +17,12 @@ echo Hello from the server profile 50-before-post-start.sh hook!
 # - AuthN Sessions
 # These are mapped later in the /config-store API calls
 
-sed -e "s#class=\"org.sourceid.oauth20.domain.ClientManagerXmlFileImpl\"/>#class=\"org.sourceid.oauth20.domain.ClientManagerLdapImpl\"/>#" \
-    -e "s#class=\"org.sourceid.oauth20.token.AccessGrantManagerJdbcImpl\"/>#class=\"org.sourceid.oauth20.token.AccessGrantManagerLDAPPingDirectoryImpl\"/>#" \
-    -e "s#class=\"org.sourceid.saml20.service.session.data.impl.SessionStorageManagerJdbcImpl\"/>#class=\"org.sourceid.saml20.service.session.data.impl.SessionStorageManagerLdapImpl\"/>#" \
-    "/opt/out/instance/server/default/conf/META-INF/hivemodule.xml" > "/opt/out/instance/server/default/conf/META-INF/hivemodule.xml-modified"
+# sed -e "s#class=\"org.sourceid.oauth20.domain.ClientManagerXmlFileImpl\"/>#class=\"org.sourceid.oauth20.domain.ClientManagerLdapImpl\"/>#" \
+#     -e "s#class=\"org.sourceid.oauth20.token.AccessGrantManagerJdbcImpl\"/>#class=\"org.sourceid.oauth20.token.AccessGrantManagerLDAPPingDirectoryImpl\"/>#" \
+#     -e "s#class=\"org.sourceid.saml20.service.session.data.impl.SessionStorageManagerJdbcImpl\"/>#class=\"org.sourceid.saml20.service.session.data.impl.SessionStorageManagerLdapImpl\"/>#" \
+#     "/opt/out/instance/server/default/conf/META-INF/hivemodule.xml" > "/opt/out/instance/server/default/conf/META-INF/hivemodule.xml-modified"
 
-mv /opt/out/instance/server/default/conf/META-INF/hivemodule.xml-modified /opt/out/instance/server/default/conf/META-INF/hivemodule.xml
+# mv /opt/out/instance/server/default/conf/META-INF/hivemodule.xml-modified /opt/out/instance/server/default/conf/META-INF/hivemodule.xml
 
 # Remove anything from the /work folder
 # Keeps the Admin node clean if restarted
