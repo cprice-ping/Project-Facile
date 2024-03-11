@@ -2,6 +2,8 @@
 # shellcheck source=../../../../pingcommon/opt/staging/hooks/pingcommon.lib.sh
 . "${HOOKS_DIR}/pingcommon.lib.sh"
 
+echo Hello from the server profile 83-configure-admin.sh hook!
+
 # Toggle on debug logging if DEBUG=true is set
 start_debug_logging
 ## attempt to accept license, works if new server, fails if admin exists.
