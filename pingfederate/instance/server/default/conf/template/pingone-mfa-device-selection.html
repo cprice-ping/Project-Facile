@@ -51,21 +51,27 @@ is not recommended as it may interfere with expected server behavior.
                     <div class="org-logo"><img class="org-logo__image"
                                                src="assets/images/ping-logo.svg"
                                                alt="Company Logo"/></div>
-                    #if($errorMessageKey)
-                    <div class="feedback feedback--error" data-id="feedback"><span
-                            class="feedback__icon pingicon-error-triangle"></span>
-                        <div class="feedback__message">$languagePackMessages.getMessage($messageKeyPrefix,
-                            $errorMessageKey)
+
+                    #if($errorMessage)
+                        <div class="feedback feedback--error" data-id="feedback"><span
+                                class="feedback__icon pingicon-error-triangle"></span>
+                            <div class="feedback__message">$errorMessage</div>
                         </div>
-                    </div>
-                    #if($additionalErrorMessageKey)
-                    <div class="feedback feedback--error" data-id="feedback" id="additional-error-message-container-id"><span
-                            class="feedback__icon pingicon-error-triangle"></span>
-                        <div class="feedback__message">$languagePackMessages.getMessage($messageKeyPrefix,
-                            $additionalErrorMessageKey)
+                    #elseif($errorMessageKey)
+                        <div class="feedback feedback--error" data-id="feedback"><span
+                                class="feedback__icon pingicon-error-triangle"></span>
+                            <div class="feedback__message">$languagePackMessages.getMessage($messageKeyPrefix,
+                                $errorMessageKey)
+                            </div>
                         </div>
-                    </div>
                     #end
+                    #if($additionalErrorMessageKey)
+                        <div class="feedback feedback--error" data-id="feedback" id="additional-error-message-container-id"><span
+                                class="feedback__icon pingicon-error-triangle"></span>
+                            <div class="feedback__message">$languagePackMessages.getMessage($messageKeyPrefix,
+                                $additionalErrorMessageKey)
+                            </div>
+                        </div>
                     #end
                     <div class="stack stack--large" data-id="stack">
                         <div>
@@ -73,9 +79,9 @@ is not recommended as it may interfere with expected server behavior.
                                 "header")</h1>
                             <h4 id="heading_desc_id" class="heading heading--4" data-id="heading">
                                 #if($isManualPairingFlow)
-                                $languagePackMessages.getMessage($messageKeyPrefix, "pairing.message")
+                                    $languagePackMessages.getMessage($messageKeyPrefix, "pairing.message")
                                 #else
-                                $languagePackMessages.getMessage($messageKeyPrefix, "message")
+                                    $languagePackMessages.getMessage($messageKeyPrefix, "message")
                                 #end
                             </h4>
                         </div>
@@ -91,15 +97,15 @@ is not recommended as it may interfere with expected server behavior.
                                     #set( $deviceIcon = $languagePackMessages.getMessage($deviceMessageKeyPrefix, "icon"))
 
                                     #if($device.usable)
-                                        #if($device.type.toLowerCase() == "security_key")
-                                        <div id="security_key_block_id" class="tile-button--side-icon tile-button tile-button--stacked-small" data-id="tile-selector-button-pingoneAuth" onclick="selectDevice(this, event, '$device.id')" role="button" tabindex="0">
+                                        #if($device.type.toLowerCase() == "security_key" || $device.type.toLowerCase() == "fido2")
+                                            <div id="security_key_block_id" class="tile-button--side-icon tile-button tile-button--stacked-small" data-id="tile-selector-button-pingoneAuth" onclick="selectDevice(this, event, '$device.id')" role="button" tabindex="0">
                                         #elseif($device.type.toLowerCase() == "platform")
-                                        <div id="platform_block_id" class="tile-button--side-icon tile-button tile-button--stacked-small" data-id="tile-selector-button-pingoneAuth" onclick="selectDevice(this, event, '$device.id')" role="button" tabindex="0">
+                                            <div id="platform_block_id" class="tile-button--side-icon tile-button tile-button--stacked-small" data-id="tile-selector-button-pingoneAuth" onclick="selectDevice(this, event, '$device.id')" role="button" tabindex="0">
                                         #else
                                             <div class="tile-button--side-icon tile-button tile-button--stacked-small" data-id="tile-selector-button-pingoneAuth" onclick="selectDevice(this, event, '$device.id')" role="button" tabindex="0">
                                         #end
 
-                                        #if($device.type.toLowerCase() == "security_key")
+                                        #if($device.type.toLowerCase() == "security_key" || $device.type.toLowerCase() == "fido2")
                                             <div id="security_key_icon_container_id" class="tile-button__icon-container" onclick="selectDevice(this, event, '$device.id')">
                                         #elseif($device.type.toLowerCase() == "platform")
                                             <div id="platform_icon_container_id" class="tile-button__icon-container" onclick="selectDevice(this, event,  '$device.id')">
@@ -137,6 +143,12 @@ is not recommended as it may interfere with expected server behavior.
                                                     d="M8 15C8.55 15 9 15.45 9 16C9 16.55 8.55 17 8 17C7.45 17 7 16.55 7 16C7 15.45 7.45 15 8 15M15.07 4.69L16.5 6.1L15.07 7.5L13.66 6.1L15.07 4.69M17.9 7.5L19.31 8.93L17.9 10.34L16.5 8.93L17.9 7.5M8 13C6.34 13 5 14.34 5 16C5 17.66 6.34 19 8 19C9.66 19 11 17.66 11 16C11 14.34 9.66 13 8 13M9.77 4.33L10.5 5.08L14.29 1.29C14.47 1.11 14.72 1 15 1C15.28 1 15.53 1.11 15.71 1.29L22.78 8.36L22.78 8.37C22.92 8.54 23 8.76 23 9C23 9.3 22.87 9.57 22.66 9.76L22.66 9.76L18.93 13.5L19.67 14.23L12.95 20.95C11.68 22.22 9.93 23 8 23C4.13 23 1 19.87 1 16C1 14.07 1.78 12.32 3.05 11.05L9.77 4.33M20.59 9L15 3.41L11.93 6.5L17.5 12.08L20.59 9Z"
                                                     style="fill: rgb(61, 69, 77);"></path>
                                             </svg>
+                                        #elseif($deviceIcon == "fido2")
+                                                <svg viewBox="0 0 27 26" role="presentation" style="width: 32px; height: 32px;">
+                                                <path d="M10.2632 12.3158C13.6641 12.3158 16.4211 9.55881 16.4211 6.15789C16.4211 2.75698 13.6641 0 10.2632 0C6.86225 0 4.10527 2.75698 4.10527 6.15789C4.10527 9.55881 6.86225 12.3158 10.2632 12.3158Z" fill="#3D454D" />
+                                                <path d="M26.6842 12.3158C26.6842 9.67474 24.5631 7.51263 21.9084 7.51263C19.2674 7.51263 17.1053 9.63369 17.1053 12.2884C17.1053 14.1495 18.1589 15.8326 19.8421 16.6263V23.9474L21.8947 26L25.3158 22.5789L23.2631 20.5263L25.3158 18.4737L23.6189 16.7768C25.4663 16.0653 26.6842 14.2863 26.6842 12.3158ZM21.8947 12.3158C21.1421 12.3158 20.5263 11.7 20.5263 10.9474C20.5263 10.1947 21.1421 9.57895 21.8947 9.57895C22.6474 9.57895 23.2631 10.1947 23.2631 10.9474C23.2631 11.7 22.6474 12.3158 21.8947 12.3158Z" fill="#3D454D" />
+                                                <path d="M15.6547 15.08C14.6011 14.6147 13.4653 14.3684 12.3158 14.3684H8.21053C3.68105 14.3684 0 18.0495 0 22.5789V25.3158H17.7895V17.7758C16.8726 17.0642 16.1337 16.1474 15.6547 15.08Z" fill="#3D454D" />
+                                            </svg>
                                         #elseif($deviceIcon == "voice")
                                             <svg viewBox="0 0 24 24" role="presentation" style="width: 32px; height: 32px;">
                                                 <path d="M20,15.5C18.8,15.5 17.5,15.3 16.4,14.9C16.3,14.9 16.2,14.9 16.1,14.9C15.8,14.9 15.6,15 15.4,15.2L13.2,17.4C10.4,15.9 8,13.6 6.6,10.8L8.8,8.6C9.1,8.3 9.2,7.9 9,7.6C8.7,6.5 8.5,5.2 8.5,4C8.5,3.5 8,3 7.5,3H4C3.5,3 3,3.5 3,4C3,13.4 10.6,21 20,21C20.5,21 21,20.5 21,20V16.5C21,16 20.5,15.5 20,15.5M5,5H6.5C6.6,5.9 6.8,6.8 7,7.6L5.8,8.8C5.4,7.6 5.1,6.3 5,5M19,19C17.7,18.9 16.4,18.6 15.2,18.2L16.4,17C17.2,17.2 18.1,17.4 19,17.4V19Z"
@@ -145,19 +157,19 @@ is not recommended as it may interfere with expected server behavior.
                                         #end
                                         </div>
 
-                                        #if($device.type.toLowerCase() == "security_key")
+                                        #if($device.type.toLowerCase() == "security_key" || $device.type.toLowerCase() == "fido2")
                                         <div id="security_key_content_container_id" class="tile-button__content-container" onclick="selectDevice(this, event, '$device.id')">
                                         #elseif($device.type.toLowerCase() == "platform")
                                         <div id="platform_content_container_id" class="tile-button__content-container" onclick="selectDevice(this, event, '$device.id')">
                                         #else
-                                            <div class="tile-button__content-container" onclick="selectDevice(this, event, '$device.id')">
+                                        <div class="tile-button__content-container" onclick="selectDevice(this, event, '$device.id')">
                                         #end
                                             <div class="flex-row flex-row--align-stretch flex-row--justify-start flex-row--flex-direction-column flex-row--column-spacing-sm"
                                                 data-id="flex-row">
                                                 #if ($escape.escape($device.nickname) && $escape.escape($device.nickname) != "")
                                                 <div class="tile-button__title">$escape.escape($device.nickname)</div>
                                                 #else
-                                                <div class="tile-button__title">$languagePackMessages.getMessage($deviceMessageKeyPrefix, "method")</div>
+                                                <div class="tile-button__title">$languagePackMessages.getMessage($deviceMessageKeyPrefix, "method", $device.name)</div>
                                                 #end
                                                 #if($device.type.toLowerCase() == "platform")
                                                 <div class="tile-button__content">
@@ -166,12 +178,12 @@ is not recommended as it may interfere with expected server behavior.
                                                   #end
                                                 </div>
                                                 #end
-                                                #if($device.type.toLowerCase() != "security_key" && $device.type.toLowerCase() != "platform")
+                                                #if($device.type.toLowerCase() != "security_key" && $device.type.toLowerCase() != "platform" && $device.type.toLowerCase() != "fido2")
                                                 <div class="tile-button__content">
                                                     #if($deviceMessageKey == "mobile")
-                                                    $device.name
+                                                        $device.name
                                                     #elseif ($escape.escape($device.target))
-                                                    $escape.escape($device.target)
+                                                        $escape.escape($device.target)
                                                     #end
                                                 </div>
                                                 #end
@@ -181,41 +193,50 @@ is not recommended as it may interfere with expected server behavior.
                                             #if ($device.defaultDevice)
                                                 <div class="device-selector__item-status"><span class="muted-text">$languagePackMessages.getMessage($messageKeyPrefix, "default.device.title")</span></div>
                                             #end
+                                        #end
+                                        #if($showDeviceMgtOptions  || ($showSetDefaultDeviceOption && !$device.defaultDevice))
+                                            <div class="device-selector__item-controls" id="kebab-menu-icon-id"
+                                                onclick="selectDevice(this, event, '$device.id')">
+                                                <div class="popover popover--left" data-id="popover-nav-menu">
+                                                    <a class="popover__trigger" data-id="popover-nav-menu-trigger">
+                                                        <div>
+                                                            <button class="button file-input~~button popover-menu__control" data-id="button" type="button"><svg
+                                                                    viewBox="0 0 24 24" role="presentation" style="width: 26px; height: 26px;">
+                                                                    <path
+                                                                        d="M12,16A2,2 0 0,1 14,18A2,2 0 0,1 12,20A2,2 0 0,1 10,18A2,2 0 0,1 12,16M12,10A2,2 0 0,1 14,12A2,2 0 0,1 12,14A2,2 0 0,1 10,12A2,2 0 0,1 12,10M12,4A2,2 0 0,1 14,6A2,2 0 0,1 12,8A2,2 0 0,1 10,6A2,2 0 0,1 12,4Z"
+                                                                        style="fill: rgb(104, 111, 119);"></path>
+                                                                </svg></button>
+                                                        </div>
+                                                    </a>
 
-                                            #if (!$device.defaultDevice)
-                                                <div class="device-selector__item-controls" id="kebab-menu-icon-id"
-                                                    onclick="selectDevice(this, event, '$device.id')">
-                                                    <div class="popover popover--left" data-id="popover-nav-menu">
-                                                        <a class="popover__trigger" data-id="popover-nav-menu-trigger">
-                                                            <div>
-                                                                <button class="button file-input~~button popover-menu__control" data-id="button" type="button"><svg
-                                                                        viewBox="0 0 24 24" role="presentation" style="width: 26px; height: 26px;">
-                                                                        <path
-                                                                            d="M12,16A2,2 0 0,1 14,18A2,2 0 0,1 12,20A2,2 0 0,1 10,18A2,2 0 0,1 12,16M12,10A2,2 0 0,1 14,12A2,2 0 0,1 12,14A2,2 0 0,1 10,12A2,2 0 0,1 12,10M12,4A2,2 0 0,1 14,6A2,2 0 0,1 12,8A2,2 0 0,1 10,6A2,2 0 0,1 12,4Z"
-                                                                            style="fill: rgb(104, 111, 119);"></path>
-                                                                    </svg></button>
-                                                            </div>
-                                                        </a>
-                                                        <div id="device-management-popup-frame-$device.id" data-id="popup-frame" data-parent="popover-nav-menu"
-                                                            class="popper-container popover-display" ;
-                                                            style="display:none; position: absolute; will-change: transform; right: 0px;">
-                                                            <div class="popup-frame popup-frame--left">
-                                                                <div class="popover-menu__dialog" data-id="kebab-menu">
+                                                    <div id="device-management-popup-frame-$device.id" data-id="popup-frame" data-parent="popover-nav-menu"
+                                                        class="popper-container popover-display" ;
+                                                        style="display:none; position: absolute; will-change: transform; right: 0px;">
+                                                        <div class="popup-frame popup-frame--left">
+                                                            <div class="popover-menu__dialog" data-id="kebab-menu">
+                                                                #if (!$device.defaultDevice && $showSetDefaultDeviceOption)
                                                                     <div>
                                                                         <button class="button file-input--button popover-menu__item" data-id="button" type="button"
                                                                             onclick="setDefaultDevice(event, '$device.id')">$languagePackMessages.getMessage($messageKeyPrefix,
                                                                             "default.device.menu.title")</button>
                                                                     </div>
-                                                                </div>
+                                                                #end
+                                                                #if($showDeviceMgtOptions)
+                                                                    <div>
+                                                                        <button class="button file-input--button popover-menu__item" data-id="button" type="button"
+                                                                                onclick="removeDevice('$device.id', $devices.size()===1)">$languagePackMessages.getMessage($messageKeyPrefix,
+                                                                            "remove.device.menu.title")</button>
+                                                                    </div>
+                                                                #end
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
+                                            </div>
                                             #end
                                         #end
-
                                     </div>
-                                    #end
+
                                 #end
                             </div>
                         </div>
@@ -257,14 +278,15 @@ is not recommended as it may interfere with expected server behavior.
         </div>
     </div>
     <form id="form" method="post" action="$resumePath" autocomplete="off">
-        <input type="hidden" name="$selectedDeviceId" value=""/>
-        <input type="hidden" name="$defaultDeviceId" value=""/>
-        <input type="hidden" name="$setupMfa" value=""/>
-        <input type="hidden" name="$cancelAuthentication" value=""/>
-        <input type="hidden" name="$usePasswordAuth" value=""/>
+        <input type="hidden" name="$escape.escape($selectedDeviceId)" value=""/>
+        <input type="hidden" name="$escape.escape($defaultDeviceId)" value=""/>
+        <input type="hidden" name="$escape.escape($deleteDeviceId)" value=""/>
+        <input type="hidden" name="$escape.escape($setupMfa)" value=""/>
+        <input type="hidden" name="$escape.escape($cancelAuthentication)" value=""/>
+        <input type="hidden" name="$escape.escape($usePasswordAuth)" value=""/>
     </form>
 </div>
-#if($manualPairing)
+#if($manualPairing || $showDeviceMgtOptions)
 <div id="authentication_required_block_id" class="modal dialog show modal-width-small" style="display: none; top: 25%">
     <div class="modal-bg" data-id="modal-bg" onclick="cancelAddMethod()"></div>
     <div class="modal-content" tabindex="-1" data-id="modal-content" style="min-width: 320px; width: 320px; height: auto;">
@@ -272,8 +294,11 @@ is not recommended as it may interfere with expected server behavior.
             <div class="modal-body overflow-auto" data-id="modal-body">
                 <h1 class="heading-text centered-text">Authentication Required</h1>
                 <div class="text-block" data-id="textblock">
-                    <div class="text-block--overflow-wrap" style="-ms-word-break: normal">
+                    <div id="auth_for_pair_message" class="text-block--overflow-wrap" style="-ms-word-break: normal">
                         $languagePackMessages.getMessage($messageKeyPrefix, "pairing.message")
+                    </div>
+                    <div id="auth_for_unpair_message" class="text-block--overflow-wrap" style="-ms-word-break: normal">
+                        $languagePackMessages.getMessage($messageKeyPrefix, "remove.device.message")
                     </div>
                 </div>
                 <div class="text-block">
@@ -284,8 +309,8 @@ is not recommended as it may interfere with expected server behavior.
                                     style="display: inline-block; width: 100px; margin-right: 10px">$languagePackMessages.getMessage($messageKeyPrefix,
                                 "cancel.add.method.button.title")
                             </button>
-                            <button class="button file-input--button button--primary brand-primary-bg"
-                                    data-id="button" type="button" onclick="setupMfa()"
+                            <button id="confirmation_button" class="button file-input--button button--primary brand-primary-bg"
+                                    data-id="button" type="button"
                                     style="display: inline-block; width: 100px">$languagePackMessages.getMessage($messageKeyPrefix,
                                 "continue.add.method.button.title")
                             </button>
@@ -297,6 +322,39 @@ is not recommended as it may interfere with expected server behavior.
     </div>
 </div>
 #end
+    <div id="last_device_warning_block_id" class="modal dialog show modal-width-small" style="display: none; top: 25%">
+        <div class="modal-bg" data-id="modal-bg" onclick="cancelRemoveLastDevice()"></div>
+        <div class="modal-content" tabindex="-1" data-id="modal-content" style="min-width: 320px; width: 320px; height: auto;">
+            <span>
+                <div class="modal-body overflow-auto" data-id="modal-body">
+                    <h1 class="heading-text centered-text">$languagePackMessages.getMessage($messageKeyPrefix, "warning")</h1>
+                    <div class="text-block" data-id="textblock">
+                        <div class="text-block--overflow-wrap" style="-ms-word-break: normal">
+                            $languagePackMessages.getMessage($messageKeyPrefix, "warning.message")
+                        </div>
+                    </div>
+                    <div class="text-block">
+                        <div class="stack" data-id="stack">
+                            <div style="margin-top: 30px">
+                                <button class="button file-input--button brand-primary-bg"
+                                        data-id="button" type="button" onclick="cancelRemoveLastDevice()"
+                                        style="display: inline-block; width: 100px; margin-right: 10px">$languagePackMessages.getMessage($messageKeyPrefix,
+                                    "cancel.add.method.button.title")
+                                </button>
+                                <button id="confirmation_warn_button" class="button file-input--button button--primary brand-primary-bg"
+                                        data-id="button" type="button"
+                                        style="display: inline-block; width: 100px">$languagePackMessages.getMessage($messageKeyPrefix,
+                                    "continue.add.method.button.title")
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </span>
+        </div>
+    </div>
+
+
 <script type="text/javascript">
     function isWebAuthnSupported () {
 	  if (!window.PublicKeyCredential) {
@@ -480,16 +538,26 @@ is not recommended as it may interfere with expected server behavior.
 	function showDeviceManagementPopup(deviceId) {
         // close other popups if any
         var popupDivs = document.querySelectorAll("[id^='device-management-popup-frame']");
-		for(i=0; i < popupDivs.length; ++i)
-		{
-			var popupDisplayStatus = popupDivs[i].style.display;
-			if(popupDisplayStatus === 'block')
-			{
-				popupDivs[i].style.display = 'none';
-			}
-		}
-        var docId = 'device-management-popup-frame-' + deviceId;
-		document.querySelector("[id='" + docId + "']").style.display = 'block';
+        let docId = 'device-management-popup-frame-' + deviceId;
+        let currentPopup = document.querySelector("[id='" + docId + "']");
+        for (i = 0; i < popupDivs.length; ++i) {
+            if (popupDivs[i] === currentPopup) {
+                continue
+            }
+            let popupDisplayStatus = popupDivs[i].style.display;
+            if (popupDisplayStatus === 'block') {
+                popupDivs[i].style.display = 'none';
+            }
+        }
+        if (document.querySelector("[id='" + docId + "']").style.display === 'none') {
+            document.querySelector("[id='" + docId + "']").style.display = 'block';
+            return
+        }
+        if (document.querySelector("[id='" + docId + "']").style.display === 'block') {
+            document.querySelector("[id='" + docId + "']").style.display = 'none';
+            return
+        }
+
     }
 
     function selectDevice(element, event, deviceId) {
@@ -507,10 +575,43 @@ is not recommended as it may interfere with expected server behavior.
             return setupMfa();
         if (document.querySelector('#authentication_required_block_id') != null) {
             document.querySelector('#authentication_required_block_id').style.display = 'block';
+            document.getElementById("auth_for_pair_message").style.display = 'block'
+            document.getElementById("auth_for_unpair_message").style.display = 'none'
+            document.getElementById("confirmation_button").onclick = function (){
+                setupMfa()
+            };
         }
         document.body.style.overflow = "hidden";
         document.body.style.height = "100%";
     }
+
+    function removeDevice(deviceId, shouldWarnForLastDevice)
+    {
+        if  (shouldWarnForLastDevice){
+            if (document.querySelector('#last_device_warning_block_id') != null) {
+                document.querySelector('#last_device_warning_block_id').style.display = 'block';
+                document.getElementById("confirmation_warn_button").onclick = function (){
+                    removeDevice(deviceId, false)
+                };
+                return;
+            }
+        }
+        if (document.querySelector('#last_device_warning_block_id') != null) {
+            document.querySelector('#last_device_warning_block_id').style.display = 'none';
+        }
+
+        if (document.querySelector('#authentication_required_block_id') != null) {
+            document.querySelector('#authentication_required_block_id').style.display = 'block';
+            document.getElementById("auth_for_pair_message").style.display = 'none'
+            document.getElementById("auth_for_unpair_message").style.display = 'block'
+            document.getElementById("confirmation_button").onclick = function (){
+                deleteDevice(deviceId)
+            };
+        }
+        document.body.style.overflow = "hidden";
+        document.body.style.height = "100%";
+    }
+
 
     function cancelAddMethod() {
         if (document.querySelector('#authentication_required_block_id') != null) {
@@ -520,10 +621,24 @@ is not recommended as it may interfere with expected server behavior.
         document.body.style.height = "auto";
     }
 
+    function cancelRemoveLastDevice() {
+        if (document.querySelector('#last_device_warning_block_id') != null) {
+            document.querySelector('#last_device_warning_block_id').style.display = 'none';
+        }
+        document.body.style.overflow = "auto";
+        document.body.style.height = "auto";
+    }
+
     function setupMfa() {
         document.forms[0]['$setupMfa'].value = 'true';
         submit('$setupMfa');
     }
+
+    function deleteDevice(deviceId) {
+        document.forms[0]['$deleteDeviceId'].value = deviceId;
+        submit('$deleteDeviceId');
+    }
+
 
     function cancelAuthentication() {
         document.forms[0]['$cancelAuthentication'].value = 'true';

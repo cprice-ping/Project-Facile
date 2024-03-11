@@ -26,8 +26,8 @@ is not recommended as it may interfere with expected server behavior.
 <body>
     <div id="widget"></div>
 
-    <form method="POST" action="$resumePath" autocomplete="off">
-        <input type="hidden" name="$flowResult" value="">
+    <form id="daVinciResponseForm" name="daVinciResponseForm" method="POST" action="$resumePath" autocomplete="off">
+        <input type="hidden" name="$escape.escape($flowResult)" value="">
     </form>
 
     <script src="$widgetUrl" type="text/javascript"></script>
@@ -35,25 +35,26 @@ is not recommended as it may interfere with expected server behavior.
         function submit(inputName)
         {
             // Prevent unused inputs from being submitted
-            var inputs = document.forms[0].getElementsByTagName("input");
+            var dvResponseForm = document.forms.daVinciResponseForm;
+            var inputs = dvResponseForm.getElementsByTagName("input");
             for (var i = 0; i < inputs.length; i++) {
                 var input = inputs[i];
                 if (input.name !== inputName) {
                     input.removeAttribute('name');
                 }
             }
-            document.forms[0].submit();
+            dvResponseForm.submit();
         }
 
         function successCallback(response) {
             let flowResult = JSON.stringify(response);
-            document.forms[0]['$flowResult'].value = flowResult;
+            document.forms.daVinciResponseForm['$flowResult'].value = flowResult;
             submit('$flowResult');
         }
 
         function errorCallback(error) {
             let flowResult = JSON.stringify(error);
-            document.forms[0]['$flowResult'].value = flowResult;
+            document.forms.daVinciResponseForm['$flowResult'].value = flowResult;
             submit('$flowResult');
         }
 

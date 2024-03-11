@@ -73,7 +73,11 @@ is not recommended as it may interfere with expected server behavior.
                             $accountLockedOutErrorMessage
                             #else
                             $languagePackMessages.getMessage($messageKeyPrefix, "could.not.authenticate")
-                            $languagePackMessages.getMessage($messageKeyPrefix, $errorMessageKey)
+                                #if($additionalErrorMessage)
+                                    $additionalErrorMessage
+                                #else
+                                    $languagePackMessages.getMessage($messageKeyPrefix, $errorMessageKey)
+                                #end
                             #end
                         </div>
                     </div>
@@ -92,7 +96,7 @@ is not recommended as it may interfere with expected server behavior.
     </div>
 </div>
 <form id='form' method="post" action="$resumePath" autocomplete="off">
-    <input type="hidden" name="$cancelAuthentication" value="true">
+    <input type="hidden" name="$escape.escape($cancelAuthentication)" value="true">
 </form>
 <script type="text/javascript">
     function cancelAuthentication() {

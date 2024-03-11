@@ -1,0 +1,462 @@
+html {
+  background-color: #fff;
+  background-image: none;
+  background-position: 50% 50%;
+}
+
+html:after {
+  display: none;
+}
+
+.ping-header.has-logo .company-logo {
+  max-height: 60px;
+  height: 60px;
+  display: block;
+  padding-bottom: 20px;
+}
+
+.company-logo img {
+  /* margin-top: -3rem; */
+  max-height: 90px !important;
+}
+
+.pattern-bg {
+  background-image: url("../images/bg/pattern-bg.png");
+  background-repeat: repeat;
+  background-size: fixed;
+  max-width: none;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  z-index: -1;
+}
+
+.body-bg {
+  background-color: #fff;
+  background-image: none;
+  background-position: 50% 50%;
+  position: fixed;
+  z-index: -2;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+  opacity: 0;
+  -webkit-transition: opacity 1.5s;
+  -moz-transition: opacity 1.5s;
+  -o-transition: opacity 1.5s;
+  -ms-transition: opacity 1.5s;
+  transition: opacity 1.5s;
+}
+
+::-webkit-input-placeholder {
+  /* WebKit browsers */
+  color: transparent !important;
+}
+
+:-moz-placeholder {
+  /* Mozilla Firefox 4 to 18 */
+  color: transparent !important;
+}
+
+::-moz-placeholder {
+  /* Mozilla Firefox 19+ */
+  color: transparent !important;
+}
+
+:-ms-input-placeholder {
+  /* Internet Explorer 10+ */
+  color: transparent !important;
+}
+
+input::-webkit-input-placeholder {
+  /* WebKit browsers */
+  color: transparent !important;
+}
+
+input:-moz-placeholder {
+  /* Mozilla Firefox 4 to 18 */
+  color: transparent !important;
+}
+
+input::-moz-placeholder {
+  /* Mozilla Firefox 19+ */
+  color: transparent !important;
+}
+
+input:-ms-input-placeholder {
+  /* Internet Explorer 10+ */
+  color: transparent !important;
+}
+
+input[type=text],
+input[type=password],
+textarea {
+  background-color: #fff;
+}
+
+.mobile-bg {
+  width: 100%;
+  height: auto;
+  max-height: 600px;
+  display: none;
+  opacity: 0;
+}
+
+.mobile-bg img {
+  width: 100%;
+  height: auto;
+}
+
+.ping-input-label,
+label {
+  color: #3d454d;
+}
+
+.ping-header:before {
+  background-size: 90px 90px;
+  height: 90px;
+  margin: 0px;
+  margin-bottom: 50px;
+}
+
+.icon:before {
+  background-color: #fff;
+  border: 1px solid #878787 !important;
+  height: 22px !important;
+  width: 22px !important;
+  line-height: 22px !important;
+}
+
+.ping-input-link.ping-pass-change {
+  border-top: 1px solid #878787;
+}
+
+.ping-signin {
+  max-width: 425px;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 10%;
+  padding: 5% 60px 10px 60px;
+  background-color: rgba(255, 255, 255, 0.45);
+  display: inline-block;
+  box-sizing: border-box;
+  overflow: auto;
+}
+
+.ping-signin .ping-header,
+.ping-signin .ping-body-container {
+  padding: 30px 0px !important;
+  margin: 0px;
+  background-color: transparent;
+  box-shadow: none;
+}
+
+.ping-signin .ping-footer-container {
+  top: 100%;
+  height: auto;
+  right: 0;
+  bottom: auto;
+  margin-top: -60px;
+  color: #3d454d;
+  box-sizing: border-box;
+}
+
+.ping-signin .ping-footer-container .ping-footer {
+  color: #3d454d;
+  line-height: 1.3em;
+}
+
+.ping-signin .ping-footer-container .ping-credits {
+  display: none;
+}
+
+html.theme-1 .mobile-bg {
+  background-image: url("../images/bg/1-mobile.jpg");
+  opacity: 1;
+}
+
+html.theme-2 .mobile-bg {
+  background-image: url("../images/bg/2-mobile.jpg");
+  opacity: 1;
+}
+
+html.theme-3 .mobile-bg {
+  background-image: url("../images/bg/3-mobile.jpg");
+  opacity: 1;
+}
+
+html.theme-4 .mobile-bg {
+  background-image: url("../images/bg/4-mobile.jpg");
+  opacity: 1;
+}
+
+html.theme-5 .mobile-bg {
+  background-image: url("../images/bg/5-mobile.jpg");
+  opacity: 1;
+}
+
+html.theme-2 .ping-input-label,
+html.theme-2 label,
+html.theme-2 .ping-footer-container .ping-footer {
+  color: #fff;
+}
+
+@media (max-height: 700px) {
+  .ping-signin .ping-footer-container {
+    position: relative;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+}
+
+@media (max-width: 480px),
+(max-device-width: 480px),
+only screen and (max-device-width: 736px) and (orientation: landscape) {
+
+  .body-bg,
+  .pattern-bg {
+    display: none;
+  }
+
+  html {
+    background-image: none !important;
+  }
+
+  html:after {
+    display: none;
+  }
+
+  ::-webkit-input-placeholder {
+    /* WebKit browsers */
+    color: #929aa1 !important;
+    text-decoration: none;
+    font-style: normal;
+    text-transform: uppercase;
+  }
+
+  :-moz-placeholder {
+    /* Mozilla Firefox 4 to 18 */
+    color: #929aa1 !important;
+    text-decoration: none;
+    font-style: normal;
+    text-transform: uppercase;
+  }
+
+  ::-moz-placeholder {
+    /* Mozilla Firefox 19+ */
+    color: #929aa1 !important;
+    text-decoration: none;
+    font-style: normal;
+    text-transform: uppercase;
+  }
+
+  :-ms-input-placeholder {
+    /* Internet Explorer 10+ */
+    color: #929aa1 !important;
+    text-decoration: none;
+    font-style: normal;
+    text-transform: uppercase;
+  }
+
+  input::-webkit-input-placeholder {
+    /* WebKit browsers */
+    color: #929aa1 !important;
+    text-decoration: none;
+    font-style: normal;
+    text-transform: uppercase;
+  }
+
+  input:-moz-placeholder {
+    /* Mozilla Firefox 4 to 18 */
+    color: #929aa1 !important;
+    text-decoration: none;
+    font-style: normal;
+    text-transform: uppercase;
+  }
+
+  input::-moz-placeholder {
+    /* Mozilla Firefox 19+ */
+    color: #929aa1 !important;
+    text-decoration: none;
+    font-style: normal;
+    text-transform: uppercase;
+  }
+
+  input:-ms-input-placeholder {
+    /* Internet Explorer 10+ */
+    color: #929aa1 !important;
+    text-decoration: none;
+    font-style: normal;
+    text-transform: uppercase;
+  }
+
+  input[type=text],
+  input[type=password],
+  input[type=text]:hover,
+  input[type=password]:hover,
+  input[type=text]:active,
+  input[type=password]:active {
+    border: none;
+    border-bottom: 1px solid #c6c6c5;
+    border-radius: 0px;
+  }
+
+  .ping-signin {
+    padding: 0px 50px;
+    padding-bottom: 30px;
+  }
+
+  .ping-signin .ping-body-container {
+    margin-top: -45px;
+  }
+
+  .ping-signin .password-container:before,
+  .ping-signin .username-container:before {
+    content: "";
+    display: inline-block;
+    position: absolute;
+    left: 10px;
+    bottom: 10px;
+    height: 20px;
+    width: 18px;
+    background-size: 18px 20px;
+    background-repeat: no-repeat;
+  }
+
+  .ping-signin .password-container input[type=password],
+  .ping-signin .password-container input[type=text],
+  .ping-signin .username-container input[type=password],
+  .ping-signin .username-container input[type=text] {
+    padding-left: 45px;
+  }
+
+  .ping-signin .password-container:before {
+    background-image: url("../images/bg/password.svg");
+  }
+
+  .ping-signin .username-container:before {
+    background-image: url("../images/bg/user.svg");
+  }
+
+  .ping-signin .ping-input-label {
+    display: none;
+    margin-top: -10px;
+  }
+
+  .ping-signin .ping-footer-container {
+    position: absolute;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding: 0px 35px;
+  }
+
+  .ping-signin .ping-footer-container .ping-footer {
+    color: #3d454d !important;
+  }
+
+  .ping-body-container {
+    padding: 35px 35px;
+  }
+
+  .ping-body-container .remember-username {
+    margin: 20px 0;
+  }
+
+  .ping-input-container {
+    margin-bottom: 10px;
+  }
+
+  .remember-username,
+  .ping-pass-change {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) and (orientation: portrait),
+(max-device-width: 480px) and (orientation: portrait) {
+  .mobile-bg {
+    display: inline-block;
+    opacity: 1;
+    -webkit-transition: opacity 5s;
+    /* property duration timing-function delay */
+    -moz-transition: opacity 5s;
+    -o-transition: opacity 5s;
+    transition: opacity 5s;
+    background-image: none !important;
+  }
+
+  .ping-header {
+    font-weight: 200;
+    font-size: 22px;
+    padding: 15px;
+    max-width: 100%;
+  }
+
+  .ping-signin.ping-container {
+    left: 0;
+    position: relative;
+    background-color: #fff;
+    min-height: initial;
+    overflow: visible;
+  }
+
+  .ping-signin .ping-header {
+    margin-top: -45px;
+  }
+}
+
+@media only screen and (max-device-width: 736px) and (orientation: landscape) {
+  .mobile-bg {
+    float: right;
+    width: 50%;
+    overflow: hidden;
+    height: 100%;
+    background-size: cover;
+    background-position: 70%;
+  }
+
+  .mobile-bg img {
+    display: none;
+  }
+
+  .mobile-bg:after {
+    content: "";
+    background-image: url("../images/bg/pattern.png");
+    background-repeat: repeat;
+    background-size: fixed;
+    max-width: none;
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 50%;
+    bottom: 0;
+    background-size: cover;
+  }
+
+  .ping-signin {
+    display: inline-block;
+    width: 50%;
+    position: relative;
+    left: 0;
+    top: 0;
+    height: 100%;
+    overflow: auto;
+    min-height: initial;
+    padding: 20px 30px;
+    margin-top: 0px;
+  }
+}
+
+@media (max-height: 500px) and (orientation: portrait) {
+  .mobile-bg {
+    height: 200px;
+    overflow: hidden;
+  }
+}
