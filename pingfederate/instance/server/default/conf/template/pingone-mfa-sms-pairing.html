@@ -69,14 +69,23 @@ is not recommended as it may interfere with expected server behavior.
                             </h1>
                             <div class="text-block" data-id="textblock">
                                 <div class="text-block--overflow-wrap">
-                                    $languagePackMessages.getMessage($messageKeyPrefix, "message")
+                                    #if($allowOnlyPredefineValuesForPhoneOrEmailDevices)
+                                        $languagePackMessages.getMessage($messageKeyPrefix, "predefined.message")
+                                    #else
+                                        $languagePackMessages.getMessage($messageKeyPrefix, "message")
+                                    #end
                                 </div>
                             </div>
                         </div>
                         <div class="stack stack--small" data-id="stack">
                             <div class="text-input__icon"></div>
+                            #set($defaultValue = "")
+                            #if($allowOnlyPredefineValuesForPhoneOrEmailDevices)
+                                #set($defaultValue = $allowOnlyPredefineValuesForPhoneOrEmailDevices)
+                            #end
                             <input id="phone" type="tel" class="text-input" data-id="text-input"
-                                   name="$smsPhone" value="" oninput="checkInput()" onkeypress="return checkPhoneOnReturn(event)"/>
+                                   name="$smsPhone" value="$defaultValue" #if($allowOnlyPredefineValuesForPhoneOrEmailDevices) readonly="readonly"  #end
+                                   oninput="checkInput()" onkeypress="return checkEmailOnReturn(event)"/>
                         </div>
                         <div class="text-block" data-id="textblock">
                             <div class="text-block--overflow-wrap">
@@ -154,7 +163,8 @@ is not recommended as it may interfere with expected server behavior.
 
     function checkInput() {
         var button = document.getElementById("next");
-        if (canSubmit()) {
+        var defaultValue = "$!defaultValue";
+        if (canSubmit() || defaultValue !== "") {
             button.disabled = false;
             button.className = "button file-input--button button--primary brand-primary-bg";
         } else {
@@ -178,6 +188,9 @@ is not recommended as it may interfere with expected server behavior.
             return true;
         }
     }
+
+    checkInput();
+
 </script>
 </body>
 </html>
