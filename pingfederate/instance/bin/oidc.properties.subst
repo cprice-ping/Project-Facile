@@ -132,7 +132,7 @@ username.attribute.name=name
 #   Example:
 #     role.attribute.name=admin_role
 #
-role.attribute.name=pingfederate_admin_roles
+role.attribute.name=pf_admin_roles
 
 #   -------------------------------------
 #   Administrator Role Mapping (REQUIRED)
