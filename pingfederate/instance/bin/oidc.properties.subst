@@ -132,7 +132,7 @@ username.attribute.name=name
 #   Example:
 #     role.attribute.name=admin_role
 #
-role.attribute.name=pf_admin_roles
+role.attribute.name=pingfederate_admin_roles
 
 #   -------------------------------------
 #   Administrator Role Mapping (REQUIRED)
@@ -166,13 +166,13 @@ role.attribute.name=pf_admin_roles
 #     role.map.admin.3=
 #
 role.admin.1=fullAdmin
-role.admin.2=admin
+role.admin.2=pingfederate-admin
 role.cryptoManager.1=fullAdmin
-role.cryptoManager.2=cryptoAdmin
+role.cryptoManager.2=pingfederate-cryptoAdmin
 role.userAdmin.1=fullAdmin
-role.userAdmin.2=userAdmin
+role.userAdmin.2=pingfederate-userAdmin
 role.expressionAdmin.1=fullAdmin
-role.expressionAdmin.2=expressionAdmin
+role.expressionAdmin.2=pingfederate-expressionAdmin
 
 #   -----------------------------------------------
 #   Auditor Role Attribute Value Mapping (OPTIONAL)
