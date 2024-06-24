@@ -149,7 +149,8 @@ pa.default.contentRewrite.buffer.default=2048
 # Requests
 pa.default.limitRequestLine=8192
 pa.default.maxHeaderCount=100
-pa.default.maxHttpHeaderSize=8192
+## Set higher to account for Protect cookie
+pa.default.maxHttpHeaderSize=16384
 pa.default.maxRequestBodySize=204800
 pa.default.maxConnectionsPerSite=-1
 
