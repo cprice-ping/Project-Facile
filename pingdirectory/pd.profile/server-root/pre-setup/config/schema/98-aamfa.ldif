@@ -1,0 +1,11 @@
+dn: cn=schema
+attributeTypes: ( devicePrintProfiles-OID NAME 'devicePrintProfiles' USAGE userApplications X-SCHEMA-FILE '99-ammfa.ldif' )
+attributeTypes: ( deviceProfiles-OID NAME 'deviceProfiles' USAGE userApplications X-SCHEMA-FILE '99-ammfa.ldif' )
+attributeTypes: ( oathDeviceProfiles-OID NAME 'oathDeviceProfiles' USAGE userApplications X-SCHEMA-FILE '99-ammfa.ldif' )
+attributeTypes: ( pushDeviceProfiles-OID NAME 'pushDeviceProfiles' USAGE userApplications X-SCHEMA-FILE '99-ammfa.ldif' )
+attributeTypes: ( webauthnDeviceProfiles-OID NAME 'webauthnDeviceProfiles' USAGE userApplications X-SCHEMA-FILE '99-ammfa.ldif' )
+objectClasses: ( devicePrintProfilesContainer-OID NAME 'devicePrintProfilesContainer' AUXILIARY MUST devicePrintProfiles X-SCHEMA-FILE '99-ammfa.ldif' )
+objectClasses: ( deviceProfilesContainer-OID NAME 'deviceProfilesContainer' AUXILIARY MUST deviceProfiles X-SCHEMA-FILE '99-ammfa.ldif' ) 
+objectClasses: ( oathDeviceProfilesContainer-OID NAME 'oathDeviceProfilesContainer' AUXILIARY MUST oathDeviceProfiles X-SCHEMA-FILE '99-ammfa.ldif' )
+objectClasses: ( pushDeviceProfilesContainer-OID NAME 'pushDeviceProfilesContainer' AUXILIARY MUST pushDeviceProfiles X-SCHEMA-FILE '99-ammfa.ldif' )
+objectClasses: ( webauthnDeviceProfilesContainer-OID NAME 'webauthnDeviceProfilesContainer' AUXILIARY MUST webauthnDeviceProfiles X-SCHEMA-FILE '99-ammfa.ldif' )
