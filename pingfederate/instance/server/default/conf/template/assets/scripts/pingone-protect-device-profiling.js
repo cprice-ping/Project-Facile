@@ -1,7 +1,9 @@
-function profileDevice(callback) {
+function profileDevice(callback, behavioralDataCollection = true) {
     // Initialize the SDK
     onPingOneSignalsReady(function () {
-        _pingOneSignals.init().then(function () {
+        _pingOneSignals.init({
+            behavioralDataCollection: behavioralDataCollection
+        }).then(function () {
             console.log("PingOne Signals initialized successfully");
         }).catch(function (e) {
             console.error("SDK Init failed", e);
@@ -30,21 +32,3 @@ function getDeviceProfileData(callback) {
         .then(result => callback(result))
         .catch(error => console.error('getData Error!', error));
 }
-
-function setCookie(name, value, days) {
-    var expires = "";
-    if (days) {
-        var date = new Date();
-        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-        expires = "; expires=" + date.toUTCString();
-    }
-
-    // you can explicitly set a domain by adding the following to the end of the cookie string: "; domain=example.com"
-    document.cookie = name + "=" + (value || "") + expires + "; path=/;SameSite=None;Secure";
-}
-
-profileDevice(function () {
-    // set cookie to indicate that device profiling has been completed
-    var cookieName = "pingone.protect.device.profile";
-    setCookie(cookieName, "signals", 1);
-});

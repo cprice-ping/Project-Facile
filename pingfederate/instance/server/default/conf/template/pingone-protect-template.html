@@ -23,9 +23,8 @@ at runtime by the server.
     <link rel="stylesheet" type="text/css" href="assets/css/end-user/0.36.1/end-user.css"/>
     <link rel="stylesheet" type="text/css" href="assets/css/pingone-protect.css"/>
 
-    <script type="text/javascript" src="assets/scripts/signals-sdk-5.2.7.js"></script>
+    <script type="text/javascript" src="assets/scripts/signals-sdk-5.3.7.js"></script>
     <script type="text/javascript" src="assets/scripts/pingone-protect-device-profiling.js"></script>
-
 
 </head>
 
@@ -61,7 +60,9 @@ at runtime by the server.
     let submitted = false;
 
     window.onload = function () {
-        profileDevice(onCompletion);
+        const cookieName = "pingone.protect.device.profile";
+        const behavioralDataCollection = sessionStorage.getItem(cookieName) === "signals";
+        profileDevice(onCompletion, behavioralDataCollection);
         setTimeout(submitDeviceProfile, $deviceProfilingTimeout);
     };
 

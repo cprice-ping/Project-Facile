@@ -20,7 +20,7 @@ for (let i = 0; i < scripts.length; i++) {
 // - create the script
 if (!isSignalScriptLoaded) {
     const scriptAttributes = new Map();
-    scriptAttributes.set('src', 'assets/scripts/signals-sdk-5.2.7.js');
+    scriptAttributes.set('src', 'assets/scripts/signals-sdk-5.3.7.js');
     const captchaScriptNonce = CaptchaUtils.getHtmlTemplateVariable(document, 'captchaCSPNonce');
     if (captchaScriptNonce != null) {
         scriptAttributes.set('nonce', captchaScriptNonce);

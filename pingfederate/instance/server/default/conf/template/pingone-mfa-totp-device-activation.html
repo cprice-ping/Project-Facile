@@ -55,9 +55,20 @@ is not recommended as it may interfere with expected server behavior.
                         #if($errorMessageKey)
                         <div class="feedback feedback--error" data-id="feedback"><span
                                 class="feedback__icon pingicon-error-triangle"></span>
+                            #if($attemptsRemaining)
+                                #if($attemptsRemaining == "1")
+                                    #set($attemptOrAttempts = "attempt")
+                                #else
+                                    #set($attemptOrAttempts = "attempts")
+                                #end
+                            <div class="feedback__message">$languagePackMessages.getMessage($messageKeyPrefix,
+                                $errorMessageKey, $attemptsRemaining, $attemptOrAttempts)
+                            </div>
+                            #else
                             <div class="feedback__message">$languagePackMessages.getMessage($messageKeyPrefix,
                                 $errorMessageKey)
                             </div>
+                            #end
                         </div>
                         #end
                         <div class="stack stack--small" data-id="stack">
@@ -95,7 +106,7 @@ is not recommended as it may interfere with expected server behavior.
                         </div>
                         <div class="text-input__icon">
                             <input id="passcode" type="text" class="text-input text-input--primary input--otp" data-id="text-input"
-                               name="$totpActivationOtp" maxlength="6"
+                               name="$escape.escape($totpActivationOtp)" maxlength="6"
                                value="" oninput="checkInput()" onkeypress="return checkOtpOnReturn(event)"/>
                         </div>
                         <div class="text-block" data-id="textblock">
@@ -110,7 +121,7 @@ is not recommended as it may interfere with expected server behavior.
                                     <a tabindex="0" data-id="content-link" target="_self" class="anchor"
                                        onclick="cancelDevicePairing()">$languagePackMessages.getMessage($messageKeyPrefix,
                                         "cancel.button.title")
-                                        <input type="hidden" name="$cancelDevicePairing" value=""/>
+                                        <input type="hidden" name="$escape.escape($cancelDevicePairing)" value=""/>
                                     </a>
                                 </div>
                             </div>
