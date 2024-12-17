@@ -1345,6 +1345,7 @@
         <Logger name="com.pingidentity.adapters.pingone.protect.shade" level="${sys:pf.log.level.pingoneshade:-INFO}"/>
         <Logger name="com.pingidentity.adapters.pingone.verify.shade" level="${sys:pf.log.level.pingoneshade:-INFO}"/>
         <Logger name="com.pingidentity.adapters.pingone.davinci.shade" level="${sys:pf.log.level.pingoneshade:-INFO}"/>
+        <Logger name="com.pingidentity.adapters.pingone.credentials.shade" level="${sys:pf.log.level.pingoneshade:-INFO}"/>
         <!-- P1 MFA CIBA -->
         <Logger name="com.pingidentity.oobauth.pingone.mfa" level="${sys:pf.log.level.pingoneshade:-INFO}" />
         
