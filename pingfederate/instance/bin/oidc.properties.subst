@@ -167,13 +167,13 @@ role.attribute.name=p1_admin_roles
 #     role.map.admin.3=
 #
 # role.admin.1=fullAdmin
-role.admin=Facile-PingFederate
+role.admin=Facile Admins - ${ENVIRONMENT_NAME}
 # role.cryptoManager.1=fullAdmin
-role.cryptoManager=Facile-PingFederate
+role.cryptoManager=Facile Admins - ${ENVIRONMENT_NAME}
 # role.userAdmin.1=fullAdmin
-role.userAdmin=Facile-PingFederate
+role.userAdmin=Facile Admins - ${ENVIRONMENT_NAME}
 # role.expressionAdmin.1=fullAdmin
-role.expressionAdmin=Facile-PingFederate
+role.expressionAdmin=Facile Admins - ${ENVIRONMENT_NAME}
 
 #   -----------------------------------------------
 #   Auditor Role Attribute Value Mapping (OPTIONAL)
