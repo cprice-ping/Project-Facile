@@ -20,7 +20,7 @@ for (let i = 0; i < scripts.length; i++) {
 // - create the script
 if (!isSignalScriptLoaded) {
     const scriptAttributes = new Map();
-    scriptAttributes.set('src', 'assets/scripts/signals-sdk-5.3.7.js');
+    scriptAttributes.set('src', 'assets/scripts/signals-sdk-5.5.0.js');
     const captchaScriptNonce = CaptchaUtils.getHtmlTemplateVariable(document, 'captchaCSPNonce');
     if (captchaScriptNonce != null) {
         scriptAttributes.set('nonce', captchaScriptNonce);
@@ -38,8 +38,15 @@ const captchaSignalsReadyCallback = () => new Promise(resolve => {
     }
 })
 
+const collectDeviceTrustAttributes = captchaAttributes['collectDeviceTrustAttributes'] === true;
+const agentPort = captchaAttributes['deviceTrustAgentPort'];
+const agentTimeout = captchaAttributes['deviceTrustAgentTimeout'];
 captchaSignalsReadyCallback()
-    .then(() => window._pingOneSignals.init())
+    .then(() => window._pingOneSignals.init(
+        collectDeviceTrustAttributes
+            ? { agentIdentification: true, agentPort: agentPort, agentTimeout: agentTimeout}
+            : undefined
+    ))
     .catch(e => console.error(e));
 
 // captcha processing

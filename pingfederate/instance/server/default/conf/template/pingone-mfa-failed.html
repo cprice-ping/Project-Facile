@@ -17,11 +17,7 @@ is not recommended as it may interfere with expected server behavior.
 <html lang="$locale.getLanguage()" dir="ltr">
 <head>
     <title>
-        #if($accountLockedOutErrorMessage)
-        $languagePackMessages.getMessage($messageKeyPrefix, "account.locked.out.title")
-        #else
-        $languagePackMessages.getMessage($messageKeyPrefix, "title")
-        #end
+        $languagePackMessages.getMessage($messageKeyPrefix, $mfaFailedTitle)
     </title>
     <base href="$CurrentPingFedBaseURL"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -59,25 +55,17 @@ is not recommended as it may interfere with expected server behavior.
                             class="icon-feedback__icon pingicon-ghost-error"></span>
                         <p class="icon-feedback__label">
                         <p class="icon-feedback__label">
-                            #if($accountLockedOutErrorMessage)
-                            $languagePackMessages.getMessage($messageKeyPrefix, "account.locked.out.header")
-                            #else
-                            $languagePackMessages.getMessage($messageKeyPrefix, "header")
-                            #end
+                            $languagePackMessages.getMessage($messageKeyPrefix, $mfaFailedHeader)
                         </p>
                         </p>
                     </div>
                     <div class="text-block text-block--small" data-id="textblock">
                         <div class="text-block--overflow-wrap">
-                            #if($accountLockedOutErrorMessage)
-                            $accountLockedOutErrorMessage
-                            #else
                             $languagePackMessages.getMessage($messageKeyPrefix, "could.not.authenticate")
-                                #if($additionalErrorMessage)
-                                    $additionalErrorMessage
-                                #else
-                                    $languagePackMessages.getMessage($messageKeyPrefix, $errorMessageKey)
-                                #end
+                            #if($additionalErrorMessage)
+                                $additionalErrorMessage
+                            #else
+                                $languagePackMessages.getMessage($messageKeyPrefix, $errorMessageKey)
                             #end
                         </div>
                     </div>

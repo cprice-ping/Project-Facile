@@ -1,7 +1,10 @@
-function profileDevice(callback, behavioralDataCollection = true) {
+function profileDevice(callback, behavioralDataCollection = true, collectDeviceTrustAttributes = false, deviceTrustAgentTimeout, deviceTrustAgentPort) {
     // Initialize the SDK
     onPingOneSignalsReady(function () {
         _pingOneSignals.init({
+            agentIdentification : collectDeviceTrustAttributes === true,
+            agentTimeout : deviceTrustAgentTimeout != null ? deviceTrustAgentTimeout : undefined,
+            agentPort : deviceTrustAgentPort != null ? deviceTrustAgentPort : undefined,
             behavioralDataCollection: behavioralDataCollection
         }).then(function () {
             console.log("PingOne Signals initialized successfully");
