@@ -36,15 +36,15 @@ echo PF AuthN API
 rm -f /opt/out/instance/server/default/lib/pf-authn-api-sdk-1.0.0.71.jar
 echo PingID IK
 # PingID IK
-rm -f /opt/out/instance/server/default/deploy/pf-pingid-idp-adapter-2.6.jar
-rm  -f /opt/out/instance/server/default/deploy/PingIDRadiusPCV-2.9.0.jar
+rm -f /opt/out/instance/server/default/deploy/pf-pingid-idp-adapter-2.14.0.jar
+rm  -f /opt/out/instance/server/default/deploy/PingIDRadiusPCV-3.0.4.jar
 rm  -f /opt/out/instance/server/default/deploy/pf-pingid-quickconnection-1.0.1.jar
 rm  -f /opt/out/instance/server/default/deploy/pf-pingid-idp-adapter-2.10.jar
 # P1
 rm -f /opt/out/instance/server/default/deploy/pf-pingone-datastore-2.2.2.jar
 rm -f /opt/out/instance/server/default/deploy/pf-pingone-quickconnection-2.2.2.jar
 # P1 MFA
-rm -f /opt/out/instance/server/default/deploy/pf-pingone-mfa-adapter-2.3.1.jar
+rm -f /opt/out/instance/server/default/deploy/pf-pingone-mfa-adapter-2.5.jar
 # P1 Risk
 rm -f /opt/out/instance/server/default/deploy/pf-pingone-risk-management-adapter-1.2.1.jar
 # Agentless
@@ -52,4 +52,8 @@ rm -f /opt/out/instance/server/default/deploy/pf-referenceid-adapter-2.0.3.jar
 # P1 Verify
 rm -f /opt/out/instance/server/default/deploy/pf-pingone-verify-adapter-2.1.jar
 # DaVinci
-rm -f /opt/out/instance/server/default/deploy/pf-pingone-davinci-adapter-1.0.1.jar
+rm -f /opt/out/instance/server/default/deploy/pf-pingone-davinci-adapter-1.2.jar
+# P1 Protect
+rm -f /opt/out/instance/server/default/deploy/pf-pingone-protect-adapter-1.0.3.jar
+# P1 Verify
+rm -f /opt/out/instance/server/default/deploy/pf-pingone-verify-adapter-2.2.2.jar
