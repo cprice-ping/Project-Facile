@@ -1,0 +1,312 @@
+core:
+  releaseName: "${ENVIRONMENT_NAME}"
+  # Use a JWT claim other than "sub" for the OIDC User ID.
+  #
+  Authentication.oidcUserIdField: "${PING_OIDC_USER_CLAIM}:-sub"
+  #
+  # Cache the OIDC JWKS response with an expiry period (in seconds). A value of
+  # `-1` will cause the Policy Editor to cache the JWKS endpoint
+  # response indefinitely (the default). Use a value of `0` to disable
+  # JWKS endpoint caching.
+  #
+  # Note that regardless of the configured value,
+  # the application will continue to request
+  # the JWKS endpoint whenever it encounters a `kid` that is not present
+  # in the cached response.
+  #
+  # The JWKS endpoint is provided either directly, through the
+  # `authWellKnownEndpoints` configuration option
+  # (see the `ui` section), or indirectly, by specifying the
+  # OIDC configuration endpoint through the
+  # `PING_OIDC_CONFIGURATION_ENDPOINT` environment variable.
+  #
+  # This option only affects server-side behavior.
+  #
+  #  Authentication.oidcJwksCacheExpirySeconds: -1
+  #
+  # Add policy configuration keys here. The value for a policy
+  # configuration key may be provided via an environment variable
+  # using the notation '${environment-variable}'.
+  #
+  #  PolicyConfigurationKeyName: PolicyConfigurationKeyValue
+keystores:
+  # Define key stores used by policy information providers here.
+  #
+  #  - name: CustomKeyStore
+  #    resource: /path/to/custom-keystore.jks
+  #    password: keystore-password
+truststores:
+  # Define trust stores used by policy information providers here.
+  #
+  #  - name: CustomTrustStore
+  #    resource: /path/to/custom-truststore.jks
+  #    password: truststore-password
+deploymentPackageData:
+  # Define a key store to use for signing deployment packages here.
+  #
+  #  contentType: json
+  #  keystore:
+  #    resource: /path/to/deployment-package-signing-keystore.jks
+  #    password: keystore-password
+  #  securityLevel: signed
+  #  signingKey:
+  #    alias: signing-cert-alias
+  #    password: private-key-password
+deploymentPackageStores:
+  # Define deployment package store publishing targets here.
+  #
+  # - name: Filesystem store
+  #   description: File system directory store
+  #   type: filesystem
+  #   path: /path/to/deployment-package-store/
+  # - name: Signed filesystem store
+  #   description: Signed file system directory store
+  #   type: filesystem
+  #   path: /path/to/signed-deployment-package-store/
+  #   securityLevel: signed
+  #   keystore:
+  #     resource: /path/to/deployment-package-signing-keystore.jks
+  #     password: keystore-password
+  #   signingKey:
+  #     alias: signing-cert-alias
+  #     password: private-key-password
+  # - name: S3 bucket store
+  #   description: AWS S3 bucket store
+  #   type: s3bucket
+  #   securityLevel: unsigned
+  #   config:
+  #     bucket: store-bucket-name
+  #     prefix: store-prefix
+  #     endpoint: https://s3.amazonaws.com
+  #     region: us-east-2
+  #     accessKey: aws-access-key
+  #     secretKey: aws-secret-key
+  #
+  # - name: Azure blob storage store
+  #   description: Microsoft Azure blob storage store
+  #   type: azure
+  #   securityLevel: unsigned
+  #   config:
+  #     connection-string: DefaultEndpointsProtocol=[http|https];AccountName=myAccountName;AccountKey=myAccountKey
+  #     container: azure-blob-storage-container-name
+  #     prefix: azure-blob-storage-prefix
+  #
+securityHeaders:
+  # Configure the values that the Policy Editor will set in its
+  # responses for the X-Frame-Options, Content-Security-Policy, and/or
+  # Access-Control-Allow-Origin HTTP security headers here.
+  #
+  # X-Frame-Options: "deny"
+  # Content-Security-Policy: "default-src https:"
+  # Access-Control-Allow-Origin: "*"
+ui:
+  # Individually configure the OpenID Connect endpoints. This only applies when configuring the Policy Editor
+  # to use OpenID Connect for authentication.
+  #
+  # authClientConfig:
+  #   authWellKnownEndpoints:
+  #     issuer: https://identity-server:<port_no>
+  #     authorizationEndpoint: https://identity-server:<port_no>/as/authorization.oauth2
+  #     jwksUri: https://identity-server:<port_no>/pf/JWKS
+  #     tokenEndpoint: https://identity-server:<port_no>/as/token.oauth2
+  #     userinfoEndpoint: https://identity-server:<port_no>/idp/userinfo.openid
+  #     endSessionEndpoint: https://identity-server:<port_no>/idp/startSLO.ping
+  #     introspectionEndpoint: https://identity-server:<port_no>/as/introspect.oauth2
+cache:
+  # Configure an external attribute and service cache for use in the Trust Framework. Note that these configuration options
+  # only apply to the Policy Editor and do not get exported with a deployment package. This means that to use
+  # the same cache for PingAuthorize running in embedded PDP mode, you must configure equivalent settings
+  # either through the Administrative Console or dsconfig.
+  #
+  # The "cacheConfig" sections below are examples of each external attribute and service caching mode. The "username"
+  # and "password" fields are only required when the external Redis instance has AUTH enabled.
+  # Customers using older Redis instances and the "requirepass" configuration only need to set "password".
+  #
+  # To use a Redis-based instance for any cache-enabled Trust Framework attributes and services, uncomment the
+  # "provider" property below, along with an appropriately modified "cacheConfig" section.
+  #
+  # provider: redis
+  #
+  # Example cacheConfig - Single Redis instance
+  #
+  # cacheConfig:
+  #   mode: single_instance
+  #   nodeAddresses: redis://localhost:6379
+  #   username: <optional>
+  #   password: <optional>
+  #
+  # Example cacheConfig - Single Redis instance using TLS
+  #
+  # cacheConfig:
+  #   mode: single_instance
+  #   nodeAddresses: rediss://localhost:6379
+  #   username: <optional>
+  #   password: <optional>
+  #
+  # Example cacheConfig - Replicated Redis
+  #
+  # cacheConfig:
+  #   mode: replicated
+  #   nodeAddresses: redis://example.com:6379,redis://example.com:6380
+  #   username: <optional>
+  #   password: <optional>
+  #
+  # Example cacheConfig - Redis Sentinel
+  #
+  # cacheConfig:
+  #   mode: sentinel
+  #   nodeAddresses: redis://example.com:23679,redis://example.com:23680,redis://example.com:23681
+  #   masterName: mymaster
+  #   database: 0
+  #   scanInterval: 1000
+  #   checkSentinelList: false
+  #   username: <optional>
+  #   password: <optional>
+  #
+  # Example cacheConfig - ElastiCache
+  #
+  # cacheConfig:
+  #   mode: elasticache
+  #   replicationGroupId: my-replication-group-id
+  #   username: <optional>
+  #   password: <optional>
+
+decisionRequestHeaderMapping:
+  # Configure mapping of decision request headers to Trust Framework attributes.
+  # This option enables you to dynamically populate attribute values with the header values of
+  # incoming decision requests.
+  #
+  # Provide a list of mappings in the form of key-value pairs, where the key is the header name
+  # and the value is the attribute fullname. If a decision request specifies values for both a
+  # header and an attribute that are mapped to each other, the attribute assumes the header value.
+  #
+  #  enabled: true
+  #  headerKeys:
+  #    "X-Correlation-Id": "Request.Headers.X-Correlation-Id"
+
+serviceExecution:
+  # Configure service execution settings for the Policy Editor.
+
+  allowedDatabaseDrivers:
+    # A map of allowed database drivers. Provide a list of mappings in the form of key-value pairs,
+    # where the key is in the format .driver and the value is the fully qualified Java class name
+    # of the driver. When this value is not specified, the default drivers shown below are used.
+    postgresql.driver: "org.postgresql.Driver"
+    oracle.driver: "oracle.jdbc.driver.OracleDriver"
+
+
+  databasePools:
+    # Configure database connection pool settings for the Policy Editor.
+    # The following settings are available:
+    # - connectionTimeoutMillis: The maximum time in milliseconds that a connection request waits for an available connection in a database pool.
+    # - validationTimeoutMillis: The maximum time in milliseconds that a database pool tests a connection for aliveness.
+    # - maximumLifetimeMillis: The maximum lifetime in milliseconds that a connection stays in the database pool.
+      # The database pool will only remove a connection if the maximum lifetime elapses,
+      # and the connection is no longer active.
+      # Setting this property to 0 makes the maximum lifetime infinite.
+    # - maximumSize: The maximum number of connections that can be created in the pool.
+    # - readOnly: A boolean value that specifies whether the connection is read-only.
+      # Some database types do not support read-only mode.
+      # If the database type does not support read-only mode,
+      # database pools will be read-write regardless of the value of this property.
+    connectionTimeoutMillis: 10000
+    validationTimeoutMillis: 10000
+    maximumLifetimeMillis: 30000
+    maximumSize: 5
+    readOnly: true
+
+auditLogging:
+  # A comma separated list of Query audit log views. Supported configuration values are:
+  # permit, permitAndDenyWithStatement, unfiltered, request.
+  # Only one of the first three can be provided to specify query decision granularity.
+  # The request view can be provided in addition to one of the first three to specify
+  # whether to include query requests.
+
+  # Example config that includes Permit decisions:
+  # queryResponseView: permit
+
+  # Example config that includes Query request, Decisions that are Permit or Deny with Statements
+  # queryResponseView: request, permitAndDenyWithStatement
+
+  # Example config that includes all Decision types, and the Query request:
+  # queryResponseView: request, unfiltered
+logging:
+  level: INFO
+  loggers:
+    "DataNucleus": ERROR
+    "DataNucleus.Enhancer": "OFF"
+    "org.glassfish.jersey.internal.Errors": ERROR
+    "com.symphonicsoft.policyanalysis.PolicyTranslator": ERROR
+    # If instructed to do so by Ping Identity Support, you can enable
+    # additional logging for HTTP errors by uncommenting one of the following
+    # lines and running setup. This will cause stack trace details about HTTP
+    # errors to be recorded to logs/debug.log.
+    #
+    # To enable additional logging for HTTP 50x errors only:
+    # "com.symphonicsoft.rest.BaseExceptionMapper": ERROR
+    #
+    # To enable additional logging for HTTP 40x and 50x errors:
+    # "com.symphonicsoft.rest.BaseExceptionMapper": DEBUG
+    "DECISION_AUDIT_LOG":
+      level: INFO
+      additive: false
+      appenders:
+        - type: file
+          currentLogFilename: logs/decision-audit.log
+          archive: true
+          maxFileSize: 250MB
+          archivedLogFilenamePattern: logs/decision-audit.%i.log.gz
+          archivedFileCount: 10
+          logFormat: "[%date{ISO8601}] %msg%n"
+    "ADMIN_POINT_AUDIT":
+      level: INFO
+      additive: false
+      appenders:
+        - type: file
+          currentLogFilename: logs/management-audit.log
+          archive: false
+          archivedLogFilenamePattern: logs/management-audit.%i.log.gz
+          archivedFileCount: 10
+          logFormat: "[%date{ISO8601}] %msg%n"
+    "QUERY_AUDIT_LOG":
+      level: INFO
+      additive: false
+      appenders:
+        - type: file
+          currentLogFilename: logs/query-audit.log
+          archive: true
+          maxFileSize: 250MB
+          archivedLogFilenamePattern: logs/query-audit.%i.log.gz
+          archivedFileCount: 10
+          logFormat: "[%date{ISO8601}] %msg%n"
+    metrics:
+      additive: false
+      appenders:
+        - type: file
+          currentLogFilename: logs/metrics.log
+          maxFileSize: 250MB
+          archive: true
+          archivedLogFilenamePattern: logs/metrics.%i.log.gz
+          archivedFileCount: 10
+          logFormat: "logger=metrics, timestamp=%date{yyyyMMdd'T'HHmmss.SSS}, %msg%n"
+  appenders:
+    - type: console
+      threshold: INFO
+      target: stdout
+      logFormat: "%-5level [%date{ISO8601}] %c: %msg%n"
+    - type: file
+      threshold: DEBUG
+      currentLogFilename: logs/debug.log
+      maxFileSize: 250MB
+      archive: true
+      archivedLogFilenamePattern: logs/debug.%i.log.gz
+      archivedFileCount: 10
+      logFormat: "%-5level [%date{ISO8601}] [%thread] %c: %msg%n"
+    - type: file
+      threshold: INFO
+      currentLogFilename: logs/authorize-pe.log
+      maxFileSize: 250MB
+      archive: true
+      archivedLogFilenamePattern: logs/authorize-pe.%i.log.gz
+      archivedFileCount: 10
+      logFormat: "%-5level [%date{ISO8601}] %c: %msg%n"
