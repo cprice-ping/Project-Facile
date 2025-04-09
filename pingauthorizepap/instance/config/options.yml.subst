@@ -2,7 +2,7 @@ core:
   releaseName: "${ENVIRONMENT_NAME}"
   # Use a JWT claim other than "sub" for the OIDC User ID.
   #
-  Authentication.oidcUserIdField: "${PING_OIDC_USER_CLAIM}:-sub"
+  Authentication.oidcUserIdField: "${PING_OIDC_USER_CLAIM}"
   #
   # Cache the OIDC JWKS response with an expiry period (in seconds). A value of
   # `-1` will cause the Policy Editor to cache the JWKS endpoint
