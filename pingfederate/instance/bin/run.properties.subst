@@ -239,7 +239,8 @@ pf.cluster.failure.detection.bind.port=7700
 # IMPORTANT: For UDP clustering with PingFederate running on Windows using ipv6. 
 # You must supply the interface identifier (for example: %11) in the 
 # "pf.cluster.bind.address" above.
-pf.cluster.transport.protocol=tcp
+# ** Glean says to not do this
+# pf.cluster.transport.protocol=tcp
 pf.cluster.mcast.group.address=239.16.96.69
 pf.cluster.mcast.group.port=7601
 
@@ -253,7 +254,8 @@ pf.cluster.mcast.group.port=7601
 # discovery mechanisms are available. See server/default/conf/tcp.xml for 
 # further details. If a dynamic discovery mechanism is used, this property
 # is ignored.
-pf.cluster.tcp.discovery.initial.hosts=${DISCOVERY_INITIAL_HOST}
+# ** Glean says to not do this
+# pf.cluster.tcp.discovery.initial.hosts=${DISCOVERY_INITIAL_HOST}
 
 # This property enables/disables adaptive clustering. Please see the 
 # PingFederate clustering guide for more information on this capability.
