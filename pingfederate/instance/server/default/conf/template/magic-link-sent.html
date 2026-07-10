@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+#*
+The server renders this HTML page in an end-user's browser when
+a magic link has been generated and sent to the user.
+
+Velocity variables (identified by the $ character) are generated
+at runtime by the server.
+
+Change text or formatting as needed. Modifying Velocity statements
+is not recommended as it may interfere with expected server behavior.
+*#
+
+<!-- template name: magic-link-sent.html -->
+
+#set( $messageKeyPrefix = "magic.link.sent." )
+
+<html lang="$locale.getLanguage()" dir="ltr">
+<head>
+    <title>$languagePackMessages.getMessage($messageKeyPrefix, "title")</title>
+    <base href="$CurrentPingFedBaseURL"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <meta http-equiv="x-ua-compatible" content="IE=edge"/>
+    <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" href="assets/images/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="assets/css/end-user/0.36.1/end-user.css">
+    <link rel="stylesheet" href="assets/css/magiclink.css">
+    <script src="assets/scripts/jquery-3.7.1.min.js"></script>
+
+    <style>
+        .page__content:before {
+            content: none;
+        }
+
+        .page__content {
+            margin-top: 50px;
+        }
+
+        @media (max-width: 480px) {
+            .page__content {
+                margin-top: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<div class="app-container">
+    <div class="page brand-background" data-id="page">
+        <div class="page__content">
+            <div class="card card--no-padding">
+                <div class="card__content">
+
+                    <div class="org-logo"><img class="org-logo__image"
+                                               src="assets/images/ping-logo.svg"
+                                               alt="Company Logo"/></div>
+
+                    <div id="started">
+                        <div class="stack stack--small" data-id="stack">
+                            #if($email)
+                            <div class="form-aside">
+                                <div class="stack" data-id="stack">
+                                    <div class="text-block" data-id="textblock">
+                                        <div class="text-block--overflow-wrap">
+                                            <h1 class="heading" data-id="heading">$languagePackMessages.getMessage($messageKeyPrefix, "greeting")</h1>
+                                        </div>
+                                    </div>
+                                    <div class="text-block" data-id="textblock">
+                                        <div class="text-block--overflow-wrap">
+                                            $escape.escape($email)
+                                        </div>
+                                    </div>
+
+                                    <div class="text-block" data-id="textblock">
+                                        <div class="text-block--overflow-wrap">
+                                            $languagePackMessages.getMessage($messageKeyPrefix, "instructions")
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            #else
+                            <div class="text-block" data-id="textblock">
+                                <div class="text-block--overflow-wrap">
+                                    $languagePackMessages.getMessage($messageKeyPrefix, "started")
+                                </div>
+                            </div>
+                            <div class="text-block" data-id="textblock">
+                                <div class="text-block--overflow-wrap">
+                                    $languagePackMessages.getMessage($messageKeyPrefix, "instructions")
+                                </div>
+                            </div>
+                            #end
+                        </div>
+                    </div>
+
+                    <div id="completed" style="display: none">
+                        <div class="icon-feedback icon-feedback--timeout  icon-feedback--success"><span
+                                class="icon-feedback__icon pingicon-ghost-success"></span>
+                            <p class="icon-feedback__label">
+                            <p class="icon-feedback__label">$languagePackMessages.getMessage($messageKeyPrefix,
+                                "completedHeader")</p>
+                            </p>
+                        </div>
+                        <div class="stack stack--small" data-id="stack">
+                            <div class="text-block" data-id="textblock">
+                                <div class="text-block--overflow-wrap">
+                                    $languagePackMessages.getMessage($messageKeyPrefix, "completed")
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="expired" style="display: none">
+                        <div class="stack stack--small" data-id="stack">
+                            <div class="icon-feedback icon-feedback--timeout  icon-feedback--error"><span
+                                    class="icon-feedback__icon pingicon-ghost-error"></span>
+                                <p class="icon-feedback__label">
+                                <p class="icon-feedback--error">$languagePackMessages.getMessage($messageKeyPrefix,
+                                    "expiredHeader")</p>
+                                </p>
+                            </div>
+
+                            <div class="text-block" data-id="textblock">
+                                <div class="text-block--overflow-wrap">
+                                    $languagePackMessages.getMessage($messageKeyPrefix, "expired")
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="page__footer">
+            <div class="ping-footer">
+                <div class="ping-credits"></div>
+                <div class="ping-copyright">$templateMessages.getMessage("global.footerMessage")</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var pollingFlag = true;
+    var POLLING_DELAY = 5000;
+
+    function cancelPoll() {
+        pollingFlag = false;
+    }
+
+    function submit() {
+        document.getElementById("form").submit();
+    }
+
+    function showComplete() {
+        document.getElementById("started").style.display = "none";
+        document.getElementById("expired").style.display = "none";
+        document.getElementById("completed").style.display = "block";
+    }
+
+    function showExpired() {
+        document.getElementById("started").style.display = "none";
+        document.getElementById("expired").style.display = "block";
+        document.getElementById("completed").style.display = "none";
+    }
+
+    function doPoll(endpoint) {
+        if (pollingFlag === true) {
+            timer = setTimeout(function () {
+                jQuery.ajax(
+                    {
+                        type: 'GET',
+                        async: false,
+                        url: endpoint,
+                        data: {
+                            '$txParam': '$transactionId'
+                        },
+                        success: function (result) {
+                            let response = JSON.parse(JSON.stringify(result));
+
+                            switch (response.status) {
+                                case "STARTED":
+                                    doPoll(endpoint);
+                                    break;
+                                case "COMPLETE":
+                                    cancelPoll();
+                                    showComplete();
+                                    break;
+                                case "AUTHENTICATED":
+                                    cancelPoll();
+                                    submit();
+                                    break;
+                                case "EXPIRED":
+                                    showExpired();
+                                    cancelPoll();
+                                    break;
+                                default:
+                                    cancelPoll();
+                            }
+                        }
+                    });
+            }, POLLING_DELAY);
+        }
+    }
+
+    onload = function () {
+        setTimeout(doPoll, POLLING_DELAY, '$endpoint');
+    };
+</script>
+
+<form id='form' method="post" action="$resumePath" autocomplete="off">
+</form>
+
+</body>
+</html>

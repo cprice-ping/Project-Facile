@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+#*
+The server renders this HTML page in an end-user's browser when
+sms/voice/whatsapp or email pairing is required.
+
+Velocity variables (identified by the $ character) are generated
+at runtime by the server.
+
+Change text or formatting as needed. Modifying Velocity statements
+is not recommended as it may interfere with expected server behavior.
+*#
+
+<!-- template name: pingone-mfa-oath-token-pairing.html -->
+
+#set($messageKeyPrefix = "pingone.mfa.oath.token.pairing.")
+
+#if($errorMessageKey)
+    #set($errorMessage = $languagePackMessages.getMessage($messageKeyPrefix, $errorMessageKey))
+#end
+
+#if(!$lockExpiresAt)
+    #set($lockExpiresAt = 0)
+#end
+
+<html lang="$locale.getLanguage()" dir="ltr">
+<head>
+    <title>$languagePackMessages.getMessage($messageKeyPrefix, "title")</title>
+    <base href="$CurrentPingFedBaseURL"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,
+    user-scalable=no"/>
+    <meta http-equiv="x-ua-compatible" content="IE=edge"/>
+    <link rel="stylesheet" href="assets/css/end-user/0.36.1/end-user.css">
+    <link rel="stylesheet" href="assets/css/pingone-mfa.css">
+    <script src="assets/scripts/jquery-3.5.1.min.js"></script>
+    <style>
+        .page__content:before {
+            content: none;
+        }
+
+        .page__content {
+            margin-top: 50px;
+        }
+
+        @media (max-width: 480px) {
+            .page__content {
+                margin-top: 0;
+            }
+        }
+
+        .feedback {
+            align-items : center
+        }
+    </style>
+</head>
+<body onload="init()">
+<div class="app-container">
+    <div class="page brand-background" data-id="page">
+        <div class="page__content">
+            <div class="card card--no-padding">
+                <div class="card__content">
+                    <form id="form" class="form" data-id="form" method="post" action="$resumePath" autocomplete="off">
+                        <div class="org-logo"><img class="org-logo__image"
+                                                   src="assets/images/ping-logo.svg"
+                                                   alt="Company Logo"/></div>
+                        #if($errorMessageKey)
+                            <div class="feedback feedback--error" data-id="feedback" id="errorContainer">
+                                <span class="feedback__icon pingicon-error-triangle"></span>
+                                <div id="errorMessageDisplay"></div>
+                            </div>
+                        #end
+                        <div class="stack stack--small" data-id="stack">
+                            <h1 class="heading-text centered-text icon-heading" data-id="heading">
+                                <svg width="27" height="27" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 27 27" fill="none">
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M16.9291 0C16.2228 0 15.5436 0.250813 15.0352 0.759219L1.93727 13.8557C1.93592 13.8571 1.93321 13.8598 1.93185 13.8612C-0.8515 16.6432 -0.596619 21.41 2.49855 24.5065C4.15528 26.1619 6.28923 27.0051 8.34183 27.0051C10.126 27.0051 11.8492 26.3679 13.1439 25.0732C13.1778 25.0393 13.2063 25.0027 13.2388 24.9688L26.2418 11.9658C27.3345 10.8717 27.2342 8.98183 26.0181 7.76437L19.2366 0.982917C18.5845 0.332158 17.7412 0 16.9291 0ZM16.9291 2.71169C17.0268 2.71169 17.18 2.76186 17.3196 2.90014L24.0997 9.68159C24.2597 9.84157 24.2936 10.011 24.2895 10.0829L11.2784 23.094L11.1754 23.2065C10.2453 24.104 9.12546 24.2938 8.34184 24.2938C6.93051 24.2938 5.50019 23.6729 4.41695 22.5897C3.39336 21.5661 2.79005 20.2632 2.7182 18.9224C2.65448 17.7103 3.04086 16.6108 3.80822 15.8191L3.85431 15.773L16.9156 2.71169H16.9291Z" fill="#3D454D"></path>
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M9.97243 16.8306C11.1262 17.9843 11.1262 19.8553 9.97243 21.009C8.81869 22.1627 6.94776 22.1627 5.79402 21.009C4.64028 19.8553 4.64028 17.9843 5.79402 16.8306C6.94776 15.6768 8.81869 15.6768 9.97243 16.8306Z" fill="#3D454D"></path>
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M20.7589 8.82056L12.4942 17.0852L9.92236 14.5147L18.1884 6.25006L20.7589 8.82056Z" fill="#3D454D"></path>
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M22.9782 4.74667C22.5254 4.74667 22.1593 4.37926 22.1593 3.9278C22.1593 3.47498 22.5254 3.10757 22.9782 3.10757C23.4297 3.10757 23.7971 3.47498 23.7971 3.9278C23.7971 4.37926 23.4297 4.74667 22.9782 4.74667ZM22.9782 1.81689C21.8136 1.81689 20.8687 2.76185 20.8687 3.92779C20.8687 5.09238 21.8136 6.03598 22.9782 6.03598C24.1428 6.03598 25.0877 5.09238 25.0877 3.92779C25.0877 2.76185 24.1428 1.81689 22.9782 1.81689Z" fill="#3D454D"></path>
+                                </svg>
+                                <span style="margin-left: .5em">$languagePackMessages.getMessage($messageKeyPrefix,"header")</span>
+                            </h1>
+                            <div class="text-block" data-id="textblock">
+                                <div class="text-block--overflow-wrap">
+                                        $languagePackMessages.getMessage($messageKeyPrefix, "message")
+                                </div>
+                            </div>
+                        </div>
+                        <div class="stack stack--small" data-id="stack">
+                            <div class="text-input__icon"></div>
+                            <input id="serial-number-input" type="text" class="text-input" data-id="text-input" name="$escape.escape($oathTokenSerialNumber)"
+                                   onkeypress="return checkTargetOnReturn(event)"/>
+                        </div>
+                        <div class="text-block" data-id="textblock">
+                            <div class="text-block--overflow-wrap">
+                                <div class="stack" data-id="stack">
+                                    <div>
+                                        <button id="next" class="button file-input--button button--primary brand-primary-bg"
+                                                data-id="button" type="button" onclick="submitSerialNumber()">
+                                            $languagePackMessages.getMessage($messageKeyPrefix, "next.button.title")
+                                        </button>
+                                    </div>
+                                    <a tabindex="0" data-id="content-link" target="_self" class="anchor"
+                                       onclick="cancelDevicePairing()">$languagePackMessages.getMessage($messageKeyPrefix,
+                                        "cancel.button.title")
+                                        <input type="hidden" name="$escape.escape($cancelDevicePairing)" value=""/>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="page__footer">
+            <div class="ping-footer">
+                <div class="ping-credits"></div>
+                <div class="ping-copyright">$templateMessages.getMessage("global.footerMessage")</div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+
+    function init() {
+        var platform = navigator.platform;
+        if (platform != null && platform.indexOf("iPhone") == -1) {
+            const serialNumberInput = document.getElementById('serial-number-input');
+            if (serialNumberInput) {
+                serialNumberInput.focus();
+            }
+        }
+
+        // Get the current time and the cooldown period expiration time
+        const currentTime = new Date().getTime();
+        const lockExpiresAt = $lockExpiresAt * 1000;
+
+        // Calculate the remaining cooldown time
+        let remainingTime = lockExpiresAt - currentTime;
+
+        const errorMessageDisplayElement = document.getElementById("errorMessageDisplay");
+        let errorMessage = "";
+
+        if (remainingTime > 0) {
+            const updateCountdown = () => {
+                if (remainingTime > 0) {
+                    // Calculate remaining minutes and seconds
+                    const remainingMinutes = Math.ceil(remainingTime / 60000);
+                    const remainingSeconds = Math.ceil((remainingTime % 60000) / 1000);
+
+                    // Handle pluralization
+                    const minuteText = remainingMinutes === 1 ? "minute" : "minutes";
+                    const secondText = remainingSeconds === 1 ? "second" : "seconds";
+
+                    errorMessage = "$errorMessage";
+                    if (remainingMinutes > 1) {
+                        errorMessage = errorMessage.replace("{0}",remainingMinutes).replace("{1}",minuteText);
+                    } else if (remainingMinutes === 1) {
+                        errorMessage = errorMessage.replace("{0}",remainingSeconds).replace("{1}",secondText);
+                    }
+                    remainingTime -= 1000;
+                } else {
+                    errorMessage = "";
+                    const errorContainerElement = document.getElementById("errorContainer");
+                    if(errorContainerElement) {
+                        errorContainerElement.style.display = "none";
+                    }
+                    clearInterval(countdownInterval);
+                }
+                if(errorMessageDisplayElement) {
+                    errorMessageDisplayElement.textContent = errorMessage;
+                }
+            };
+
+            // Start the countdown timer
+            const countdownInterval = setInterval(updateCountdown, 1000);
+
+            // Initial display
+            updateCountdown();
+        } else {
+            errorMessage = "$errorMessage";
+            if(errorMessageDisplayElement) {
+                errorMessageDisplayElement.textContent = errorMessage;
+            }
+        }
+    }
+
+    function checkTargetOnReturn(e) {
+        var keycode;
+        if (window.event) keycode = window.event.keyCode;
+        else if (e) keycode = e.which;
+        else return true;
+
+        if (keycode === 13) {
+            submit("$oathTokenSerialNumber");
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    function submitSerialNumber() {
+        submit("$oathTokenSerialNumber")
+    }
+
+    function cancelDevicePairing() {
+        document.forms[0]['$cancelDevicePairing'].value = 'true';
+        submit('$cancelDevicePairing');
+    }
+
+    function submit(inputName) {
+        var inputs = document.forms[0].getElementsByTagName("input");
+        for (var i = 0; i < inputs.length; i++) {
+            var input = inputs[i];
+            if (input.name !== inputName) {
+                input.removeAttribute('name');
+            }
+        }
+        var form = jQuery('form');
+        form.submit(function () {
+            jQuery(this).unbind('submit');
+            jQuery(this).submit(function () {
+                return false;
+            });
+        });
+        form.submit();
+    }
+
+</script>
+</body>
+</html>

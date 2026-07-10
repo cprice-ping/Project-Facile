@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+#*
+Modified version of pingone-mfa-setup.html
+Adds a "Remember this device?" prompt with Yes/No buttons.
+*#
+
+<!-- template name: pingone-mfa-rememember-me-user-consent.html -->
+#set( $messageKeyPrefix = "pingone.mfa.remember.me.user.consent." )
+
+<html lang="$locale.getLanguage()" dir="ltr">
+<head>
+  <title>$languagePackMessages.getMessage($messageKeyPrefix, "title")</title>
+  <base href="$CurrentPingFedBaseURL"/>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <meta http-equiv="x-ua-compatible" content="IE=edge"/>
+  <link rel="stylesheet" href="assets/css/end-user/0.36.1/end-user.css">
+  <link rel="stylesheet" href="assets/css/pingone-mfa.css">
+  <script src="assets/scripts/jquery-3.5.1.min.js"></script>
+  <style>
+    .page__content:before { content: none; }
+    .page__content { margin-top: 50px; text-align: center; }
+    @media (max-width: 480px) {
+        .page__content { margin-top: 0; }
+    }
+    .remember-question {
+        font-size: 1.2em;
+        font-weight: 500;
+        margin-bottom: 1.5em;
+    }
+    .button-group {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+    }
+    .button--yes {
+        background-color: #007ac1;
+        color: white;
+    }
+    .button--no {
+        background-color: #f0f0f0;
+        color: #333;
+    }
+    .button--yes:hover {
+        background-color: #0064a3;
+    }
+    .button--no:hover {
+        background-color: #e0e0e0;
+    }
+  </style>
+</head>
+
+<body>
+<div class="app-container">
+  <div class="page brand-background" data-id="page">
+    <div class="page__content">
+      <div class="card card--no-padding">
+        <div class="card__content">
+          <div class="org-logo">
+            <img class="org-logo__image" src="assets/images/ping-logo.svg" alt="Company Logo"/>
+          </div>
+          <h1 id="remember-me-heading" class="heading" data-id="heading">$languagePackMessages.getMessage($messageKeyPrefix, "question")</h1>
+          <h4 id="remember-me-desc" class="heading heading--4" data-id="heading">$languagePackMessages.getMessage($messageKeyPrefix, "device.warning")</h4>
+          <form id="form" class="form" data-id="form" method="post" action="$resumePath" autocomplete="off">
+            <input type="hidden" name="$escape.escape($shouldRememberDevice)" id="rememberDevice" value="">
+            <input type="hidden" name="$escape.escape($doNotAskAgain)" id="doNotAskAgain" value="">
+            <div class="text-block" data-id="textblock">
+              <div class="text-block--overflow-wrap">
+                <div class="stack" data-id="stack">
+                  <div>
+                    <button id="user-consent-yes" class="button file-input--button button--primary brand-primary-bg" data-id="button" type="button" onclick="rememberChoice(true)">$languagePackMessages.getMessage($messageKeyPrefix, "yes")</button>
+                  </div>
+                  <div>
+                    <button id="user-consent-no" class="button" data-id="button" type="button" onclick="rememberChoice(false)">$languagePackMessages.getMessage($messageKeyPrefix, "no")</button>
+                  </div>
+                  <div>
+                    <a tabindex="0" data-id="content-link" target="_self"
+                       class="anchor"
+                       onclick="doNotAskAgain()">$languagePackMessages.getMessage($messageKeyPrefix,
+                      "dont.ask")</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="page__footer">
+      <div class="ping-footer">
+        <div class="ping-credits"></div>
+        <div class="ping-copyright">$templateMessages.getMessage("global.footerMessage")</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  function rememberChoice(isRemembered) {
+      document.getElementById('rememberDevice').value = isRemembered ? 'true' : 'false';
+      submitForm("form");
+  }
+
+  function submitForm(id) {
+      var form = document.getElementById(id);
+      if (form) {
+          form.submit();
+      }
+  }
+
+  function doNotAskAgain() {
+     document.getElementById('doNotAskAgain').value = 'true';
+     submitForm("form");
+  }
+</script>
+</body>
+</html>

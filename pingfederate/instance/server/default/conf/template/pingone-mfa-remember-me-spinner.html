@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+
+#*
+The server renders this HTML page in an end-user's browser to
+collect information about their device.
+
+Velocity variables (identified by the $ character) are generated
+at runtime by the server.
+*#
+
+<!-- template name: pingone-mfa-rememember-me-spinner.html -->
+#set( $messageKeyPrefix = "pingone.mfa.remember.me." )
+
+<html lang="$locale.getLanguage()" dir="ltr">
+<head>
+    <title>$languagePackMessages.getMessage($messageKeyPrefix, "title")</title>
+    <base href="$CurrentPingFedBaseURL"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <meta http-equiv="x-ua-compatible" content="IE=edge"/>
+    <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" href="assets/images/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" type="text/css" href="assets/css/end-user/0.36.1/end-user.css"/>
+    <link rel="stylesheet" href="assets/css/pingone-mfa.css">
+    <script type="text/javascript" src="assets/scripts/signals-sdk-5.6.3.js"></script>
+</head>
+
+<body>
+    <div class="app-container">
+        <div class="page brand-background" data-id="page">
+            <div class="page__content">
+                <div class="card card--no-padding">
+                    <div class="card__content">
+                        <div class="org-logo"><img class="org-logo__image"
+                                                   src="assets/images/ping-logo.svg"
+                                                   alt="Company Logo"/></div>
+                        <div class="ping-body-container" style="min-height: auto;">
+                            <div class="spinner">
+                                <div class="spinner__icon" data-id="spinner"></div>
+                            </div>
+                        </div>
+                        <div class="icon-feedback icon-feedback--success">
+                            <p class="icon-feedback__label">$languagePackMessages.getMessage($messageKeyPrefix, "header")</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="page__footer">
+                <div class="ping-footer">
+                    <div class="ping-credits"></div>
+                    <div class="ping-copyright">$templateMessages.getMessage("global.footerMessage")</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        let submitted = false;
+        let timedOut = false;
+        window.onload = function () {
+            profileDevice(onCompletion);
+            setTimeout(function () {
+                timedOut = true;
+                console.error("Device profiling timed out");
+                setAndSubmitDeviceProfilingTimeoutError("device-profile-form");
+            }, $rememberMeDeviceProfilingTimeout);
+        };
+
+        function onCompletion(deviceProfile) {
+            if (timedOut) return;
+            setDeviceProfile(deviceProfile);
+            submitDeviceProfile();
+        }
+
+        function setDeviceProfile(deviceProfile) {
+            const deviceProfileInput = document.getElementById("device-profile-input");
+            if (deviceProfileInput) {
+                deviceProfileInput.value = deviceProfile;
+            }
+        }
+
+        function submitDeviceProfile() {
+            submitOnce("device-profile-form");
+        }
+
+        function submitForm(id) {
+            var form = document.getElementById(id);
+            if (form) {
+                form.submit();
+            }
+        }
+        function profileDevice(callback) {
+        // Initialize the SDK
+        onPingOneSignalsReady(function () {
+            _pingOneSignals.init({
+                universalDeviceIdentification: true
+            }).then(function () {
+                console.log("PingOne Signals initialized successfully");
+            }).catch(function (e) {
+                console.error("SDK Init failed", e);
+                setAndSubmitTemplateScriptError("device-profile-form");
+            });
+
+            // get device profiling data immediately
+            getDeviceProfileData(callback)
+           });
+        }
+
+        function onPingOneSignalsReady(callback) {
+            if (window['_pingOneSignalsReady']) {
+                callback();
+            } else {
+                document.addEventListener('PingOneSignalsReadyEvent', callback);
+            }
+        }
+
+        function setAndSubmitTemplateScriptError(id) {
+            const deviceProfileInput = document.getElementById("template-script-error");
+            if (deviceProfileInput) {
+                deviceProfileInput.value = true;
+            }
+            submitOnce(id);
+        }
+
+        function setAndSubmitDeviceProfilingTimeoutError(id) {
+            const deviceProfilingTimeoutError = document.getElementById("device-profiling-timeout-error");
+            if (deviceProfilingTimeoutError) {
+                deviceProfilingTimeoutError.value = true;
+            }
+            submitOnce(id);
+        }
+
+        /**
+        * Calls the getData method and with the output, calls the callback function.
+        *
+        * @param callback
+        */
+        function getDeviceProfileData(callback) {
+            _pingOneSignals.getData()
+                .then(result => callback(result))
+                .catch(error => {
+                    console.error('getData Error!', error);
+                    setAndSubmitTemplateScriptError("device-profile-form");
+                });
+        }
+
+        function submitOnce(id) {
+            if (submitted) return;
+            submitted = true;
+            submitForm(id);
+        }
+
+    </script>
+    <form id="device-profile-form" method="post" action="$resumePath">
+        <input type="hidden" name="$escape.escape($rememberMeDeviceProfile)" id="device-profile-input" value="">
+        <input type="hidden" name="$escape.escape($rememberMeTemplateScriptError)" id="template-script-error" value="">
+        <input type="hidden" name="$escape.escape($rememberMeDeviceProfilingTimeoutError)" id="device-profiling-timeout-error" value="">
+    </form>
+</body>
