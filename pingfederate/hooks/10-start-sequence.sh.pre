@@ -1,16 +1,29 @@
-#!/usr/bin/env
-echo Hello from the server profile 10-start-sequence.sh.pre hook!
-echo "====> SECRET=[${ADMIN_CLIENT_SECRET}]"
+#!/usr/bin/env sh
+echo "Hello from the server profile 10-start-sequence.sh.pre hook!"
 
-if ! test -z "$ADMIN_CLIENT_SECRET"; then
-    export ADMIN_CLIENT_SECRET_CODE=$(sh /opt/out/instance/bin/obfuscate.sh $ADMIN_CLIENT_SECRET | tr -d ' \t\n\r')
-    echo "====> ADMIN_CLIENT_SECRET_CODE=[${ADMIN_CLIENT_SECRET_CODE}]"
-    cleanregex=$(echo "${ADMIN_CLIENT_SECRET_CODE}" | sed -e 's/[]$.*[\^]/\\&/g' )
-    
-    sed -e "s#client.secret=#client.secret=${cleanregex}#" \
-        "/opt/out/instance/bin/oidc.properties" > "/opt/out/instance/bin/oidc.properties-modified"
-    mv /opt/out/instance/bin/oidc.properties-modified /opt/out/instance/bin/oidc.properties
+OIDC_FILE="/opt/out/instance/bin/oidc.properties"
+OBFUSCATE_SCRIPT="/opt/out/instance/bin/obfuscate.sh"
+
+if [ ! -f "$OIDC_FILE" ]; then
+  echo "OIDC properties file not found: $OIDC_FILE"
+  exit 1
+fi
+
+if [ -n "${ADMIN_CLIENT_SECRET:-}" ]; then
+  ADMIN_CLIENT_SECRET_CODE="$($OBFUSCATE_SCRIPT "$ADMIN_CLIENT_SECRET" | tr -d ' \t\n\r')"
+
+  if [ -z "$ADMIN_CLIENT_SECRET_CODE" ]; then
+    echo "Failed to obfuscate ADMIN_CLIENT_SECRET"
+    exit 1
+  fi
+
+  ESCAPED_SECRET="$(printf '%s' "$ADMIN_CLIENT_SECRET_CODE" | sed 's/[\\/&]/\\\\&/g')"
+
+  sed -E "s#^client\.secret=.*#client.secret=${ESCAPED_SECRET}#" \
+    "$OIDC_FILE" > "${OIDC_FILE}.modified" &&
+  mv "${OIDC_FILE}.modified" "$OIDC_FILE"
+
+  echo "Updated client.secret in $OIDC_FILE"
 else
-    echo "No ADMIN_CLIENT_SECRET"
-    # exit 183
+  echo "ADMIN_CLIENT_SECRET not set; leaving client.secret unchanged"
 fi
