@@ -12,7 +12,7 @@
 -->
 <log4jCategories>
     <logCategories>
-        <category id="core" name="Core" offLevel="DEBUG" onLevel="DEBUG"
+        <category id="core" name="Core" offLevel="INFO" onLevel="DEBUG"
                   description="Debug logging for core components."/>
         <category id="protocolrequestresponse" name="Protocol Requests and Responses" offLevel="INFO" onLevel="DEBUG"
                   description="Log protocol request and response messages."/>
