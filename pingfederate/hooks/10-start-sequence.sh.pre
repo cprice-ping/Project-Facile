@@ -10,10 +10,12 @@ if [ ! -f "$OIDC_FILE" ]; then
 fi
 
 if [ -n "${ADMIN_CLIENT_SECRET:-}" ]; then
-  ADMIN_CLIENT_SECRET_CODE="$($OBFUSCATE_SCRIPT "$ADMIN_CLIENT_SECRET" | tr -d ' \t\n\r')"
+  OBFUSCATE_OUTPUT="$($OBFUSCATE_SCRIPT "$ADMIN_CLIENT_SECRET" 2>&1)"
+  ADMIN_CLIENT_SECRET_CODE="$(printf '%s\n' "$OBFUSCATE_OUTPUT" | sed -nE 's/.*(OBF:[^[:space:]]+).*/\1/p' | tail -n 1)"
 
   if [ -z "$ADMIN_CLIENT_SECRET_CODE" ]; then
     echo "Failed to obfuscate ADMIN_CLIENT_SECRET"
+    echo "obfuscate.sh did not return an OBF token"
     exit 1
   fi
 
