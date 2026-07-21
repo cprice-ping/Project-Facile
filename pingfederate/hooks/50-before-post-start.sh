@@ -57,3 +57,9 @@ rm -f /opt/out/instance/server/default/deploy/pf-pingone-davinci-adapter-1.2.jar
 rm -f /opt/out/instance/server/default/deploy/pf-pingone-protect-adapter-1.0.3.jar
 # P1 Verify
 rm -f /opt/out/instance/server/default/deploy/pf-pingone-verify-adapter-2.2.2.jar
+
+# Post 13.1 release
+rm -f /opt/out/instance/server/default/deploy/pf-pingone-datastore-3.1.1.jar
+rm -f /opt/out/instance/server/default/deploy/pf-pingone-mfa-adapter-3.3.jar
+rm -f /opt/out/instance/server/default/deploy/pf-pingone-pcv-3.1.1.jar
+rm -f /opt/out/instance/server/default/deploy/pf-pingone-quickconnection-3.1.1.jar

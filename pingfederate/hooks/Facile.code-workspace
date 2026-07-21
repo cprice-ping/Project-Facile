@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"path": "../../../helm-charts"
+		},
+		{
+			"path": "../../../Facile-Apps"
+		},
+		{
+			"path": "../../../Facile-Deployer-Container"
+		},
+		{
+			"path": "../.."
+		}
+	],
+	"settings": {}
+}
